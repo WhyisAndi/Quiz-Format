@@ -204,8 +204,14 @@ body.ov{overflow:hidden;background:transparent}
 .ddfbottom .hostslot{width:360px}
 .qwho{font-size:36px;color:var(--gold);text-align:center;line-height:1}
 /* Effekte */
-.stimer{position:absolute;top:28px;right:528px;background:#000c;border:3px solid var(--gold);border-radius:12px;padding:4px 18px 0;font-size:56px;line-height:1.05;min-width:100px;text-align:center;display:none;z-index:3}
-.stimer.low{color:var(--bad);border-color:var(--bad)}
+.timerspot{display:none;align-items:center;justify-content:center;gap:8px;background:#000c;border:3px solid var(--gold);border-radius:12px;padding:4px 18px 0;font-size:48px;line-height:1.05;min-width:110px;color:#fff}
+.timerspot.on{display:inline-flex}.timerspot.low{color:var(--bad);border-color:var(--bad);animation:tpulse 1s infinite}
+.timerspot::before{content:'⏱';font-size:30px;margin-top:-4px}
+@keyframes tpulse{50%{transform:scale(1.08)}}
+.toprow{display:flex;align-items:center;justify-content:center;gap:18px;flex:none;min-height:30px}
+.jq .timerspot{margin-bottom:10px}
+.tlives.big{justify-content:center;font-size:15px;margin:8px 0 2px}.tlives.big .hrt{font-size:38px;margin:0 3px}
+.jv.won{background:linear-gradient(180deg,#ffffff1a,#00000030),var(--tc);opacity:.42;color:#ffffffcc;border-color:transparent;text-shadow:none}
 .bigx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:30px;animation:fadeout 1.6s forwards}
 .bigx span{font-size:420px;font-weight:800;color:var(--bad);text-shadow:0 0 60px #ff0030,0 10px 0 #600;line-height:1;animation:pop .35s both}
 .flashtxt{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font-size:150px;color:var(--gold);text-shadow:0 0 50px #000,0 8px 0 #0009;animation:fadeout 1.8s forwards;white-space:nowrap}
@@ -682,7 +688,7 @@ function startHost() {
     } else if (g.type === 'jeo') {
       const cats = g.boards[g.bi], c = g.cur ? cats[g.cur.c].cards[g.cur.r] : null;
       pub.g = {type: 'jeo', phase: g.phase, pickTeam: g.pickTeam, answerTeam: g.answerTeam, result: g.result, bi: g.bi, nb: g.boards.length,
-        cats: cats.map(k => ({name: k.name, cards: k.cards.map(x => ({v: x.v, used: x.used}))})),
+        cats: cats.map(k => ({name: k.name, cards: k.cards.map(x => ({v: x.v, used: x.used, w: x.wonBy ?? null}))})),
         cur: g.cur ? {c: g.cur.c, r: g.cur.r, cat: cats[g.cur.c].name, v: c.v, q: c.q, a: g.showA ? c.a : null} : null};
     }
     return pub;
@@ -811,7 +817,7 @@ function startHost() {
     },
     correct() {
       const g = S.game; if (g.phase !== 'question' && g.phase !== 'steal') return; const v = jcard().v;
-      S.teams[g.answerTeam].score += v; g.result = {team: g.answerTeam, delta: v}; g.showA = true; g.phase = 'answer';
+      S.teams[g.answerTeam].score += v; jcard().wonBy = g.answerTeam; g.result = {team: g.answerTeam, delta: v}; g.showA = true; g.phase = 'answer';
       flash('text', {text: '+' + v, team: g.answerTeam}); sfx('correct');
     },
     wrong() {
@@ -1017,7 +1023,7 @@ function startHost() {
     }
     const board = `<div class="card"><div class="jgrid" style="grid-template-columns:repeat(${cols},1fr)">
       ${cats.map(c => `<div class="jh">${esc(c.name)}</div>`).join('')}
-      ${Array.from({length: rows}, (_, r) => cats.map((c, ci) => c.cards[r] ? `<button class="jc ${c.cards[r].used ? 'used' : ''}" data-act="jeoPick" data-c="${ci}" data-r="${r}" ${c.cards[r].used || g.phase !== 'board' ? 'disabled' : ''}>${c.cards[r].v}</button>` : '<div></div>').join('')).join('')}
+      ${Array.from({length: rows}, (_, r) => cats.map((c, ci) => c.cards[r] ? `<button class="jc ${c.cards[r].used ? 'used' : ''}" ${c.cards[r].wonBy != null ? `style="background:${S.teams[c.cards[r].wonBy].color}66;color:#fff"` : ''} data-act="jeoPick" data-c="${ci}" data-r="${r}" ${c.cards[r].used || g.phase !== 'board' ? 'disabled' : ''}>${c.cards[r].v}</button>` : '<div></div>').join('')).join('')}
     </div></div>`;
     return `<div class="ctrl">${top}${board}</div>`;
   }
@@ -1275,8 +1281,8 @@ function confettiIn(host) {
 }
 function createStage(wrap, opt) {
   const room = opt.room, me = opt.me || null, low = !!opt.low, onAct = opt.onAct || null, getVote = opt.getVote || (() => null);
-  wrap.innerHTML = `<div class="stage"><div class="layer camlayer"></div><div class="layer ui"></div><div class="layer fx"></div><div class="stimer disp"></div></div>`;
-  const stage = wrap.querySelector('.stage'), camlayer = stage.querySelector('.camlayer'), ui = stage.querySelector('.ui'), fx = stage.querySelector('.fx'), timerEl = stage.querySelector('.stimer');
+  wrap.innerHTML = `<div class="stage"><div class="layer camlayer"></div><div class="layer ui"></div><div class="layer fx"></div></div>`;
+  const stage = wrap.querySelector('.stage'), camlayer = stage.querySelector('.camlayer'), ui = stage.querySelector('.ui'), fx = stage.querySelector('.fx');
   let scale = 1, P = null, status = 'connecting', lastFlash = null, firstRender = true, lastTick = null;
   const seen = new Map(), counts = new Map(), camEls = new Map();
   function fit() { const w = wrap.clientWidth, h = wrap.clientHeight; if (!w || !h) return; scale = Math.min(w / 1920, h / 1080); stage.style.transform = `scale(${scale})`; stage.style.left = (w - 1920 * scale) / 2 + 'px'; stage.style.top = (h - 1080 * scale) / 2 + 'px'; }
@@ -1303,8 +1309,9 @@ function createStage(wrap, opt) {
     const st = o.status || {txt: 'WARTET'};
     return `<div class="tpanel ${t === 0 ? 'l' : 'r'} ${o.active ? 'active' : ''}" style="--tc:${tm.color}">
       <div class="thead"><div class="tban disp">${esc(tm.name)}</div>
+      ${o.lives != null ? `<div class="tlives big">${hearts(o.lives, 3, o.livesKey + ':' + t)}</div>` : ''}
       <div class="tpts disp"><span data-count="score${t}" data-v="${tm.score}">${tm.score}</span><small>PTS</small></div>
-      <div class="trow"><span class="tstat ${st.on ? 'on' : ''}" data-an="ts${t}:${st.key || st.txt}">${st.txt}</span>${o.lives != null ? `<span class="tlives">LEBEN ${hearts(o.lives, 3, o.livesKey + ':' + t)}</span>` : ''}</div></div>
+      <div class="trow" style="justify-content:center"><span class="tstat ${st.on ? 'on' : ''}" data-an="ts${t}:${st.key || st.txt}">${st.txt}</span></div></div>
       <div class="tslots">${ms.map(m => `<div style="width:${w}%">${slot(m, o.so ? o.so(m) : {})}</div>`).join('')}</div></div>`;
   }
 
@@ -1345,7 +1352,7 @@ function createStage(wrap, opt) {
     if (g.phase === 'over') { const w = leader(); banner = `<div class="banner disp" data-an="fbover">${w == null ? 'Unentschieden!' : '🏆 ' + esc(P.teams[w].name) + ' gewinnt!'}</div>`; }
     const tp = t => teamPanel(t, {status: st(t), lives: lives(t), livesKey: 'f' + g.ri, active: active(t), so});
     return tp(0) + tp(1) + `<div class="center">
-      <div class="qmeta disp">RUNDE ${g.ri + 1} / ${g.total}</div>
+      <div class="toprow"><div class="qmeta disp">RUNDE ${g.ri + 1} / ${g.total}</div><div class="timerspot disp"></div></div>
       <div class="qbar" data-an="fq${g.ri}">${esc(g.q)}</div>
       <div class="fboard" style="--rows:${rows}">${g.cards.map((c, i) => `<div class="fcard ${c.rev ? 'rev' : ''}" ${c.rev ? `data-an="fc${g.ri}:${i}"` : ''}><div class="fin"><div class="ff"><span class="rk disp">${c.rank}</span></div><div class="fb">${c.rev ? `<span class="tx">${esc(c.text)}</span><span class="pt disp">${c.pts}</span>` : ''}</div></div></div>`).join('')}</div>
       <div class="fstat"><div class="pot disp">TOPF<b data-count="pot${g.ri}" data-v="${g.pot}">${g.pot}</b></div>${banner}<div class="strikes">${[0, 1, 2].map(i => `<div class="strk ${i < g.strikes ? 'on' : ''}" ${i < g.strikes ? `data-an="sk${g.ri}:${i}"` : ''}>✕</div>`).join('')}</div></div>
@@ -1371,14 +1378,14 @@ function createStage(wrap, opt) {
       if (g.phase === 'stealOffer') extra = `<div class="banner t disp" style="--tc:${P.teams[1 - g.pickTeam].color};margin-top:22px" data-an="jb${k}so">${esc(P.teams[1 - g.pickTeam].name)}: nachziehen?</div>`;
       if (g.phase === 'steal') extra = `<div class="banner t disp" style="--tc:${P.teams[g.answerTeam].color};margin-top:22px" data-an="jb${k}st">${esc(P.teams[g.answerTeam].name)} zieht nach!</div>`;
       if (g.phase === 'answer' && g.result && g.result.team != null) extra = `<div class="banner t disp" style="--tc:${P.teams[g.result.team].color};margin-top:22px" data-an="jb${k}an">${esc(P.teams[g.result.team].name)} ${g.result.delta > 0 ? '+' : ''}${g.result.delta}</div>`;
-      center = `<div class="jq" data-an="jq${k}"><div class="cat disp">${esc(c.cat)}</div><div class="val disp">${c.v}</div><div class="qq">${esc(c.q)}</div>${c.a != null ? `<div class="aa" data-an="ja${k}">${esc(c.a)}</div>` : ''}${extra}</div>`;
+      center = `<div class="jq" data-an="jq${k}"><div class="timerspot disp"></div><div class="cat disp">${esc(c.cat)}</div><div class="val disp">${c.v}</div><div class="qq">${esc(c.q)}</div>${c.a != null ? `<div class="aa" data-an="ja${k}">${esc(c.a)}</div>` : ''}${extra}</div>`;
     } else {
       const cols = g.cats.length, rows = Math.max(...g.cats.map(c => c.cards.length));
       const w = leader();
       const banner = g.phase === 'over' ? `<div class="banner disp" data-an="jover">${w == null ? 'Unentschieden!' : '🏆 ' + esc(P.teams[w].name) + ' gewinnt!'}</div>`
         : `<div class="banner t disp" style="--tc:${P.teams[g.pickTeam].color}" data-an="jpick${g.pickTeam}${g.cats.map(c => c.cards.filter(x => x.used).length).join('')}">${esc(P.teams[g.pickTeam].name)} wählt</div>`;
-      center = `${g.nb > 1 ? `<div class="qmeta disp" data-an="jb${g.bi}">${g.bi ? 'RUNDE 2 · DOPPELTE PUNKTE' : 'RUNDE 1 / 2'}</div>` : ''}<div class="jboard" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:84px repeat(${rows},1fr)">${g.cats.map(c => `<div class="jh disp">${esc(c.name)}</div>`).join('')}
-        ${Array.from({length: rows}, (_, r) => g.cats.map((c, ci) => { const x = c.cards[r]; if (!x) return '<div></div>'; const cl = canPick && !x.used; return `<div class="jv disp ${x.used ? 'used' : ''} ${cl ? 'click' : ''}" ${cl ? `data-pact="pick" data-c="${ci}" data-r="${r}"` : ''}>${x.v}</div>`; }).join('')).join('')}</div>${banner}`;
+      center = `<div class="toprow">${g.nb > 1 ? `<div class="qmeta disp" data-an="jb${g.bi}">${g.bi ? 'RUNDE 2 · DOPPELTE PUNKTE' : 'RUNDE 1 / 2'}</div>` : ''}<div class="timerspot disp"></div></div><div class="jboard" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:84px repeat(${rows},1fr)">${g.cats.map(c => `<div class="jh disp">${esc(c.name)}</div>`).join('')}
+        ${Array.from({length: rows}, (_, r) => g.cats.map((c, ci) => { const x = c.cards[r]; if (!x) return '<div></div>'; const cl = canPick && !x.used; const won = x.w != null && P.teams[x.w]; return `<div class="jv disp ${x.used ? 'used' : ''} ${won ? 'won' : ''} ${cl ? 'click' : ''}" ${won ? `style="--tc:${P.teams[x.w].color}"` : ''} ${cl ? `data-pact="pick" data-c="${ci}" data-r="${r}"` : ''}>${x.v}</div>`; }).join('')).join('')}</div>${banner}`;
     }
     const tp = t => teamPanel(t, {status: st(t), active: active(t)});
     return tp(0) + tp(1) + `<div class="center">${center}${hostSlot()}</div>`;
@@ -1413,7 +1420,7 @@ function createStage(wrap, opt) {
     if (g.phase === 'reveal') q = `<div class="qbar disp" style="font-size:54px" data-an="dr${g.round}">${esc(pname(P, g.loser))} ${g.out ? 'FLIEGT RAUS! 💀' : 'VERLIERT EIN HERZ 💔'}</div>`;
     if (g.phase === 'over') q = `<div class="qbar disp" style="font-size:60px" data-an="dover">🏆 ${g.winner ? esc(pname(P, g.winner)) + ' GEWINNT!' : 'SPIEL VORBEI'}</div>`;
     const gh = rows * w * 9 / 16 + (rows - 1) * 24, gtop = 34 + Math.max(0, (1080 - 34 - 270 - gh) / 2);
-    return `<div class="ddfgrid" style="grid-template-columns:repeat(${cols},${w}px);top:${gtop}px">${slots}</div><div class="ddfbottom"><div class="qcol">${q}</div>${hostSlot()}</div>`;
+    return `<div class="ddfgrid" style="grid-template-columns:repeat(${cols},${w}px);top:${gtop}px">${slots}</div><div class="ddfbottom"><div class="qcol"><div class="toprow" style="min-height:0"><div class="timerspot disp"></div></div>${q}</div>${hostSlot()}</div>`;
   }
 
   /* --- Rendern + Animationen --- */
@@ -1451,6 +1458,7 @@ function createStage(wrap, opt) {
       c.el = el; el.textContent = Math.round(c.v);
     });
     doFlash();
+    updTimer();
     firstRender = false;
   }
   function doFlash() {
@@ -1480,12 +1488,14 @@ function createStage(wrap, opt) {
     counts.forEach(c => { if (c.v === c.to) return; const p = Math.min(1, (now - c.t0) / 900); const e = 1 - Math.pow(1 - p, 3); c.v = p >= 1 ? c.to : c.from + (c.to - c.from) * e; if (c.el && c.el.isConnected) c.el.textContent = Math.round(c.v); });
   }
   (function loop() { placeCams(); tickCounts(); requestAnimationFrame(loop); })();
-  setInterval(() => {
+  function updTimer() {
     const t = timerText();
-    if (t == null) { timerEl.style.display = 'none'; lastTick = null; return; }
-    timerEl.style.display = 'block'; timerEl.textContent = t; timerEl.classList.toggle('low', t <= 5);
+    const timerEl = ui.querySelector('.timerspot');
+    if (t == null) { if (timerEl) timerEl.classList.remove('on', 'low'); lastTick = null; return; }
+    if (timerEl) { timerEl.classList.add('on'); if (timerEl.textContent !== String(t)) timerEl.textContent = t; timerEl.classList.toggle('low', t <= 5); }
     if (!opt.silent && t <= 5 && t > 0 && t !== lastTick) playSfx('tick'); lastTick = t;
-  }, 100);
+  }
+  setInterval(updTimer, 100);
   render();
   return {update(p) { P = p; render(); }, setStatus(s) { if (s !== status) { status = s; render(); } }, rerender: render};
 }
@@ -1591,6 +1601,7 @@ function startPlayer() {
     el.innerHTML = `<div class="me"><div class="row"><span class="dot ${status === 'online' ? 'on' : ''}"></span><b>${esc(name)}</b></div><div class="row">${t ? `<span class="pill" style="background:${t.color};color:#fff">${esc(t.name)}</span>` : ''}<span style="font-size:18px">${hearts}</span>${status !== 'online' ? `<span class="muted" style="font-size:13px">${status === 'nohost' ? 'Host offline…' : 'verbinde…'}</span>` : ''}</div></div>
       <div class="mid">${midHTML()}</div>
       <div class="side"><b id="ptimer" style="font-size:26px;color:var(--gold);min-width:60px"></b>
+      <button data-bact="fs" class="b-ghost" title="Overlay im Vollbild">⛶ Vollbild</button>
       <button data-bact="cam" class="${camOn ? '' : 'b-gold'}">${camOn ? '📷 Cam an' : '📷 Cam starten'}</button>
       <label class="row muted" title="Lautstärke">🔊<input type="range" min="0" max="100" value="${Math.round(masterVol * 100)}" id="vol" style="width:90px"></label></div>`;
     $('#vol').oninput = e => { masterVol = e.target.value / 100; store.set('dqs-pvol', masterVol); };
@@ -1601,6 +1612,7 @@ function startPlayer() {
     if (d.bact === 'vote') { myVote = d.target; send('vote', {target: d.target}); renderBar(); stage && stage.rerender(); }
     if (d.bact === 'steal' || d.bact === 'pass') send(d.bact);
     if (d.bact === 'cam') { camOpen = !camOpen; $('#campop').classList.toggle('hide', !camOpen); }
+    if (d.bact === 'fs') { const el = $('#plstage'); if (document.fullscreenElement) document.exitFullscreen(); else if (el && el.requestFullscreen) el.requestFullscreen().catch(() => {}); }
     if (d.bact === 'camClose') { camOpen = false; $('#campop').classList.add('hide'); }
   });
   addEventListener('keydown', e => {
