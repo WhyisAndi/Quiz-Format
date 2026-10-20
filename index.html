@@ -6,11 +6,11 @@
 <title>Quizshow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0e1f;--bg2:#121838;--panel:#151c3f;--panel2:#1b2350;--line:#2a3366;--text:#eef1ff;--muted:#9aa3d0;--gold:#ffc83d;--good:#2ee59d;--bad:#ff4d6d;--r:14px}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',system-ui,sans-serif}
 button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:9px 14px;background:#28316c;color:var(--text);font-weight:600;transition:filter .12s,transform .06s}
 button:hover{filter:brightness(1.18)}button:active{transform:translateY(1px)}
 button:disabled{opacity:.38;cursor:not-allowed;filter:none;transform:none}
@@ -29,7 +29,7 @@ h1,h2,h3{margin:0 0 10px;line-height:1.1}h2{font-size:18px}h3{font-size:15px;col
 
 /* landing */
 .landing{max-width:520px;margin:10vh auto;padding:16px}
-.logo{font-weight:800;font-size:44px;letter-spacing:-.02em}.logo span{color:var(--gold)}
+.logo{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:56px;letter-spacing:.02em}.logo span{color:var(--gold)}
 
 /* host */
 .host header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--bg2);position:sticky;top:0;z-index:5}
@@ -42,7 +42,7 @@ h1,h2,h3{margin:0 0 10px;line-height:1.1}h2{font-size:18px}h3{font-size:15px;col
 .prow .nm{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prow button{padding:4px 8px;font-size:12px;border-radius:7px}
 .tbtn{background:#0c1130;border:1px solid var(--tc)}.tbtn.on{background:var(--tc);color:#000}
-.teamed{display:grid;grid-template-columns:minmax(0,1fr) 72px 44px;gap:6px;align-items:center;margin-bottom:6px}.teamed input{min-width:0;width:100%}
+.teamed{display:grid;grid-template-columns:minmax(0,1fr) 64px 84px 40px;gap:6px;align-items:center;margin-bottom:6px}.teamed input{min-width:0;width:100%}
 .teamed input[type=color]{padding:0;height:36px;width:40px}
 .ctrl{display:flex;flex-direction:column;gap:14px}
 .qbox{background:#0c1130;border-radius:12px;padding:14px 16px;font-size:22px;font-weight:600}
@@ -54,90 +54,167 @@ h1,h2,h3{margin:0 0 10px;line-height:1.1}h2{font-size:18px}h3{font-size:15px;col
 .jgrid{display:grid;gap:6px}.jgrid .jc{background:#1d2a8a;color:var(--gold);font-weight:800;font-size:18px;padding:12px 0}.jgrid .jc.used{background:#11163a;color:#ffffff22}
 .jgrid .jh{font-size:12px;font-weight:800;text-transform:uppercase;text-align:center;padding:6px 2px;color:var(--muted)}
 .vlist{display:flex;flex-direction:column;gap:6px}
+.edcard{background:var(--panel2);border-radius:12px;padding:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.edcard input,.edrow input{min-width:0}
+.edno{min-width:26px;color:var(--gold)}.edq{font-weight:600}
+.edanswers{display:flex;flex-direction:column;gap:6px;padding-left:34px}
+.edans{flex-wrap:nowrap}.edrank{width:24px;color:var(--muted)}.edpts{width:40px;text-align:right;color:var(--gold);font-weight:800}
+.edans button,.edcard .row>button,.edrow button{padding:6px 10px}
+.edtable{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.edrow{flex-wrap:nowrap}.edrow .eda{width:30%}
+.edjeo{display:grid;gap:10px;margin:10px 0}
+.edcol{display:flex;flex-direction:column;gap:8px;min-width:0}
+.edcat{font-weight:800;text-align:center;background:#1d2a8a}
+.edjcard{background:var(--panel2);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:5px}
+.edjcard textarea{min-height:0;font-family:inherit;font-size:13px;padding:6px 8px;resize:vertical}
+.edjcard input{font-size:13px;padding:6px 8px;min-width:0}
+.edval{font-weight:800;color:var(--gold);font-size:15px}
+.edimport{margin:14px 0 6px;background:var(--panel2);border-radius:12px;padding:10px 12px}.edimport summary{cursor:pointer;font-weight:600}
 .help p,.help li{line-height:1.55;color:#d7dcf5}.help code{background:#0c1130;padding:1px 6px;border-radius:6px}
 
-/* player */
-.player{max-width:640px;margin:0 auto;padding:14px 14px 40px}
-.ptop{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.buzz{width:min(78vw,340px);aspect-ratio:1;border-radius:50%;font-size:44px;font-weight:800;letter-spacing:.04em;background:radial-gradient(circle at 35% 30%,#fff6 0,transparent 40%),var(--tc,#e11d48);color:#fff;box-shadow:0 14px 0 #0006,0 0 0 10px #ffffff14;margin:18px auto;display:block;text-shadow:0 3px 0 #0005}
-.buzz:active{transform:translateY(8px);box-shadow:0 6px 0 #0006,0 0 0 10px #ffffff14}
-.big-msg{text-align:center;font-size:24px;font-weight:800;margin:18px 0}
-.vbtn{display:block;width:100%;text-align:left;background:var(--panel2);margin-bottom:8px;padding:12px 14px;border:2px solid transparent}
-.vbtn.on{border-color:var(--gold);background:#3a3110}
-.vbtn small{display:block;color:var(--muted);font-weight:400;margin-top:3px}
-.campanel{margin-top:22px}
-.campanel iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000;margin-top:10px}
-
-/* overlay */
-body.ov{overflow:hidden;background:transparent}
-body.ov.dark{background:radial-gradient(1200px 700px at 50% 0%,#24307a 0,#0a0e1f 70%)}
-#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden}
-#camlayer,#ui,#fx{position:absolute;inset:0}
-#ui,#fx{pointer-events:none}
-.camwrap{position:absolute;overflow:hidden;border-radius:16px;background:#000}
-.camwrap iframe{width:100%;height:100%;border:0;display:block}
-.slot{position:relative;display:flex;flex-direction:column;transition:transform .3s,opacity .3s}
-.cam{position:relative;aspect-ratio:16/9;border-radius:16px;box-shadow:inset 0 0 0 4px var(--sc,#ffffff30)}
-.cam.nocam{background:linear-gradient(160deg,#28316c,#141a40);display:flex;align-items:center;justify-content:center}
-.cam .ini{font-size:64px;font-weight:800;color:#ffffff40}
-.sname{position:absolute;left:10px;bottom:10px;right:10px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:24px;text-shadow:0 2px 6px #000}
-.sname .n{min-width:0;background:#000a;padding:2px 12px;border-radius:9px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.slot.hot .cam{box-shadow:inset 0 0 0 7px var(--gold),0 0 40px var(--gold)}
-.slot.turn .cam{box-shadow:inset 0 0 0 7px var(--gold),0 0 30px #ffc83d88}
-.slot.hit .cam{box-shadow:inset 0 0 0 7px var(--bad),0 0 50px var(--bad);animation:shake .5s 2}
-.slot.win .cam{box-shadow:inset 0 0 0 8px var(--gold),0 0 70px var(--gold)}
-.slot.dim{opacity:.45}
-.sbadge{position:absolute;top:-14px;right:-10px;background:var(--gold);color:#1d1500;font-weight:800;font-size:26px;min-width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;padding:0 12px;box-shadow:0 4px 12px #0008}
-.stag{position:absolute;top:10px;left:10px;background:var(--gold);color:#1d1500;font-weight:800;font-size:16px;padding:3px 10px;border-radius:8px;letter-spacing:.06em}
-.hearts{margin-left:auto;font-size:30px;background:#000a;padding:0 10px;border-radius:9px;white-space:nowrap}
-.voters{position:absolute;top:10px;left:10px;right:70px;font-size:15px;font-weight:600;background:#000b;border-radius:8px;padding:3px 8px}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-@keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
-@keyframes fadeout{0%,70%{opacity:1}100%{opacity:0}}
-.tside{position:absolute;top:30px;bottom:30px;width:400px;display:flex;flex-direction:column;gap:16px}
-.tside.l{left:30px}.tside.r{right:30px}
-.thead{background:var(--tc);color:#04120a;border-radius:18px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 30px #0006}
-.tside.active .thead{box-shadow:0 0 0 5px var(--gold),0 0 40px var(--gold)}
-.tname{font-size:30px;font-weight:800}.tscore{font-size:44px;font-weight:800}
-.tslots{display:flex;flex-direction:column;gap:14px}
-.tslots .slot .cam{--sc:var(--tc)}
-.center{position:absolute;left:460px;right:460px;top:30px;bottom:30px;display:flex;flex-direction:column;gap:18px}
-.qbar{background:#0b102ccc;border:2px solid #ffffff22;border-radius:22px;padding:20px 26px;font-size:36px;font-weight:800;text-align:center;line-height:1.2;box-shadow:0 10px 40px #0007}
-.qmeta{font-size:20px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:center}
-.fboard{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(var(--rows),1fr);gap:14px;flex:1}
-.fcard{position:relative;border-radius:16px;background:linear-gradient(180deg,#2a4bd8,#1a2c94);border:3px solid #6f8bff55;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;color:#ffffffcc;box-shadow:0 6px 0 #0005}
-.fcard.rev{background:linear-gradient(180deg,#ffd55a,#f2a90f);color:#2a1a00;justify-content:space-between;padding:0 24px;animation:pop .45s}
-.fcard.rev .tx{font-size:30px;text-align:left}.fcard.rev .pt{font-size:40px;background:#2a1a00;color:var(--gold);border-radius:12px;padding:2px 14px}
-.fcard .rk{width:64px;height:64px;border-radius:50%;background:#0b102c;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff}
-.fcard.rev .rk{display:none}
-.fstat{display:flex;justify-content:space-between;align-items:center;gap:18px}
-.pot{background:#0b102ccc;border-radius:18px;padding:10px 24px;font-size:26px;font-weight:800}.pot b{color:var(--gold);font-size:40px;margin-left:8px}
-.strikes{display:flex;gap:12px}.strk{width:64px;height:64px;border-radius:14px;border:4px solid #ffffff30;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;color:transparent}
-.strk.on{border-color:var(--bad);color:var(--bad);background:#ff4d6d22}
-.banner{align-self:center;background:var(--gold);color:#1d1500;font-weight:800;font-size:30px;padding:10px 28px;border-radius:16px;animation:pop .4s;box-shadow:0 8px 30px #0008}
-.banner.t{background:var(--tc);color:#04120a}
-.bigx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:30px;animation:fadeout 1.6s forwards}
-.bigx span{font-size:420px;font-weight:800;color:var(--bad);text-shadow:0 0 60px #ff0030,0 10px 0 #600;line-height:1}
-.flashtxt{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font-size:150px;font-weight:800;color:var(--gold);text-shadow:0 0 50px #000,0 8px 0 #0008;animation:fadeout 1.8s forwards;white-space:nowrap}
-.ddfslots{position:absolute;left:40px;right:40px;top:40px;display:grid;gap:26px;justify-content:center}
-.ddfbottom{position:absolute;left:60px;right:60px;bottom:40px;display:flex;flex-direction:column;gap:14px}
-.qwho{font-size:26px;font-weight:800;color:var(--gold);text-align:center}
+/* ===== Spieler-Seite ===== */
+body.pl{overflow:hidden}
+.plwrap{position:fixed;inset:0;display:flex;flex-direction:column;background:#07050f}
+.plstage{flex:1;position:relative;min-height:0}
+.pbar{height:124px;flex:none;display:flex;align-items:center;gap:18px;padding:0 20px;background:#0f0a22;border-top:2px solid #3a2670}
+.pbar .me{display:flex;flex-direction:column;gap:5px;min-width:200px}
+.pbar .me b{font-size:20px}
+.pbar .mid{flex:1;display:flex;align-items:center;justify-content:center;gap:8px 10px;flex-wrap:wrap;min-width:0}
+.pbar .msg{font-size:22px;font-weight:700;text-align:center}
+.pbar .side{display:flex;align-items:center;gap:12px}
+.bigbuzz{font-family:'Bebas Neue',Impact,sans-serif;font-size:50px;letter-spacing:.06em;padding:8px 64px 4px;border-radius:16px;background:linear-gradient(180deg,#ffffff38,#00000040),var(--tc,#e11d48);color:#fff;box-shadow:0 7px 0 #0008,0 0 30px var(--tc);animation:bpulse 1s infinite;text-shadow:0 3px 0 #0006}
+.bigbuzz:disabled{animation:none;box-shadow:none}
+@keyframes bpulse{50%{box-shadow:0 7px 0 #0008,0 0 70px var(--tc)}}
+.vchip{padding:9px 16px;font-size:17px;border:2px solid transparent}.vchip.on{border-color:var(--gold);background:#3a3110}
+.campop{position:fixed;right:16px;bottom:140px;width:400px;z-index:20;transition:transform .25s,opacity .25s}
+.campop.hide{transform:translateY(24px);opacity:0;pointer-events:none}
+.campop iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000;margin-top:10px}
+input[type=range]{padding:0;accent-color:var(--gold)}
 .okbadge{display:inline-block;margin-top:10px;font-size:30px;padding:4px 18px;border-radius:12px}
-.okbadge.y{background:var(--good);color:#00281a}.okbadge.n{background:var(--bad)}
-.jboard{display:grid;gap:12px;flex:1}
-.jboard .jh{background:#0b102ccc;border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:22px;font-weight:800;padding:8px;text-transform:uppercase;line-height:1.1}
-.jboard .jv{background:linear-gradient(180deg,#2a4bd8,#1a2c94);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:46px;font-weight:800;color:var(--gold);text-shadow:0 3px 0 #0007;box-shadow:0 5px 0 #0005}
-.jboard .jv.used{background:#0b102c88;color:transparent;box-shadow:none}
-.jq{flex:1;background:linear-gradient(180deg,#2a4bd8,#14207a);border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;animation:pop .4s;box-shadow:0 20px 60px #0008}
-.jq .cat{font-size:26px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ffffffaa}
-.jq .val{font-size:60px;font-weight:800;color:var(--gold)}
-.jq .qq{font-size:50px;font-weight:800;line-height:1.2;margin-top:18px}
-.jq .aa{margin-top:26px;font-size:40px;font-weight:800;background:var(--good);color:#00281a;padding:8px 26px;border-radius:16px}
-.timer{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:#000c;border-radius:16px;padding:6px 22px;font-size:44px;font-weight:800;min-width:120px;text-align:center;display:none;border:3px solid var(--gold)}
-.timer.low{color:var(--bad);border-color:var(--bad)}
-.ovhint{position:absolute;left:20px;bottom:16px;font-size:20px;color:#ffffff88}
-.lobbyov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px}
-.lobbyov .logo{font-size:110px}
+.okbadge.y{background:var(--good);color:#00281a}.okbadge.n{background:var(--bad);color:#fff}
+
+/* ===== Bühne (Overlay + Spieler-Ansicht) ===== */
+body.ov{overflow:hidden;background:transparent}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;color:#fff;font-family:'Poppins',system-ui,sans-serif}
+.stage.bg{background:radial-gradient(1000px 700px at 50% 45%,#2b1556 0,#150b2e 55%,#09060f 100%)}
+.stage.bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(#ffffff10 1px,transparent 1.3px);background-size:7px 7px}
+.stage .layer{position:absolute;inset:0}
+.stage .ui,.stage .fx{pointer-events:none}
+.stage .click{pointer-events:auto;cursor:pointer}
+.disp{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;letter-spacing:.03em}
+.camwrap{position:absolute;overflow:hidden;border-radius:9px;background:#000}
+.camwrap iframe{width:100%;height:100%;border:0;display:block}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+@keyframes pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.1);opacity:1}100%{transform:scale(1)}}
+@keyframes fadeout{0%,70%{opacity:1}100%{opacity:0}}
+@keyframes slotin{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes zoomin{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Slots */
+.slot{position:relative;transform-origin:0 0}
+.cam{position:relative;aspect-ratio:16/9;border-radius:9px;box-shadow:inset 0 0 0 3px var(--sc),0 0 22px #0009;transition:box-shadow .3s}
+.cam.nocam{background:linear-gradient(160deg,#2c2160,#140c30)}
+.cam .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;color:#ffffff1c}
+.npill{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:linear-gradient(180deg,#ffffff30,#00000030),var(--sc);border-radius:99px;padding:3px 16px 3px 3px;font-weight:700;font-size:19px;box-shadow:0 3px 10px #000a;white-space:nowrap;max-width:94%;text-shadow:0 1px 2px #0008}
+.npill .av{width:28px;height:28px;border-radius:50%;background:#0007;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex:none}
+.npill .nm{overflow:hidden;text-overflow:ellipsis}
+.npill .hearts{font-size:19px;margin-left:4px;letter-spacing:1px}
+.slot.hot .cam,.slot.turn .cam,.slot.mine .cam{box-shadow:inset 0 0 0 6px var(--gold),0 0 40px #ffc83daa}
+.slot.hit .cam{box-shadow:inset 0 0 0 6px var(--bad),0 0 50px var(--bad);animation:shake .5s 2}
+.slot.win .cam{box-shadow:inset 0 0 0 7px var(--gold),0 0 80px var(--gold)}
+.slot.dim{opacity:.4}
+.slot.click:hover .cam{box-shadow:inset 0 0 0 6px #fff,0 0 30px #fff8}
+.slot.an{animation:slotin .5s cubic-bezier(.2,.9,.3,1.2) var(--ad,0s) both}
+.sbadge{position:absolute;top:-16px;right:-12px;background:var(--gold);color:#1d1500;font-size:40px;min-width:58px;height:58px;border-radius:29px;display:flex;align-items:center;justify-content:center;padding:4px 14px 0;box-shadow:0 4px 14px #000a;line-height:1}
+.sbadge.an{animation:pop .5s var(--ad,0s) both}
+.stag.low{top:auto;bottom:52px}
+.stag{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1d1500;font-weight:800;font-size:15px;padding:3px 12px;border-radius:7px;letter-spacing:.08em;white-space:nowrap}
+.ansbox{position:absolute;top:8px;left:8px;right:8px;background:#000c;border-radius:8px;padding:6px 10px;font-size:15px;line-height:1.35}
+.ansbox div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage .hrt{display:inline-block;color:#ff3b5c;margin:0}.stage .hrt.lost{color:#ffffff2e}
+.stage .hrt.lost.an{animation:hbreak 1.2s var(--ad,0s) both}
+@keyframes hbreak{0%{color:#ff3b5c;transform:scale(1)}25%{color:#ff3b5c;transform:scale(2.1) rotate(-14deg)}50%{color:#fff;transform:scale(1.6) rotate(16deg)}100%{color:#ffffff2e;transform:scale(1)}}
+/* Team-Panels */
+.tpanel{position:absolute;top:26px;bottom:26px;width:430px;border:2px solid #5a3aa6;border-radius:10px;background:#0d0820d9;padding:10px;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 40px #5a3aa633;transition:border-color .3s,box-shadow .3s}
+.tpanel.l{left:40px}.tpanel.r{right:40px}
+.tpanel.active{border-color:var(--gold);box-shadow:0 0 60px #ffc83d55}
+.thead{border:2px solid #5a3aa6;border-radius:8px;padding:8px;background:#120b2a}
+.tban{background:linear-gradient(180deg,#ffffff38,#00000045),var(--tc);border-radius:6px;text-align:center;font-size:50px;line-height:1;padding:10px 8px 4px;text-shadow:0 3px 0 #0007;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.tpts{text-align:center;font-size:72px;line-height:1;margin:10px 0 6px}.tpts small{font-size:32px;color:var(--tc);margin-left:6px;filter:brightness(1.4)}
+.trow{display:flex;justify-content:space-between;align-items:center;background:#0a0618;border:1px solid #3a2670;border-radius:6px;padding:6px 10px;min-height:42px}
+.tstat{background:#2a2245;border-radius:99px;padding:3px 14px;font-size:15px;font-weight:700;letter-spacing:.08em;color:#c9c2e6;text-transform:uppercase}
+.tstat.on{background:var(--gold);color:#1d1500}
+.tstat.an{animation:pop .4s var(--ad,0s) both}
+.tlives{font-size:13px;font-weight:700;letter-spacing:.08em;color:#c9c2e6;display:flex;align-items:center;gap:6px}
+.tlives .hrt{font-size:24px}
+.tslots{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;gap:10px;min-height:0}
+/* Mitte */
+.center{position:absolute;left:500px;right:500px;top:26px;bottom:26px;display:flex;flex-direction:column;gap:14px}
+.hostslot{width:430px;align-self:center;flex:none}
+.logo2{display:flex;flex-direction:column;align-items:center;transform:rotate(-4deg)}
+.logo2 .a,.logo2 .b{text-shadow:5px 5px 0 #07040f,-5px 5px 0 #07040f,5px -5px 0 #07040f,-5px -5px 0 #07040f,0 6px 0 #07040f,6px 0 0 #07040f,-6px 0 0 #07040f,0 14px 0 #07040f}
+.logo2 .a{font-size:170px;line-height:.85;color:#fff}
+.logo2 .b{font-size:140px;line-height:.85;font-style:italic;color:#b388ff;margin-top:2px;transform:skewX(-8deg)}
+.logo2.sm .a{font-size:110px}.logo2.sm .b{font-size:90px}
+.lobbycenter{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.lobbycenter .ns{font-size:58px;color:#ff3b5c;margin-top:36px;line-height:1;white-space:nowrap;text-align:center}
+.lobbycenter .wt{font-size:22px;font-weight:600}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid #ff3b5c33;border-top-color:#ff3b5c;animation:spin 1s linear infinite;margin-top:8px}
+.lobbygrid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:30px}
+.lgrid{display:grid;gap:24px;justify-content:center}
+.qbar{background:#0d0820e6;border:2px solid #5a3aa6;border-radius:12px;padding:16px 26px;font-size:34px;font-weight:700;text-align:center;line-height:1.25;flex:none}
+.qbar.an{animation:pop .45s var(--ad,0s) both}
+.qmeta{font-size:30px;color:var(--gold);text-align:center;line-height:1;flex:none}
+/* Team-Duell */
+.fboard{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(var(--rows),1fr);gap:12px;min-height:0}
+.fcard{perspective:1400px;position:relative}
+.fin{position:absolute;inset:0;transform-style:preserve-3d}
+.fcard.rev .fin{transform:rotateX(180deg)}
+.fcard.rev.an .fin{animation:flipx .9s cubic-bezier(.3,1.35,.5,1) var(--ad,0s) both}
+@keyframes flipx{from{transform:rotateX(0)}to{transform:rotateX(180deg)}}
+.ff,.fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;display:flex;align-items:center}
+.ff{justify-content:center;background:linear-gradient(180deg,#3b2a8f,#22165a);border:2px solid #7c5cff66;box-shadow:inset 0 0 30px #0006}
+.ff .rk{width:66px;height:66px;border-radius:50%;background:#0d0820;border:2px solid #7c5cff;display:flex;align-items:center;justify-content:center;font-size:44px;padding-top:5px}
+.fb{transform:rotateX(180deg);background:linear-gradient(180deg,#ffd75e,#f0a70c);color:#2a1a00;justify-content:space-between;padding:0 22px;gap:12px}
+.fb .tx{font-size:30px;font-weight:800;line-height:1.1}
+.fb .pt{font-size:46px;background:#2a1a00;color:var(--gold);border-radius:10px;padding:4px 14px 0;line-height:1.05}
+.fstat{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none;min-height:66px}
+.pot{background:#0d0820e6;border:2px solid #5a3aa6;border-radius:12px;padding:6px 20px 2px;font-size:32px}.pot b{color:var(--gold);font-size:46px;margin-left:8px;font-weight:400}
+.strikes{display:flex;gap:10px}.strk{width:58px;height:58px;border-radius:10px;border:3px solid #ffffff25;display:flex;align-items:center;justify-content:center;font-size:42px;color:transparent;font-weight:800}
+.strk.on{border-color:var(--bad);color:var(--bad);background:#ff4d6d22}
+.strk.on.an{animation:pop .4s var(--ad,0s) both}
+.banner{background:var(--gold);color:#1d1500;font-size:38px;padding:6px 28px 2px;border-radius:12px;box-shadow:0 8px 30px #0009;text-align:center;white-space:nowrap;align-self:center}
+.banner.t{background:linear-gradient(180deg,#ffffff38,#00000040),var(--tc);color:#fff;text-shadow:0 2px 0 #0007}
+.banner.an{animation:pop .45s var(--ad,0s) both}
+/* Kategorien-Duell */
+.jboard{flex:1;display:grid;gap:10px;min-height:0}
+.jh{background:#0d0820e6;border:2px solid #5a3aa6;border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:30px;line-height:1;padding:8px 6px 4px}
+.jv{background:linear-gradient(180deg,#3b2a8f,#22165a);border:2px solid #7c5cff66;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--gold);text-shadow:0 3px 0 #0008;transition:transform .15s,border-color .15s;padding-top:6px}
+.jv.used{background:#0d082066;border-color:#ffffff10;color:transparent;text-shadow:none}
+.jv.click:hover{transform:scale(1.07);border-color:var(--gold)}
+.jq{flex:1;min-height:0;background:linear-gradient(180deg,#3b2a8f,#1a1048);border:3px solid #7c5cff;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 40px;box-shadow:0 20px 60px #000a}
+.jq.an{animation:zoomin .55s cubic-bezier(.2,.9,.3,1.15) var(--ad,0s) both}
+.jq .cat{font-size:34px;color:#ffffffaa}.jq .val{font-size:84px;color:var(--gold);line-height:1}
+.jq .qq{font-size:44px;font-weight:800;line-height:1.2;margin-top:12px}
+.jq .aa{margin-top:20px;font-size:38px;font-weight:800;background:var(--good);color:#00281a;padding:6px 26px;border-radius:14px}
+.jq .aa.an,.jq .banner.an{animation:pop .45s var(--ad,0s) both}
+/* Der Dümmste fliegt */
+.ddfgrid{position:absolute;left:40px;right:40px;top:34px;display:grid;gap:24px;justify-content:center}
+.ddfbottom{position:absolute;left:40px;right:40px;bottom:28px;display:flex;gap:22px;align-items:flex-end}
+.ddfbottom .qcol{flex:1;display:flex;flex-direction:column;gap:10px}
+.ddfbottom .hostslot{width:360px}
+.qwho{font-size:36px;color:var(--gold);text-align:center;line-height:1}
+/* Effekte */
+.stimer{position:absolute;top:28px;right:528px;background:#000c;border:3px solid var(--gold);border-radius:12px;padding:4px 18px 0;font-size:56px;line-height:1.05;min-width:100px;text-align:center;display:none;z-index:3}
+.stimer.low{color:var(--bad);border-color:var(--bad)}
+.bigx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:30px;animation:fadeout 1.6s forwards}
+.bigx span{font-size:420px;font-weight:800;color:var(--bad);text-shadow:0 0 60px #ff0030,0 10px 0 #600;line-height:1;animation:pop .35s both}
+.flashtxt{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font-size:150px;color:var(--gold);text-shadow:0 0 50px #000,0 8px 0 #0009;animation:fadeout 1.8s forwards;white-space:nowrap}
+.flashtxt.long{animation-duration:4.5s}
+.titlecard{position:absolute;left:50%;top:50%;font-size:210px;white-space:nowrap;color:#fff;text-shadow:7px 7px 0 #7c4dff,0 0 70px #7c4dff;animation:titlein 2.8s forwards}
+@keyframes titlein{0%{transform:translate(-50%,-50%) scale(.2) rotate(-10deg);opacity:0}15%{transform:translate(-50%,-50%) scale(1.08) rotate(-3deg);opacity:1}25%{transform:translate(-50%,-50%) scale(1) rotate(-3deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.03) rotate(-3deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.2) rotate(-3deg)}}
+.fxdim{position:absolute;inset:0;background:#000a;animation:fadeout 2.8s forwards}
+.confetti{position:absolute;inset:0}
+.ovhint{position:absolute;left:20px;bottom:14px;font-size:20px;color:#ffffff99}
 </style>
 </head>
 <body>
@@ -155,6 +232,9 @@ function parseHash() { const o = {}; location.hash.slice(1).split('&').forEach(p
 const PARAMS = parseHash();
 const LOCAL = PARAMS.local === '1';
 const PREFIX = 'dqs-v1-';
+// Host-Passwort: SHA-256-Hash hier eintragen (leer = kein Passwort). Den Hash erzeugst du im Host-Panel unter „Einstellungen & Hilfe“.
+const HOST_PASS_HASH = '';
+async function sha256(t) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
@@ -168,18 +248,18 @@ function link(kind, room) { return baseUrl() + '#' + kind + '=' + room + (LOCAL 
 async function copy(txt) { try { await navigator.clipboard.writeText(txt); toast('Link kopiert'); } catch { prompt('Link kopieren:', txt); } }
 function heartsHTML(n, max) { let s = ''; for (let i = 0; i < max; i++) s += `<span class="hrt ${i < n ? '' : 'lost'}">♥</span>`; return s; }
 const camSid = (room, pid) => ('dqs' + room + pid).toLowerCase().replace(/[^a-z0-9]/g, '');
-const camViewUrl = sid => `https://vdo.ninja/?view=${sid}&cleanoutput&noaudio&cover&transparent`;
+const camViewUrl = (sid, low) => `https://vdo.ninja/?view=${sid}&cleanoutput&noaudio&cover&transparent${low ? '&scale=35' : ''}`;
 const camPushUrl = (sid, name) => `https://vdo.ninja/?push=${sid}&webcam&audiodevice=0&quality=1&label=${encodeURIComponent(name || 'Spieler')}`;
 
 /* ================== Sounds (WebAudio, keine Dateien nötig) ================== */
-let AC = null, soundOn = true;
+let AC = null, soundOn = true, masterVol = 1;
 function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } } if (AC.state === 'suspended') AC.resume(); return AC; }
 document.addEventListener('pointerdown', () => ac(), {once: false});
 function tone(f, d, type = 'sine', vol = .25, when = 0, slideTo = null) {
   const c = ac(); if (!c) return; const t = c.currentTime + when;
   const o = c.createOscillator(), g = c.createGain();
   o.type = type; o.frequency.setValueAtTime(f, t); if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + d);
-  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol * masterVol * sfxScale), t + .015); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
   o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .05);
 }
 const SFX = {
@@ -195,7 +275,25 @@ const SFX = {
   tick() { tone(1200, .05, 'square', .12); },
   timeup() { tone(330, .9, 'square', .2); tone(335, .9, 'sawtooth', .12); }
 };
-function playSfx(n) { if (soundOn && SFX[n]) try { SFX[n](); } catch {} }
+const SFX_NAMES = {buzz: 'Buzzer', correct: 'Richtig', wrong: 'Falsch', reveal: 'Aufdecken / neue Frage', open: 'Buzzer freigegeben', heart: 'Herz verloren', out: 'Rausgeflogen', win: 'Sieg / Spielstart', vote: 'Abstimmung', tick: 'Timer-Tick (letzte 5 s)', timeup: 'Zeit abgelaufen'};
+let sfxScale = 1, SFXCFG = {master: 1, vol: {}}, customVer = null;
+const customBuf = {};
+function setCustomSounds(data, ver) {
+  if (ver === customVer) return; customVer = ver;
+  Object.keys(customBuf).forEach(k => delete customBuf[k]);
+  Object.entries(data || {}).forEach(([k, url]) => {
+    fetch(url).then(r => r.arrayBuffer()).then(b => new Promise((res, rej) => { const c = ac(); if (!c) return rej(); c.decodeAudioData(b, res, rej); })).then(buf => { if (customVer === ver) customBuf[k] = buf; }).catch(() => {});
+  });
+}
+function playSfx(n, force) {
+  if (!soundOn && !force) return;
+  const v = (SFXCFG.master ?? 1) * (SFXCFG.vol && SFXCFG.vol[n] != null ? SFXCFG.vol[n] : 1);
+  if (v <= 0) return;
+  try {
+    if (customBuf[n]) { const c = ac(); const src = c.createBufferSource(); src.buffer = customBuf[n]; const g = c.createGain(); g.gain.value = v * masterVol; src.connect(g).connect(c.destination); src.start(); return; }
+    if (SFX[n]) { sfxScale = v; SFX[n](); }
+  } catch {} finally { sfxScale = 1; }
+}
 
 /* ================== Transport (PeerJS / lokal: BroadcastChannel) ================== */
 function loadPeer() {
@@ -383,6 +481,40 @@ jeo: `// KATEGORIEN-DUELL: # = Kategorie, darunter: Punkte | Frage | Antwort
 400 | Aus welcher Plattform ist Twitch hervorgegangen? | Justin.tv
 500 | Welche Firma kaufte Twitch im Jahr 2014? | Amazon`
 };
+const SAMPLE_JEO2 = `# Filme & Serien
+Wie heißt der Zauberschüler mit der blitzförmigen Narbe? | Harry Potter
+In welcher Serie kämpfen Kinder in Hawkins gegen Monster? | Stranger Things
+Wie heißt der junge Löwe in „Der König der Löwen“? | Simba
+Welcher Regisseur drehte „Titanic“ und „Avatar“? | James Cameron
+Wie heißt das Schiff von Captain Jack Sparrow? | Black Pearl
+
+# Musik
+Wie viele Saiten hat eine normale Gitarre? | 6
+Aus welchem Land kommt die Band ABBA? | Schweden
+Wer wird der „King of Pop“ genannt? | Michael Jackson
+Welches Instrument spielte Beethoven vor allem? | Klavier
+Wie viele Sinfonien hat Beethoven vollendet? | 9
+
+# Sport
+Wie lange dauert ein Fußballspiel regulär? | 90 Minuten
+In welcher Sportart gibt es den „Slam Dunk“? | Basketball
+Wie viele Ringe hat das olympische Symbol? | 5
+In welchem Land fand die Fußball-WM 2014 statt? | Brasilien
+Wie viele Punkte bringt ein Touchdown im American Football? | 6
+
+# Tiere
+Welches ist das schnellste Landtier? | Gepard
+Wie nennt man ein männliches Huhn? | Hahn
+Wie viele Herzen hat ein Oktopus? | 3
+Welches Säugetier kann aktiv fliegen? | Fledermaus
+Welcher Vogel kann rückwärts fliegen? | Kolibri
+
+# Allgemeinwissen
+Wie viele Stunden hat eine Woche? | 168
+Wie heißt die Währung von Japan? | Yen
+Wofür steht die Abkürzung „WWW“? | World Wide Web
+Wie viele Knochen hat ein Hai? | Keine (Knorpelskelett)
+Welche Sprache hat weltweit die meisten Muttersprachler? | Chinesisch (Mandarin)`;
 const clean = l => l.trim();
 function parseFeud(t) {
   const rounds = []; let cur = null;
@@ -415,6 +547,28 @@ function parseJeo(t) {
 const MODE_NAMES = {feud: 'Team-Duell', ddf: 'Der Dümmste fliegt', jeo: 'Kategorien-Duell'};
 function pname(p, id) { return p.players.find(x => x.id === id)?.name || '?'; }
 function feudPts(n, i) { return n - i; }
+const jeoVal = (b, r) => (r + 1) * 100 * (b + 1);
+function jeoShapeBoard(cats, nc, nr) {
+  cats = (cats || []).slice(0, nc).map(c => ({name: c.name || '', cards: (c.cards || []).slice(0, nr).map(x => ({q: x.q || '', a: x.a || ''}))}));
+  while (cats.length < nc) cats.push({name: '', cards: []});
+  cats.forEach(c => { while (c.cards.length < nr) c.cards.push({q: '', a: ''}); });
+  return cats;
+}
+function cdataFromText(content) {
+  const j1 = parseJeo(content && content.jeo || SAMPLE.jeo), j2 = parseJeo(SAMPLE_JEO2);
+  const nc = Math.max(2, Math.min(6, j1.length || 5)), nr = Math.max(3, Math.min(6, Math.max(...j1.map(c => c.cards.length), 5)));
+  return {
+    feud: parseFeud(content && content.feud || SAMPLE.feud).map(r => ({q: r.q, answers: r.answers.slice()})),
+    ddf: parseDdf(content && content.ddf || SAMPLE.ddf),
+    jeo: {cols: nc, rows: nr, useB2: true, boards: [jeoShapeBoard(j1, nc, nr), jeoShapeBoard(j2, nc, nr)]}
+  };
+}
+function cdataToText(k, cd) {
+  if (k === 'feud') return cd.feud.map(r => '? ' + r.q + '\n' + r.answers.filter(Boolean).join('\n')).join('\n\n');
+  if (k === 'ddf') return cd.ddf.map(x => x.q + (x.a ? ' | ' + x.a : '')).join('\n');
+  if (k === 'jeo1' || k === 'jeo2') { const b = cd.jeo.boards[k === 'jeo1' ? 0 : 1]; return b.map(c => '# ' + c.name + '\n' + c.cards.map(x => x.q + ' | ' + x.a).join('\n')).join('\n\n'); }
+  return '';
+}
 
 /* =====================================================================
    HOST
@@ -423,10 +577,10 @@ function defaultState(room) {
   return {
     v: 1, room,
     players: [],
-    teams: [{name: 'Grün', color: '#22c55e', score: 0}, {name: 'Blau', color: '#3b82f6', score: 0}],
-    settings: {cams: true, bg: 'dark', ddfLives: 3, ddfQPP: 1, ddfShuffle: true, jeoPenalty: 100, hostSound: false},
-    content: {feud: SAMPLE.feud, ddf: SAMPLE.ddf, jeo: SAMPLE.jeo},
-    game: null, timer: {end: null, total: 0}, flash: null, tab: 'feud'
+    teams: [{name: 'Team Rot', color: '#e0263f', score: 0}, {name: 'Team Blau', color: '#2f6bff', score: 0}],
+    settings: {sfxMaster: 1, sfxVol: {}, showName: 'ANDI QUIZ', hostName: 'Host', cams: true, bg: 'dark', ddfLives: 3, ddfQPP: 1, ddfShuffle: true, jeoPenalty: 'half_all', hostSound: false},
+    content: {feud: SAMPLE.feud, ddf: SAMPLE.ddf, jeo: SAMPLE.jeo}, cdata: null,
+    game: null, timer: {end: null, total: 0}, flash: null, tab: 'feud', hostCam: false
   };
 }
 function startHost() {
@@ -439,7 +593,13 @@ function startHost() {
   S = Object.assign(defaultState(room), S, {room});
   S.settings = Object.assign(defaultState(room).settings, S.settings);
   S.players.forEach(p => p.online = false);
+  if (!S.cdata) S.cdata = cdataFromText(S.content);
+  if (typeof S.settings.jeoPenalty === 'number') S.settings.jeoPenalty = 'half_all';
   soundOn = S.settings.hostSound;
+  let SND = store.get('dqs-sounds', {ver: null, data: {}});
+  const applySfxCfg = () => { SFXCFG = {master: S.settings.sfxMaster ?? 1, vol: S.settings.sfxVol || {}}; };
+  applySfxCfg(); setCustomSounds(SND.data, SND.ver);
+  const soundsMsg = () => ({t: 'sounds', ver: SND.ver, data: SND.data});
   const cid2pid = new Map();
   const undo = [];
   let net = null, status = 'connecting';
@@ -454,6 +614,7 @@ function startHost() {
     <button data-act="copyPlayer">Spieler-Link kopieren</button>
     <button data-act="copyOverlay">Overlay-Link kopieren</button>
     <button data-act="openOverlay" class="b-ghost">Overlay öffnen</button>
+    <button data-act="hostCam" id="hcamBtn">🎥 Host-Cam</button>
     <button data-act="undo" class="b-ghost" title="Letzten Schritt rückgängig">↶ Rückgängig</button>
   </header>
   <div class="hgrid">
@@ -465,7 +626,9 @@ function startHost() {
       <div class="tabs" id="htabs"></div>
       <div id="hmain"></div>
     </main>
-  </div>`;
+  </div>
+  <div class="card campop hide" id="hcampop"><div class="row"><h3 class="grow" style="margin:0">Deine Host-Cam</h3><button data-act="hostCamToggle" id="hcamToggle"></button><button class="b-ghost" data-act="hostCam">✕</button></div>
+  <p class="muted" style="font-size:14px;margin:8px 0 0">Erscheint unten in der Mitte des Overlays. Kamera wählen, „Start“ klicken, Fenster schließen – die Cam läuft weiter.</p><div id="hcamBox"></div></div>`;
 
   /* ---------- Speicherung & Senden ---------- */
   let pending = false;
@@ -485,6 +648,7 @@ function startHost() {
   }
   let flashId = 0;
   function flash(kind, extra = {}) { S.flash = Object.assign({id: Date.now() + '' + (++flashId), kind, at: Date.now()}, extra); }
+  function winText() { const a = S.teams[0].score, b = S.teams[1].score; return a === b ? 'UNENTSCHIEDEN!' : '🏆 ' + S.teams[a > b ? 0 : 1].name + ' GEWINNT!'; }
   function snap() { undo.push(JSON.stringify({game: S.game, teams: S.teams, teamOf: S.players.map(p => [p.id, p.team])})); if (undo.length > 40) undo.shift(); }
   function doUndo() {
     const s = undo.pop(); if (!s) return toast('Nichts zum Rückgängigmachen');
@@ -498,7 +662,7 @@ function startHost() {
     const g = S.game, now = Date.now();
     const pub = {
       room, players: S.players.map(p => ({id: p.id, name: p.name, team: p.team, online: p.online, cam: p.cam})),
-      teams: S.teams, settings: {cams: S.settings.cams, bg: S.settings.bg},
+      teams: S.teams, settings: {cams: S.settings.cams, bg: S.settings.bg, showName: S.settings.showName, sfx: {master: S.settings.sfxMaster ?? 1, vol: S.settings.sfxVol || {}}}, host: {name: S.settings.hostName || 'Host', cam: !!S.hostCam},
       timer: {rem: S.timer.end ? Math.max(0, S.timer.end - now) : null, total: S.timer.total},
       flash: S.flash ? Object.assign({}, S.flash, {age: now - S.flash.at}) : null,
       g: null
@@ -516,10 +680,10 @@ function startHost() {
         left: g.queue.length, answers: g.answers.map(x => ({pid: x.pid, q: x.q, a: x.a, ok: x.ok})),
         voted: Object.keys(g.votes), votes: vis ? g.votes : null, tally: vis ? g.tally : null, loser: g.loser, tie: g.tie, winner: g.winner, out: g.out || null};
     } else if (g.type === 'jeo') {
-      const c = g.cur ? g.cats[g.cur.c].cards[g.cur.r] : null;
-      pub.g = {type: 'jeo', phase: g.phase, pickTeam: g.pickTeam, answerTeam: g.answerTeam, result: g.result,
-        cats: g.cats.map(k => ({name: k.name, cards: k.cards.map(x => ({v: x.v, used: x.used}))})),
-        cur: g.cur ? {c: g.cur.c, r: g.cur.r, cat: g.cats[g.cur.c].name, v: c.v, q: c.q, a: g.showA ? c.a : null} : null};
+      const cats = g.boards[g.bi], c = g.cur ? cats[g.cur.c].cards[g.cur.r] : null;
+      pub.g = {type: 'jeo', phase: g.phase, pickTeam: g.pickTeam, answerTeam: g.answerTeam, result: g.result, bi: g.bi, nb: g.boards.length,
+        cats: cats.map(k => ({name: k.name, cards: k.cards.map(x => ({v: x.v, used: x.used}))})),
+        cur: g.cur ? {c: g.cur.c, r: g.cur.r, cat: cats[g.cur.c].name, v: c.v, q: c.q, a: g.showA ? c.a : null} : null};
     }
     return pub;
   }
@@ -528,7 +692,7 @@ function startHost() {
   const teamMembers = t => S.players.filter(p => p.team === t);
   // Team-Duell
   function feudStart() {
-    const rounds = parseFeud(S.content.feud);
+    const rounds = S.cdata.feud.map(r => ({q: r.q.trim(), answers: r.answers.map(a => a.trim()).filter(Boolean)})).filter(r => r.q && r.answers.length);
     if (!rounds.length) return toast('Keine Runden im Team-Duell-Inhalt');
     if (!teamMembers(0).length || !teamMembers(1).length) return toast('Beide Teams brauchen mindestens einen Spieler');
     S.teams.forEach(t => t.score = 0);
@@ -562,12 +726,12 @@ function startHost() {
       else if (g.phase === 'steal') { flash('x', {n: 1}); sfx('wrong'); setTimeout(() => { feudAward(g.control); changed(); }, 900); }
     },
     award(t) { const g = S.game; if (g.phase === 'done' || g.phase === 'over') return; feudAward(t); },
-    next() { const g = S.game; if (g.ri + 1 < g.rounds.length) { g.ri++; feudRound(); sfx('reveal'); } else { g.phase = 'over'; flash('text', {text: 'ENDE'}); sfx('win'); } },
+    next() { const g = S.game; if (g.ri + 1 < g.rounds.length) { g.ri++; feudRound(); sfx('reveal'); } else { g.phase = 'over'; flash('win', {text: winText()}); sfx('win'); } },
     setBuzzer(team, pid) { S.game.buzzers[team] = pid || null; }
   };
   // Der Dümmste fliegt
   function ddfStart() {
-    let qs = parseDdf(S.content.ddf); if (!qs.length) return toast('Keine Fragen im Inhalt');
+    let qs = S.cdata.ddf.map(x => ({q: x.q.trim(), a: x.a.trim()})).filter(x => x.q); if (!qs.length) return toast('Keine Fragen im Inhalt');
     if (S.settings.ddfShuffle) qs = shuffle(qs);
     const ids = S.players.map(p => p.id); if (ids.length < 2) return toast('Mindestens 2 Spieler nötig');
     const max = Math.max(1, +S.settings.ddfLives || 3);
@@ -585,7 +749,7 @@ function startHost() {
   }
   function ddfCheckWin() {
     const g = S.game, al = alive();
-    if (al.length <= 1) { g.winner = al[0] || null; g.phase = 'over'; g.cur = null; flash('text', {text: al[0] ? '🏆 ' + (S.players.find(p => p.id === al[0])?.name || '') : 'ENDE'}); sfx('win', 900); return true; }
+    if (al.length <= 1) { g.winner = al[0] || null; g.phase = 'over'; g.cur = null; flash('win', {text: al[0] ? '🏆 ' + (S.players.find(p => p.id === al[0])?.name || '') : 'ENDE'}); sfx('win', 900); return true; }
     return false;
   }
   function ddfHit(pid) {
@@ -627,37 +791,55 @@ function startHost() {
   };
   // Kategorien-Duell
   function jeoStart() {
-    const cats = parseJeo(S.content.jeo); if (!cats.length) return toast('Keine Kategorien im Inhalt');
+    const J0 = S.cdata.jeo;
+    const mk = (b, bi) => b.map(c => ({name: c.name.trim() || 'Kategorie', cards: c.cards.map((x, r) => ({v: jeoVal(bi, r), q: x.q.trim(), a: x.a.trim(), used: !x.q.trim()}))}));
+    const hasQ = b => b.some(c => c.cards.some(x => !x.used));
+    const boards = [mk(J0.boards[0], 0)];
+    if (J0.useB2 && J0.boards[1]) { const b2 = mk(J0.boards[1], 1); if (hasQ(b2)) boards.push(b2); }
+    if (!hasQ(boards[0])) return toast('Board 1 hat noch keine Fragen');
     if (!teamMembers(0).length || !teamMembers(1).length) return toast('Beide Teams brauchen mindestens einen Spieler');
     S.teams.forEach(t => t.score = 0);
-    S.game = {type: 'jeo', cats, pickTeam: 0, phase: 'board', cur: null, answerTeam: null, showA: false, result: null}; S.flash = null;
+    S.game = {type: 'jeo', boards, bi: 0, pickTeam: 0, phase: 'board', cur: null, answerTeam: null, showA: false, result: null, firstPen: 0}; S.flash = null;
   }
+  const jcats = () => S.game.boards[S.game.bi];
+  const jcard = () => jcats()[S.game.cur.c].cards[S.game.cur.r];
+  const penalty = (v, steal) => { const m = S.settings.jeoPenalty; return m === 'none' ? 0 : (m === 'half_steal' && !steal) ? 0 : Math.round(v / 2); };
   const J = {
     pick(c, r) {
-      const g = S.game; if (g.phase !== 'board') return; const card = g.cats[c]?.cards[r]; if (!card || card.used) return;
-      g.cur = {c, r}; g.phase = 'question'; g.answerTeam = g.pickTeam; g.showA = false; g.result = null; sfx('reveal');
+      const g = S.game; if (g.phase !== 'board') return; const card = jcats()[c]?.cards[r]; if (!card || card.used) return;
+      g.cur = {c, r}; g.phase = 'question'; g.answerTeam = g.pickTeam; g.showA = false; g.result = null; g.firstPen = 0; sfx('reveal');
     },
     correct() {
-      const g = S.game; if (g.phase !== 'question' && g.phase !== 'steal') return; const v = g.cats[g.cur.c].cards[g.cur.r].v;
+      const g = S.game; if (g.phase !== 'question' && g.phase !== 'steal') return; const v = jcard().v;
       S.teams[g.answerTeam].score += v; g.result = {team: g.answerTeam, delta: v}; g.showA = true; g.phase = 'answer';
       flash('text', {text: '+' + v, team: g.answerTeam}); sfx('correct');
     },
     wrong() {
-      const g = S.game;
-      if (g.phase === 'question') { g.phase = 'stealOffer'; flash('x', {n: 1}); sfx('wrong'); }
-      else if (g.phase === 'steal') { const pen = +S.settings.jeoPenalty || 0; S.teams[g.answerTeam].score -= pen; g.result = {team: g.answerTeam, delta: -pen}; g.showA = true; g.phase = 'answer'; flash('text', {text: '−' + pen, team: g.answerTeam, bad: true}); sfx('wrong'); }
+      const g = S.game, v = jcard().v;
+      if (g.phase === 'question') {
+        const pen = penalty(v, false); g.firstPen = pen;
+        if (pen) { S.teams[g.answerTeam].score -= pen; flash('text', {text: '−' + pen, team: g.answerTeam, bad: true}); } else flash('x', {n: 1});
+        g.phase = 'stealOffer'; sfx('wrong');
+      } else if (g.phase === 'steal') {
+        const pen = penalty(v, true); S.teams[g.answerTeam].score -= pen; g.result = {team: g.answerTeam, delta: -pen}; g.showA = true; g.phase = 'answer';
+        if (pen) flash('text', {text: '−' + pen, team: g.answerTeam, bad: true}); else flash('x', {n: 1}); sfx('wrong');
+      }
     },
     steal() { const g = S.game; if (g.phase !== 'stealOffer') return; g.phase = 'steal'; g.answerTeam = 1 - g.pickTeam; sfx('buzz'); flash('buzz', {team: g.answerTeam}); },
-    pass() { const g = S.game; if (g.phase !== 'stealOffer') return; g.showA = true; g.phase = 'answer'; g.result = {team: null, delta: 0}; sfx('reveal'); },
+    pass() { const g = S.game; if (g.phase !== 'stealOffer') return; g.showA = true; g.phase = 'answer'; g.result = g.firstPen ? {team: g.pickTeam, delta: -g.firstPen} : {team: null, delta: 0}; sfx('reveal'); },
     showA() { const g = S.game; if (g.cur) { g.showA = true; } },
     cont() {
       const g = S.game; if (g.phase !== 'answer') return;
-      g.cats[g.cur.c].cards[g.cur.r].used = true; g.cur = null; g.result = null; g.showA = false; g.pickTeam = 1 - g.pickTeam;
-      const left = g.cats.some(k => k.cards.some(x => !x.used));
-      g.phase = left ? 'board' : 'over'; S.flash = null; if (!left) { flash('text', {text: 'ENDE'}); sfx('win'); }
+      jcard().used = true; g.cur = null; g.result = null; g.showA = false; g.pickTeam = 1 - g.pickTeam;
+      const left = jcats().some(k => k.cards.some(x => !x.used));
+      S.flash = null;
+      if (left) { g.phase = 'board'; return; }
+      if (g.bi + 1 < g.boards.length) { g.bi++; g.phase = 'board'; flash('title', {text: 'RUNDE 2 · DOPPELTE PUNKTE'}); sfx('win'); return; }
+      g.phase = 'over'; flash('win', {text: winText()}); sfx('win');
     },
     back() { const g = S.game; if (g.phase === 'question') { g.cur = null; g.phase = 'board'; } },
-    setPick(t) { S.game.pickTeam = t; }
+    setPick(t) { S.game.pickTeam = t; },
+    nextBoard() { const g = S.game; if (g.bi + 1 < g.boards.length && (g.phase === 'board')) { g.bi++; flash('title', {text: 'RUNDE 2 · DOPPELTE PUNKTE'}); sfx('win'); } }
   };
 
   /* ---------- Nachrichten von Spielern ---------- */
@@ -673,6 +855,7 @@ function startHost() {
         cid2pid.set(cid, p.id);
       } else cid2pid.set(cid, null);
       net.send(cid, {t: 'state', s: buildPub()});
+      if (SND.ver && Object.keys(SND.data).length) net.send(cid, soundsMsg());
       changed(); return;
     }
     if (m.t === 'act') {
@@ -724,7 +907,7 @@ function startHost() {
         const tc = p.team != null ? S.teams[p.team].color : '#555';
         const ddfInfo = g && g.type === 'ddf' ? (p.id in g.lives ? `<span>${heartsHTML(g.lives[p.id], g.maxLives)}</span><button data-act="ddfLife" data-p="${p.id}" data-d="-1">−</button><button data-act="ddfLife" data-p="${p.id}" data-d="1">+</button>${g.lives[p.id] > 0 ? `<button data-act="ddfRemove" data-p="${p.id}" title="Aus dem Spiel nehmen">raus</button>` : `<button data-act="ddfAdd" data-p="${p.id}">rein</button>`}` : `<button data-act="ddfAdd" data-p="${p.id}">+ ins Spiel</button>`) : '';
         return `<div class="prow" style="--tc:${tc}"><span class="dot ${p.online ? 'on' : ''}" title="${p.online ? 'online' : 'offline'}"></span><span class="nm" title="${esc(p.name)}">${esc(p.name)} ${p.cam ? '📷' : ''}</span>
-          ${teamMode ? S.teams.map((t, i) => `<button class="tbtn ${p.team === i ? 'on' : ''}" style="--tc:${t.color}" data-act="setTeam" data-p="${p.id}" data-t="${i}">${esc(t.name.slice(0, 5))}</button>`).join('') : ''}
+          ${teamMode ? S.teams.map((t, i) => `<button class="tbtn ${p.team === i ? 'on' : ''}" style="--tc:${t.color}" data-act="setTeam" data-p="${p.id}" data-t="${i}">${esc(t.name.replace(/^team\s+/i, '').slice(0, 6))}</button>`).join('') : ''}
           ${ddfInfo}
           <button data-act="movePlayer" data-p="${p.id}" title="Nach oben">▲</button>
           <button data-act="kick" data-p="${p.id}" class="b-bad" title="Entfernen">✕</button></div>`;
@@ -732,8 +915,9 @@ function startHost() {
       <div class="row" style="margin-top:10px"><button data-act="randomTeams">Teams zufällig</button><button data-act="clearOffline" class="b-ghost">Offline entfernen</button></div>`;
   }
   function renderTeams() {
-    $('#hteams').innerHTML = S.teams.map((t, i) => `<div class="teamed"><input value="${esc(t.name)}" data-chg="teamName" data-t="${i}"><input type="number" value="${t.score}" data-chg="teamScore" data-t="${i}"><input type="color" value="${t.color}" data-chg="teamColor" data-t="${i}"></div>`).join('') +
-      '<p class="muted" style="font-size:13px;margin:6px 0 0">Name · Punkte · Farbe (Punkte kannst du hier jederzeit korrigieren)</p>';
+    if (document.activeElement && document.activeElement.closest && document.activeElement.closest('#hteams')) return;
+    $('#hteams').innerHTML = S.teams.map((t, i) => `<div class="teamed"><input value="${esc(t.name)}" data-chg="teamName" data-t="${i}"><input type="number" value="${t.score}" data-chg="teamScore" data-t="${i}"><input value="${t.color}" data-chg="teamHex" data-t="${i}" maxlength="7" spellcheck="false" title="Farbcode, z. B. #e0263f" style="font-family:ui-monospace,monospace;font-size:13px"><input type="color" value="${t.color}" data-chg="teamColor" data-t="${i}"></div>`).join('') +
+      '<p class="muted" style="font-size:13px;margin:6px 0 0">Name · Punkte · Farbcode · Farbwähler (Punkte kannst du hier jederzeit korrigieren)</p>';
   }
   function renderTabs() {
     const tabs = [['feud', 'Team-Duell'], ['ddf', 'Der Dümmste fliegt'], ['jeo', 'Kategorien-Duell'], ['content', 'Fragen bearbeiten'], ['settings', 'Einstellungen & Hilfe']];
@@ -813,13 +997,16 @@ function startHost() {
     return `<div class="ctrl"><div class="card">${body}</div>${answered}<p class="muted" style="font-size:13px">Herzen anpassen, Spieler rausnehmen oder Nachzügler aufnehmen: links in der Spielerliste.</p></div>`;
   }
   function renderJeoHost(g) {
-    const cols = g.cats.length, rows = Math.max(...g.cats.map(c => c.cards.length));
+    const cats = g.boards[g.bi];
+    const cols = cats.length, rows = Math.max(...cats.map(c => c.cards.length));
+    const bInfo = g.boards.length > 1 ? `<span class="pill" style="background:${g.bi ? 'var(--gold);color:#1d1500' : ''}">Board ${g.bi + 1}/${g.boards.length}${g.bi ? ' · doppelte Punkte' : ''}</span>` : '';
     let top = '';
-    if (g.phase === 'board' || g.phase === 'over') top = `<div class="card"><div class="row"><span class="grow">${g.phase === 'over' ? '<b>Alle Karten gespielt!</b>' : `Wählt: ${tName(g.pickTeam)} (Spieler können auch selbst auf ihrer Seite klicken)`}</span>${[0, 1].map(t => `<button data-act="jeoSetPick" data-t="${t}" class="b-ghost" style="border-color:${S.teams[t].color}">${esc(S.teams[t].name)} wählt</button>`).join('')}</div></div>`;
+    if (g.phase === 'board' || g.phase === 'over') top = `<div class="card"><div class="row">${bInfo}<span class="grow">${g.phase === 'over' ? '<b>Alle Karten gespielt!</b>' : `Wählt: ${tName(g.pickTeam)} (Spieler können auch selbst auf ihrer Seite klicken)`}</span>${[0, 1].map(t => `<button data-act="jeoSetPick" data-t="${t}" class="b-ghost" style="border-color:${S.teams[t].color}">${esc(S.teams[t].name)} wählt</button>`).join('')}${g.phase === 'board' && g.bi + 1 < g.boards.length ? '<button data-act="jeoNextBoard" class="b-ghost">Board 2 jetzt starten</button>' : ''}</div></div>`;
     else {
-      const c = g.cats[g.cur.c].cards[g.cur.r];
-      const ph = {question: `${tName(g.answerTeam)} antwortet`, stealOffer: `Falsch! Darf ${tName(1 - g.pickTeam)} nachziehen?`, steal: `${tName(g.answerTeam)} zieht nach (falsch = −${S.settings.jeoPenalty})`, answer: g.result && g.result.team != null ? `${tName(g.result.team)}: ${g.result.delta > 0 ? '+' : ''}${g.result.delta}` : 'Niemand bekommt Punkte'}[g.phase];
-      top = `<div class="card"><div class="phase">${esc(g.cats[g.cur.c].name)} · ${c.v}</div><div class="qbox" style="margin-top:8px">${esc(c.q)}<div class="ans">Lösung: ${esc(c.a || '–')}</div></div>
+      const c = cats[g.cur.c].cards[g.cur.r];
+      const pen1 = penalty(c.v, false), pen2 = penalty(c.v, true);
+      const ph = {question: `${tName(g.answerTeam)} antwortet${pen1 ? ` (falsch = −${pen1})` : ''}`, stealOffer: `Falsch!${g.firstPen ? ` ${tName(g.pickTeam)} −${g.firstPen}.` : ''} Darf ${tName(1 - g.pickTeam)} nachziehen?`, steal: `${tName(g.answerTeam)} zieht nach${pen2 ? ` (falsch = −${pen2})` : ''}`, answer: g.result && g.result.team != null ? `${tName(g.result.team)}: ${g.result.delta > 0 ? '+' : ''}${g.result.delta}` : 'Niemand bekommt Punkte'}[g.phase];
+      top = `<div class="card"><div class="row">${bInfo}<div class="phase">${esc(cats[g.cur.c].name)} · ${c.v}</div></div><div class="qbox" style="margin-top:8px">${esc(c.q)}<div class="ans">Lösung: ${esc(c.a || '–')}</div></div>
         <p>${ph}</p><div class="row">
         ${g.phase === 'question' || g.phase === 'steal' ? `<button class="b-good b-big" data-act="jeoCorrect">✓ Richtig</button><button class="b-bad b-big" data-act="jeoWrong">✗ Falsch</button>` : ''}
         ${g.phase === 'question' ? '<button data-act="jeoBack" class="b-ghost">Zurück zum Board</button>' : ''}
@@ -829,40 +1016,115 @@ function startHost() {
         </div></div>`;
     }
     const board = `<div class="card"><div class="jgrid" style="grid-template-columns:repeat(${cols},1fr)">
-      ${g.cats.map(c => `<div class="jh">${esc(c.name)}</div>`).join('')}
-      ${Array.from({length: rows}, (_, r) => g.cats.map((c, ci) => c.cards[r] ? `<button class="jc ${c.cards[r].used ? 'used' : ''}" data-act="jeoPick" data-c="${ci}" data-r="${r}" ${c.cards[r].used || g.phase !== 'board' ? 'disabled' : ''}>${c.cards[r].v}</button>` : '<div></div>').join('')).join('')}
+      ${cats.map(c => `<div class="jh">${esc(c.name)}</div>`).join('')}
+      ${Array.from({length: rows}, (_, r) => cats.map((c, ci) => c.cards[r] ? `<button class="jc ${c.cards[r].used ? 'used' : ''}" data-act="jeoPick" data-c="${ci}" data-r="${r}" ${c.cards[r].used || g.phase !== 'board' ? 'disabled' : ''}>${c.cards[r].v}</button>` : '<div></div>').join('')).join('')}
     </div></div>`;
     return `<div class="ctrl">${top}${board}</div>`;
   }
+  function edGet(path) { return path.split('.').reduce((o, k) => o == null ? o : o[k], S.cdata); }
+  function edSet(path, v) { const ks = path.split('.'); const last = ks.pop(); const o = ks.reduce((o, k) => o[k], S.cdata); o[last] = v; }
+  let edSaveT;
+  function edSave() { clearTimeout(edSaveT); edSaveT = setTimeout(() => { store.set(KEY, S); const el = $('#edsaved'); if (el) { el.textContent = '✓ gespeichert'; setTimeout(() => { if (el) el.textContent = ''; }, 1200); } }, 300); }
+  const inp = (path, val, ph, cls = '') => `<input class="${cls}" data-ed="${path}" value="${esc(val)}" placeholder="${esc(ph)}">`;
   function renderContent(m) {
     m.dataset.static = '1';
-    m.innerHTML = `<div class="card"><div class="tabs">${['feud', 'ddf', 'jeo'].map(k => `<button data-act="ctab" data-k="${k}" class="${(S.ctab || 'feud') === k ? 'on' : ''}">${MODE_NAMES[k]}</button>`).join('')}</div>
-      <textarea id="ctext" spellcheck="false"></textarea>
-      <div class="row" style="margin-top:10px"><button class="b-gold" data-act="csave">Speichern</button><button data-act="csample" class="b-ghost">Beispiel wiederherstellen</button><span class="muted" id="cinfo"></span></div>
-      <p class="muted" style="font-size:13px">Änderungen gelten beim nächsten Start des Formats. Zeilen mit <code>//</code> sind Kommentare.</p></div>`;
-    const k = S.ctab || 'feud'; $('#ctext').value = S.content[k]; contentInfo();
-    $('#ctext').addEventListener('input', contentInfo);
+    const k = S.ctab || 'feud', cd = S.cdata;
+    let body = '', info = '';
+    if (k === 'feud') {
+      info = `${cd.feud.length} Runden`;
+      body = cd.feud.map((r, i) => `<div class="edcard"><div class="row"><b class="edno">${i + 1}</b>${inp(`feud.${i}.q`, r.q, 'Frage, z. B. „Nenne etwas, das man morgens macht“', 'grow edq')}
+          <button class="b-ghost" data-act="edMove" data-p="feud" data-i="${i}" data-d="-1" title="Nach oben">▲</button><button class="b-ghost" data-act="edMove" data-p="feud" data-i="${i}" data-d="1" title="Nach unten">▼</button><button class="b-bad" data-act="edDel" data-p="feud" data-i="${i}" title="Runde löschen">✕</button></div>
+          <div class="edanswers">${r.answers.map((a, j) => `<div class="row edans"><span class="edrank">${j + 1}.</span>${inp(`feud.${i}.answers.${j}`, a, 'Antwort', 'grow')}<span class="edpts">${feudPts(r.answers.length, j)} P</span><button class="b-ghost" data-act="edDel" data-p="feud.${i}.answers" data-i="${j}" title="Antwort löschen">✕</button></div>`).join('')}</div>
+          <div class="row"><button data-act="edAdd" data-p="feud.${i}.answers" data-kind="str" ${r.answers.length >= 8 ? 'disabled' : ''}>+ Antwort</button><span class="muted" style="font-size:13px">Reihenfolge = Platz. Platz 1 bekommt die meisten Punkte (${r.answers.length} P).</span></div></div>`).join('') +
+        `<button class="b-gold" data-act="edAdd" data-p="feud" data-kind="feud">+ Runde hinzufügen</button>`;
+    }
+    if (k === 'ddf') {
+      info = `${cd.ddf.length} Fragen`;
+      body = `<div class="edtable">${cd.ddf.map((x, i) => `<div class="row edrow"><b class="edno">${i + 1}</b>${inp(`ddf.${i}.q`, x.q, 'Frage', 'grow edq')}${inp(`ddf.${i}.a`, x.a, 'Lösung', 'eda')}<button class="b-bad" data-act="edDel" data-p="ddf" data-i="${i}" title="Löschen">✕</button></div>`).join('')}</div>
+        <button class="b-gold" data-act="edAdd" data-p="ddf" data-kind="ddf">+ Frage hinzufügen</button>`;
+    }
+    if (k === 'jeo') {
+      const J0 = cd.jeo, b = S.cboard || 0, B = J0.boards[b];
+      info = `${J0.cols} Kategorien × ${J0.rows} Karten pro Board`;
+      body = `<div class="row" style="margin-bottom:12px">
+          <span class="muted">Kategorien</span><button data-act="jeoShape" data-w="cols" data-d="-1" ${J0.cols <= 2 ? 'disabled' : ''}>−</button><b>${J0.cols}</b><button data-act="jeoShape" data-w="cols" data-d="1" ${J0.cols >= 6 ? 'disabled' : ''}>+</button>
+          <span class="muted" style="margin-left:14px">Karten pro Kategorie</span><button data-act="jeoShape" data-w="rows" data-d="-1" ${J0.rows <= 3 ? 'disabled' : ''}>−</button><b>${J0.rows}</b><button data-act="jeoShape" data-w="rows" data-d="1" ${J0.rows >= 6 ? 'disabled' : ''}>+</button>
+          <label class="row" style="margin-left:14px"><input type="checkbox" data-edcheck="jeo.useB2" ${J0.useB2 ? 'checked' : ''}> Board 2 spielen (doppelte Punkte)</label></div>
+        <div class="tabs">${[0, 1].map(i => `<button data-act="jeoBoardTab" data-b="${i}" class="${b === i ? 'on' : ''}">Board ${i + 1} · ${jeoVal(i, 0)}–${jeoVal(i, J0.rows - 1)} Punkte</button>`).join('')}</div>
+        <div class="edjeo" style="grid-template-columns:repeat(${J0.cols},minmax(0,1fr))">
+          ${B.map((c, ci) => `<div class="edcol">${inp(`jeo.boards.${b}.${ci}.name`, c.name, 'Kategorie', 'edcat')}
+            ${c.cards.map((x, r) => `<div class="edjcard"><div class="edval">${jeoVal(b, r)}</div>
+              <textarea rows="2" data-ed="jeo.boards.${b}.${ci}.cards.${r}.q" placeholder="Frage">${esc(x.q)}</textarea>${inp(`jeo.boards.${b}.${ci}.cards.${r}.a`, x.a, 'Lösung')}</div>`).join('')}</div>`).join('')}
+        </div><p class="muted" style="font-size:13px">Leere Karten werden im Spiel einfach übersprungen. Die Punkte ergeben sich automatisch aus der Zeile.</p>`;
+    }
+    const tk = k === 'jeo' ? 'jeo' + ((S.cboard || 0) + 1) : k;
+    m.innerHTML = `<div class="card"><div class="row" style="margin-bottom:12px"><div class="tabs grow" style="margin:0">${['feud', 'ddf', 'jeo'].map(x => `<button data-act="ctab" data-k="${x}" class="${k === x ? 'on' : ''}">${MODE_NAMES[x]}</button>`).join('')}</div>
+        <span class="muted">${info}</span><span id="edsaved" style="color:var(--good);font-size:13px;min-width:90px"></span></div>
+      ${body}
+      <details class="edimport"><summary>Text-Import / Export (viele Fragen auf einmal einfügen)</summary>
+        <p class="muted" style="font-size:13px">${{feud: 'Format: Zeile mit <code>?</code> = Frage, darunter die Antworten (oberste = Platz 1).', ddf: 'Format: <code>Frage | Lösung</code> – eine Frage pro Zeile.', jeo: 'Format: <code># Kategorie</code>, darunter <code>Frage | Lösung</code>. Gilt für das gerade offene Board.'}[k]}</p>
+        <textarea id="ctext" spellcheck="false" style="min-height:200px">${esc(cdataToText(tk, cd))}</textarea>
+        <div class="row" style="margin-top:8px"><button class="b-gold" data-act="edImport">Text übernehmen (ersetzt die Liste)</button><button data-act="edSample" class="b-ghost">Beispiel-Fragen laden</button></div></details>
+      <p class="muted" style="font-size:13px">Alles wird automatisch gespeichert und gilt beim nächsten Start des Formats.</p></div>`;
   }
-  function contentInfo() {
-    const k = S.ctab || 'feud', t = $('#ctext').value; let s = '';
-    if (k === 'feud') { const r = parseFeud(t); s = r.length + ' Runden'; }
-    if (k === 'ddf') s = parseDdf(t).length + ' Fragen';
-    if (k === 'jeo') { const c = parseJeo(t); s = c.length + ' Kategorien, ' + c.reduce((a, x) => a + x.cards.length, 0) + ' Karten'; }
-    $('#cinfo').textContent = s;
+  function edStructural(d) {
+    const k = S.ctab || 'feud', cd = S.cdata;
+    if (d.act === 'edAdd') {
+      const arr = edGet(d.p);
+      arr.push(d.kind === 'feud' ? {q: '', answers: ['', '', '', '', '', '']} : d.kind === 'ddf' ? {q: '', a: ''} : '');
+    }
+    if (d.act === 'edDel') {
+      const arr = edGet(d.p), i = +d.i, it = arr[i];
+      const filled = typeof it === 'string' ? it.trim() : (it.q || '').trim();
+      if (filled && !confirm('Wirklich löschen?')) return;
+      arr.splice(i, 1);
+    }
+    if (d.act === 'edMove') { const arr = edGet(d.p), i = +d.i, j = i + (+d.d); if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; }
+    if (d.act === 'jeoShape') {
+      const J0 = cd.jeo, nc = d.w === 'cols' ? J0.cols + (+d.d) : J0.cols, nr = d.w === 'rows' ? J0.rows + (+d.d) : J0.rows;
+      const lose = J0.boards.some(B => B.slice(0, J0.cols).some((c, ci) => ci >= nc ? (c.name || c.cards.some(x => x.q)) : c.cards.slice(nr).some(x => x.q)));
+      if (lose && !confirm('Dabei gehen ausgefüllte Karten verloren. Fortfahren?')) return;
+      J0.cols = Math.max(2, Math.min(6, nc)); J0.rows = Math.max(3, Math.min(6, nr));
+      J0.boards = J0.boards.map(B => jeoShapeBoard(B, J0.cols, J0.rows));
+    }
+    if (d.act === 'jeoBoardTab') S.cboard = +d.b;
+    if (d.act === 'edImport' || d.act === 'edSample') {
+      const t = d.act === 'edSample' ? (k === 'jeo' ? ((S.cboard || 0) ? SAMPLE_JEO2 : SAMPLE.jeo) : SAMPLE[k]) : $('#ctext').value;
+      if (!confirm(d.act === 'edSample' ? 'Beispiel-Fragen laden? Deine aktuelle Liste wird ersetzt.' : 'Text übernehmen? Die aktuelle Liste wird ersetzt.')) return;
+      if (k === 'feud') cd.feud = parseFeud(t).map(r => ({q: r.q, answers: r.answers}));
+      if (k === 'ddf') cd.ddf = parseDdf(t);
+      if (k === 'jeo') { const b = S.cboard || 0; const cats = parseJeo(t); cd.jeo.boards[b] = jeoShapeBoard(cats.map(c => ({name: c.name, cards: c.cards})), cd.jeo.cols, cd.jeo.rows); }
+      toast('Übernommen');
+    }
+    store.set(KEY, S); renderMain();
   }
   function renderSettings(m) {
     m.dataset.static = '1'; const s = S.settings;
     m.innerHTML = `<div class="ctrl"><div class="card"><h2>Einstellungen</h2>
       <div class="ctrl" style="gap:10px">
+      <label class="row">Name der Show (Logo): <input data-set="showName" value="${esc(s.showName)}" maxlength="30"></label>
+      <label class="row">Dein Name (Host-Cam): <input data-set="hostName" value="${esc(s.hostName)}" maxlength="24"></label>
       <label class="row"><input type="checkbox" data-set="cams" ${s.cams ? 'checked' : ''}> Cams im Overlay anzeigen</label>
       <label class="row">Overlay-Hintergrund <select data-set="bg"><option value="dark" ${s.bg === 'dark' ? 'selected' : ''}>Dunkel (fertige Szene)</option><option value="transparent" ${s.bg === 'transparent' ? 'selected' : ''}>Transparent (eigener Hintergrund in OBS)</option></select></label>
       <label class="row"><input type="checkbox" data-set="hostSound" ${s.hostSound ? 'checked' : ''}> Sounds auch hier im Host-Panel abspielen</label>
       <label class="row">Der Dümmste fliegt – Leben: <input type="number" min="1" max="10" style="width:70px" data-set="ddfLives" value="${s.ddfLives}"></label>
       <label class="row">Der Dümmste fliegt – Fragen pro Spieler und Runde: <input type="number" min="1" max="10" style="width:70px" data-set="ddfQPP" value="${s.ddfQPP}"></label>
       <label class="row"><input type="checkbox" data-set="ddfShuffle" ${s.ddfShuffle ? 'checked' : ''}> Der Dümmste fliegt – Fragen mischen</label>
-      <label class="row">Kategorien-Duell – Abzug bei falschem Nachziehen: <input type="number" min="0" step="50" style="width:90px" data-set="jeoPenalty" value="${s.jeoPenalty}"></label>
+      <label class="row">Kategorien-Duell – Abzug bei falscher Antwort: <select data-set="jeoPenalty"><option value="half_all" ${s.jeoPenalty === 'half_all' ? 'selected' : ''}>Hälfte der Kartenpunkte – bei jeder falschen Antwort</option><option value="half_steal" ${s.jeoPenalty === 'half_steal' ? 'selected' : ''}>Hälfte der Kartenpunkte – nur beim Nachziehen</option><option value="none" ${s.jeoPenalty === 'none' ? 'selected' : ''}>Kein Abzug</option></select></label>
       </div>
       <div class="row" style="margin-top:14px"><button data-act="newRoom" class="b-ghost">Neuen Raum erstellen</button><button data-act="resetAll" class="b-bad">Alles zurücksetzen</button></div></div>
+      <div class="card"><h2>Sounds</h2>
+      <p class="muted" style="margin-top:0;font-size:14px">Gilt für Overlay und Spieler. Eigene Sounds: MP3/WAV/OGG, max. 500 KB pro Datei. Mit ▶ hörst du den Sound hier zur Probe.</p>
+      <label class="row" style="margin-bottom:12px"><b style="min-width:200px">Gesamtlautstärke</b><input type="range" min="0" max="100" value="${Math.round((s.sfxMaster ?? 1) * 100)}" data-sfx="master" style="flex:1;max-width:260px"><span class="muted" id="sfxv-master">${Math.round((s.sfxMaster ?? 1) * 100)}%</span></label>
+      <div class="vlist">${Object.entries(SFX_NAMES).map(([k, n]) => { const v = Math.round(((s.sfxVol || {})[k] ?? 1) * 100); return `<div class="prow" style="--tc:#7c4dff"><span class="nm" style="min-width:170px">${n}${SND.data[k] ? ' <span class="pill" style="font-size:11px">eigener</span>' : ''}</span>
+        <input type="range" min="0" max="150" value="${v}" data-sfx="${k}" style="width:150px"><span class="muted" id="sfxv-${k}" style="width:42px">${v}%</span>
+        <button data-act="sfxTest" data-k="${k}">▶</button>
+        <label class="pill" style="cursor:pointer">Datei…<input type="file" accept="audio/*" data-sfxfile="${k}" hidden></label>
+        ${SND.data[k] ? `<button data-act="sfxReset" data-k="${k}" class="b-ghost">Standard</button>` : ''}</div>`; }).join('')}</div></div>
+      <div class="card"><h2>Host-Passwort</h2>
+      <p class="muted" style="margin-top:0;font-size:14px">${HOST_PASS_HASH ? '✅ Das Host-Panel ist mit einem Passwort geschützt.' : '⚠ Noch kein Passwort gesetzt – jeder mit dem Link kann ein Host-Panel öffnen.'}</p>
+      <div class="row"><input type="password" id="newpw" placeholder="Neues Passwort" class="grow"><button data-act="mkHash" class="b-gold">Code erzeugen</button></div>
+      <div id="hashOut" style="margin-top:10px"></div></div>
       <div class="card help"><h2>So läuft eine Show</h2>
       <ol>
         <li><b>Diese Seite offen lassen.</b> Das Host-Panel ist der „Server“. Schließt du es, pausiert das Spiel. Nach einem Neuladen geht es genau dort weiter.</li>
@@ -878,17 +1140,23 @@ function startHost() {
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
     const d = b.dataset, a = d.act;
-    const NOSNAP = ['tab', 'ctab', 'copyPlayer', 'copyOverlay', 'openOverlay', 'undo', 'csave', 'csample', 'timer', 'newRoom', 'resetAll'];
+    const NOSNAP = ['edAdd', 'edDel', 'edMove', 'jeoShape', 'jeoBoardTab', 'edImport', 'edSample', 'copyHash', 'sfxTest', 'sfxReset', 'mkHash', 'hostCam', 'hostCamToggle', 'tab', 'ctab', 'copyPlayer', 'copyOverlay', 'openOverlay', 'undo', 'csave', 'csample', 'timer', 'newRoom', 'resetAll'];
     if (!NOSNAP.includes(a)) snap();
     switch (a) {
+      case 'hostCam': $('#hcampop').classList.toggle('hide'); return;
+      case 'sfxTest': playSfx(d.k, true); return;
+      case 'sfxReset': delete SND.data[d.k]; SND.ver = Date.now() + ''; saveSounds(); renderMain(); return;
+      case 'mkHash': { const pw = $('#newpw').value; if (pw.length < 4) return toast('Mindestens 4 Zeichen');
+        sha256(pw).then(h => { $('#hashOut').innerHTML = `<p style="margin:0 0 6px">Öffne deine <code>index.html</code> mit dem Editor, suche (Strg+F) nach <code>const HOST_PASS&#95;HASH</code> und ersetze diese Zeile:</p><pre style="background:#0c1130;padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-all;margin:0 0 6px">${'const HOST_PASS' + "_HASH = '" + HOST_PASS_HASH + "';"}</pre><p style="margin:0 0 6px">durch:</p><pre style="background:#0c1130;padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-all;margin:0 0 8px">${'const HOST_PASS' + "_HASH = '" + h + "';"}</pre><button data-act="copyHash" data-h="${h}">Zeile kopieren</button>`; }); return; }
+      case 'copyHash': { const line = 'const HOST_PASS' + "_HASH = '" + d.h + "';"; navigator.clipboard.writeText(line).then(() => toast('Kopiert'), () => prompt('Kopieren:', line)); return; }
+      case 'hostCamToggle': S.hostCam = !S.hostCam; renderHostCam(); break;
       case 'tab': S.tab = d.k; renderTabs(); renderMain(); store.set(KEY, S); return;
       case 'ctab': S.ctab = d.k; renderMain(); return;
+      case 'edAdd': case 'edDel': case 'edMove': case 'jeoShape': case 'jeoBoardTab': case 'edImport': case 'edSample': edStructural(d); return;
       case 'copyPlayer': return copy(link('play', room));
       case 'copyOverlay': return copy(link('overlay', room));
       case 'openOverlay': return window.open(link('overlay', room), '_blank');
       case 'undo': return doUndo();
-      case 'csave': S.content[S.ctab || 'feud'] = $('#ctext').value; toast('Gespeichert'); store.set(KEY, S); return;
-      case 'csample': $('#ctext').value = SAMPLE[S.ctab || 'feud']; contentInfo(); return;
       case 'timer': { const s = +d.s; S.timer = s ? {end: Date.now() + s * 1000, total: s * 1000} : {end: null, total: 0}; break; }
       case 'newRoom': if (confirm('Neuen Raum erstellen? Spieler brauchen dann den neuen Link.')) { store.set('dqs-last-room', ''); location.hash = 'host' + (LOCAL ? '&local=1' : ''); location.reload(); } return;
       case 'resetAll': if (confirm('Alles (Spieler, Punkte, Fragen) zurücksetzen?')) { S = defaultState(room); changed(); renderMain(); } return;
@@ -897,7 +1165,7 @@ function startHost() {
       case 'movePlayer': { const i = S.players.findIndex(x => x.id === d.p); if (i > 0) { const [p] = S.players.splice(i, 1); S.players.splice(i - 1, 0, p); if (S.game && S.game.type === 'ddf') { const o = S.game.order, j = o.indexOf(d.p); if (j > 0) { o.splice(j, 1); o.splice(j - 1, 0, d.p); } } } break; }
       case 'randomTeams': { const ps = shuffle(S.players); ps.forEach((p, i) => p.team = i % 2); break; }
       case 'clearOffline': S.players = S.players.filter(p => p.online); break;
-      case 'start': if (S.game && !confirm('Laufendes Spiel beenden und neu starten?')) { undo.pop(); return; } ({feud: feudStart, ddf: ddfStart, jeo: jeoStart})[d.k](); S.tab = d.k; break;
+      case 'start': if (S.game && !confirm('Laufendes Spiel beenden und neu starten?')) { undo.pop(); return; } ({feud: feudStart, ddf: ddfStart, jeo: jeoStart})[d.k](); S.tab = d.k; if (S.game && S.game.type === d.k) { flash('title', {text: MODE_NAMES[d.k].toUpperCase()}); sfx('win'); } break;
       case 'endGame': S.game = null; S.flash = null; break;
       case 'feudOpen': F.open(); break;
       case 'feudBuzz': F.buzz(+d.t); break;
@@ -924,6 +1192,7 @@ function startHost() {
       case 'jeoCont': J.cont(); break;
       case 'jeoBack': J.back(); break;
       case 'jeoSetPick': J.setPick(+d.t); break;
+      case 'jeoNextBoard': J.nextBoard(); break;
       default: return;
     }
     changed();
@@ -933,15 +1202,51 @@ function startHost() {
     if (d.chg === 'teamName') { snap(); S.teams[+d.t].name = el.value.slice(0, 20) || 'Team'; changed(); }
     if (d.chg === 'teamScore') { snap(); S.teams[+d.t].score = +el.value || 0; changed(); }
     if (d.chg === 'teamColor') { snap(); S.teams[+d.t].color = el.value; changed(); }
+    if (d.chg === 'teamHex') {
+      let v = el.value.trim(); if (!v.startsWith('#')) v = '#' + v;
+      if (/^#[0-9a-f]{3}$/i.test(v)) v = '#' + v.slice(1).split('').map(c => c + c).join('');
+      if (!/^#[0-9a-f]{6}$/i.test(v)) { toast('Ungültiger Farbcode – Beispiel: #e0263f'); el.value = S.teams[+d.t].color; return; }
+      snap(); S.teams[+d.t].color = v.toLowerCase(); changed();
+    }
+    if (d.edcheck) { edSet(d.edcheck, el.checked); store.set(KEY, S); }
     if (d.chg === 'feudBuzzer') { snap(); F.setBuzzer(+d.t, el.value); changed(); }
+    if (d.sfxfile) {
+      const f = el.files && el.files[0]; if (!f) return;
+      if (f.size > 500 * 1024) { toast('Datei zu groß (max. 500 KB)'); el.value = ''; return; }
+      const rd = new FileReader();
+      rd.onload = () => { SND.data[d.sfxfile] = rd.result; SND.ver = Date.now() + ''; if (!saveSounds()) { delete SND.data[d.sfxfile]; toast('Speicher voll – nimm kleinere Dateien'); } renderMain(); toast('Sound gespeichert'); };
+      rd.readAsDataURL(f); return;
+    }
     if (d.set) {
       const k = d.set; S.settings[k] = el.type === 'checkbox' ? el.checked : el.type === 'number' ? +el.value : el.value;
       if (k === 'hostSound') soundOn = el.checked;
       changed();
     }
   });
+  document.addEventListener('focusout', e => { if (e.target.closest && e.target.closest('#hteams')) setTimeout(renderTeams, 0); });
+  document.addEventListener('input', e => {
+    if (e.target.dataset.ed) { edSet(e.target.dataset.ed, e.target.value); edSave(); return; }
+    const k = e.target.dataset.sfx; if (!k) return; const v = +e.target.value / 100;
+    if (k === 'master') S.settings.sfxMaster = v; else { S.settings.sfxVol = Object.assign({}, S.settings.sfxVol, {[k]: v}); }
+    const lab = $('#sfxv-' + k); if (lab) lab.textContent = e.target.value + '%';
+    applySfxCfg(); changed();
+  });
+  function saveSounds() {
+    try { localStorage.setItem('dqs-sounds', JSON.stringify(SND)); } catch { return false; }
+    customVer = null; setCustomSounds(SND.data, SND.ver);
+    net && net.broadcast(soundsMsg()); return true;
+  }
   addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); doUndo(); } });
 
+  function renderHostCam() {
+    $('#hcamToggle').textContent = S.hostCam ? 'Cam beenden' : 'Cam starten';
+    $('#hcamToggle').className = S.hostCam ? 'b-ghost' : 'b-gold';
+    $('#hcamBtn').textContent = S.hostCam ? '🎥 Host-Cam an' : '🎥 Host-Cam';
+    const box = $('#hcamBox');
+    if (S.hostCam && !box.querySelector('iframe')) box.innerHTML = `<iframe allow="camera;microphone;autoplay;fullscreen" src="${camPushUrl(camSid(room, 'host'), S.settings.hostName || 'Host')}"></iframe>`;
+    if (!S.hostCam) box.innerHTML = '';
+  }
+  renderHostCam();
   renderHost();
   hostTransport(room, {onMsg, onClose, onStatus: s => { status = s; renderHost(); }})
     .then(n => { net = n; changed(); })
@@ -949,47 +1254,285 @@ function startHost() {
 }
 
 /* =====================================================================
-   CLIENT (Spieler + Overlay): gemeinsame Zustands-Verwaltung
+   BÜHNE: zeichnet das Overlay (für OBS und für die Spieler-Ansicht)
    ===================================================================== */
-let PUB = null, timerEnd = null, timerTotal = 0, lastFlash = null;
-function applyState(s) {
-  PUB = s;
-  if (s.timer.rem != null) { timerEnd = Date.now() + s.timer.rem; timerTotal = s.timer.total; } else timerEnd = null;
+function logoHTML(name, sm) {
+  const parts = String(name || 'QUIZ SHOW').trim().split(/\s+/);
+  const a = parts.length > 1 ? parts.slice(0, -1).join(' ') : parts[0];
+  const b = parts.length > 1 ? parts[parts.length - 1] : '';
+  return `<div class="logo2 disp ${sm ? 'sm' : ''}"><div class="a">${esc(a)}</div>${b ? `<div class="b">${esc(b)}</div>` : ''}</div>`;
 }
+function confettiIn(host) {
+  const c = document.createElement('canvas'); c.width = 1920; c.height = 1080; c.className = 'confetti'; host.appendChild(c);
+  const ctx = c.getContext('2d'); const cols = ['#ffc83d', '#b388ff', '#2ee59d', '#ff4d6d', '#3b82f6', '#ffffff'];
+  const ps = Array.from({length: 260}, (_, i) => ({x: i % 2 ? 300 : 1620, y: 1000, vx: (i % 2 ? 1 : -1) * (6 + Math.random() * 16), vy: -18 - Math.random() * 24, r: Math.random() * 6, vr: (Math.random() - .5) * .5, w: 10 + Math.random() * 12, h: 6 + Math.random() * 8, c: cols[Math.random() * cols.length | 0]}));
+  const t0 = performance.now();
+  (function step(now) {
+    const e = now - t0; ctx.clearRect(0, 0, 1920, 1080);
+    ps.forEach(p => { p.vy += .55; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - e / 5000); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore(); });
+    if (e < 5000) requestAnimationFrame(step); else c.remove();
+  })(t0);
+}
+function createStage(wrap, opt) {
+  const room = opt.room, me = opt.me || null, low = !!opt.low, onAct = opt.onAct || null, getVote = opt.getVote || (() => null);
+  wrap.innerHTML = `<div class="stage"><div class="layer camlayer"></div><div class="layer ui"></div><div class="layer fx"></div><div class="stimer disp"></div></div>`;
+  const stage = wrap.querySelector('.stage'), camlayer = stage.querySelector('.camlayer'), ui = stage.querySelector('.ui'), fx = stage.querySelector('.fx'), timerEl = stage.querySelector('.stimer');
+  let scale = 1, P = null, status = 'connecting', lastFlash = null, firstRender = true, lastTick = null;
+  const seen = new Map(), counts = new Map(), camEls = new Map();
+  function fit() { const w = wrap.clientWidth, h = wrap.clientHeight; if (!w || !h) return; scale = Math.min(w / 1920, h / 1080); stage.style.transform = `scale(${scale})`; stage.style.left = (w - 1920 * scale) / 2 + 'px'; stage.style.top = (h - 1080 * scale) / 2 + 'px'; }
+  new ResizeObserver(fit).observe(wrap); fit();
+  if (onAct) stage.addEventListener('click', e => { const b = e.target.closest('[data-pact]'); if (b) onAct(b.dataset.pact, b.dataset); });
+
+  /* --- Bausteine --- */
+  const teamColor = m => m.team != null && P.teams[m.team] ? P.teams[m.team].color : '#7c4dff';
+  const hearts = (n, max, key) => { let s = ''; for (let i = 0; i < max; i++) s += `<span class="hrt ${i < n ? '' : 'lost'}" ${i >= n ? `data-an="h:${key}:${i}"` : ''}>♥</span>`; return s; };
+  function slot(m, o = {}) {
+    const on = P.settings.cams && m.cam, ini = esc((m.name || '?').trim()[0] || '?').toUpperCase();
+    const click = o.click ? `data-pact="${o.click}" data-target="${m.id}"` : '';
+    return `<div class="slot ${o.cls || ''} ${o.click ? 'click' : ''}" data-flip="s:${m.id}" data-an="sa:${m.id}" style="--sc:${o.sc || teamColor(m)}" ${click}>
+      <div class="cam ${on ? 'hascam' : 'nocam'}" data-cam="${on ? m.id : ''}">${on ? '' : `<span class="ini disp">${ini}</span>`}${o.top || ''}${o.tag ? `<div class="stag ${o.tagLow ? 'low' : ''}">${o.tag}</div>` : ''}
+      <div class="npill"><span class="av">${ini}</span><span class="nm">${esc(m.name)}${m.online === false ? ' ⚠' : ''}</span>${o.right || ''}</div></div>
+      ${o.badge != null ? `<div class="sbadge disp" data-an="b:${m.id}:${o.badgeKey || ''}">${o.badge}</div>` : ''}</div>`;
+  }
+  const hostM = () => ({id: 'host', name: (P.host && P.host.name) || 'Host', cam: !!(P.host && P.host.cam), online: true});
+  const hostSlot = () => P.host && P.host.cam ? `<div class="hostslot">${slot(hostM(), {sc: '#7c4dff'})}</div>` : '';
+  const leader = () => P.teams[0].score === P.teams[1].score ? null : (P.teams[0].score > P.teams[1].score ? 0 : 1);
+  function teamPanel(t, o) {
+    const tm = P.teams[t]; const ms = P.players.filter(p => p.team === t);
+    const w = ms.length <= 3 ? 100 : ms.length === 4 ? 80 : 66;
+    const st = o.status || {txt: 'WARTET'};
+    return `<div class="tpanel ${t === 0 ? 'l' : 'r'} ${o.active ? 'active' : ''}" style="--tc:${tm.color}">
+      <div class="thead"><div class="tban disp">${esc(tm.name)}</div>
+      <div class="tpts disp"><span data-count="score${t}" data-v="${tm.score}">${tm.score}</span><small>PTS</small></div>
+      <div class="trow"><span class="tstat ${st.on ? 'on' : ''}" data-an="ts${t}:${st.key || st.txt}">${st.txt}</span>${o.lives != null ? `<span class="tlives">LEBEN ${hearts(o.lives, 3, o.livesKey + ':' + t)}</span>` : ''}</div></div>
+      <div class="tslots">${ms.map(m => `<div style="width:${w}%">${slot(m, o.so ? o.so(m) : {})}</div>`).join('')}</div></div>`;
+  }
+
+  /* --- Ansichten --- */
+  function vLobby() {
+    const teamed = P.players.some(p => p.team != null);
+    if (teamed) {
+      return teamPanel(0, {lives: 3, livesKey: 'lobby'}) + teamPanel(1, {lives: 3, livesKey: 'lobby'}) +
+        `<div class="center"><div class="lobbycenter">${logoHTML(P.settings.showName)}<div class="disp ns">SPIEL NOCH NICHT GESTARTET</div><div class="wt">Warte auf den Host…</div><div class="spin"></div></div>${hostSlot()}</div>`;
+    }
+    const ps = P.players, n = ps.length; const cols = n <= 3 ? Math.max(n, 1) : n <= 4 ? 4 : n <= 8 ? 4 : 6;
+    const w = Math.min(400, (1840 - (cols - 1) * 24) / cols);
+    return `<div class="lobbygrid">${logoHTML(P.settings.showName, n > 4)}
+      ${n ? `<div class="lgrid" style="grid-template-columns:repeat(${cols},${w}px)">${ps.map(p => slot(p)).join('')}</div>` : ''}
+      <div style="text-align:center"><div class="disp" style="font-size:52px;color:#ff3b5c;line-height:1">SPIEL NOCH NICHT GESTARTET</div><div style="font-size:22px;font-weight:600;margin-top:8px">${n ? n + ' Spieler bereit · ' : ''}Warte auf den Host…</div></div></div>`;
+  }
+  function vFeud(g) {
+    const st = t => {
+      switch (g.phase) {
+        case 'intro': return {txt: 'BEREIT'};
+        case 'buzz': return {txt: 'BUZZER!', on: true};
+        case 'faceoff': return g.turn === t ? {txt: 'AM ZUG', on: true} : {txt: 'WARTET'};
+        case 'play': return g.control === t ? {txt: 'AM ZUG', on: true} : {txt: 'WARTET'};
+        case 'steal': return g.turn === t ? {txt: 'KLAUT!', on: true} : {txt: 'WARTET'};
+        case 'done': return g.awarded === t ? {txt: '+' + g.pot + ' PUNKTE', on: true} : {txt: '—'};
+        case 'over': { const w = leader(); return w === t ? {txt: 'SIEGER', on: true} : {txt: w == null ? 'GLEICHSTAND' : '—'}; }
+      }
+      return {txt: 'WARTET'};
+    };
+    const lives = t => g.control === t && ['play', 'steal', 'done'].includes(g.phase) ? Math.max(0, 3 - g.strikes) : 3;
+    const active = t => ((g.phase === 'faceoff' || g.phase === 'steal') && g.turn === t) || (g.phase === 'play' && g.control === t);
+    const so = m => ({cls: (g.buzzWinner === m.id && g.phase === 'faceoff') ? 'hot' : '', tag: g.buzzers.includes(m.id) && ['intro', 'buzz'].includes(g.phase) ? 'AM BUZZER' : ''});
+    const rows = Math.ceil(g.cards.length / 2);
+    let banner = '';
+    if (g.phase === 'buzz') banner = `<div class="banner disp" data-an="fb${g.ri}buzz">BUZZER OFFEN!</div>`;
+    if (g.phase === 'steal') banner = `<div class="banner t disp" style="--tc:${P.teams[g.turn].color}" data-an="fb${g.ri}steal">${esc(P.teams[g.turn].name)} darf klauen!</div>`;
+    if (g.phase === 'done' && g.awarded != null) banner = `<div class="banner t disp" style="--tc:${P.teams[g.awarded].color}" data-an="fb${g.ri}done">+${g.pot} für ${esc(P.teams[g.awarded].name)}</div>`;
+    if (g.phase === 'over') { const w = leader(); banner = `<div class="banner disp" data-an="fbover">${w == null ? 'Unentschieden!' : '🏆 ' + esc(P.teams[w].name) + ' gewinnt!'}</div>`; }
+    const tp = t => teamPanel(t, {status: st(t), lives: lives(t), livesKey: 'f' + g.ri, active: active(t), so});
+    return tp(0) + tp(1) + `<div class="center">
+      <div class="qmeta disp">RUNDE ${g.ri + 1} / ${g.total}</div>
+      <div class="qbar" data-an="fq${g.ri}">${esc(g.q)}</div>
+      <div class="fboard" style="--rows:${rows}">${g.cards.map((c, i) => `<div class="fcard ${c.rev ? 'rev' : ''}" ${c.rev ? `data-an="fc${g.ri}:${i}"` : ''}><div class="fin"><div class="ff"><span class="rk disp">${c.rank}</span></div><div class="fb">${c.rev ? `<span class="tx">${esc(c.text)}</span><span class="pt disp">${c.pts}</span>` : ''}</div></div></div>`).join('')}</div>
+      <div class="fstat"><div class="pot disp">TOPF<b data-count="pot${g.ri}" data-v="${g.pot}">${g.pot}</b></div>${banner}<div class="strikes">${[0, 1, 2].map(i => `<div class="strk ${i < g.strikes ? 'on' : ''}" ${i < g.strikes ? `data-an="sk${g.ri}:${i}"` : ''}>✕</div>`).join('')}</div></div>
+      ${hostSlot()}</div>`;
+  }
+  function vJeo(g) {
+    const my = me ? P.players.find(p => p.id === me) : null, myTeam = my ? my.team : null;
+    const canPick = !!me && g.phase === 'board' && myTeam === g.pickTeam;
+    const st = t => {
+      switch (g.phase) {
+        case 'board': return g.pickTeam === t ? {txt: 'WÄHLT', on: true} : {txt: 'WARTET'};
+        case 'question': case 'steal': return g.answerTeam === t ? {txt: g.phase === 'steal' ? 'ZIEHT NACH' : 'ANTWORTET', on: true} : {txt: 'WARTET'};
+        case 'stealOffer': return 1 - g.pickTeam === t ? {txt: 'NACHZIEHEN?', on: true} : {txt: 'FALSCH'};
+        case 'answer': return g.result && g.result.team === t ? {txt: (g.result.delta > 0 ? '+' : '') + g.result.delta, on: g.result.delta > 0} : {txt: 'WARTET'};
+        case 'over': { const w = leader(); return w === t ? {txt: 'SIEGER', on: true} : {txt: w == null ? 'GLEICHSTAND' : '—'}; }
+      }
+      return {txt: 'WARTET'};
+    };
+    const active = t => (g.phase === 'board' && g.pickTeam === t) || (['question', 'steal'].includes(g.phase) && g.answerTeam === t) || (g.phase === 'stealOffer' && 1 - g.pickTeam === t);
+    let center;
+    if (g.cur) {
+      const c = g.cur, k = c.c + '_' + c.r; let extra = '';
+      if (g.phase === 'stealOffer') extra = `<div class="banner t disp" style="--tc:${P.teams[1 - g.pickTeam].color};margin-top:22px" data-an="jb${k}so">${esc(P.teams[1 - g.pickTeam].name)}: nachziehen?</div>`;
+      if (g.phase === 'steal') extra = `<div class="banner t disp" style="--tc:${P.teams[g.answerTeam].color};margin-top:22px" data-an="jb${k}st">${esc(P.teams[g.answerTeam].name)} zieht nach!</div>`;
+      if (g.phase === 'answer' && g.result && g.result.team != null) extra = `<div class="banner t disp" style="--tc:${P.teams[g.result.team].color};margin-top:22px" data-an="jb${k}an">${esc(P.teams[g.result.team].name)} ${g.result.delta > 0 ? '+' : ''}${g.result.delta}</div>`;
+      center = `<div class="jq" data-an="jq${k}"><div class="cat disp">${esc(c.cat)}</div><div class="val disp">${c.v}</div><div class="qq">${esc(c.q)}</div>${c.a != null ? `<div class="aa" data-an="ja${k}">${esc(c.a)}</div>` : ''}${extra}</div>`;
+    } else {
+      const cols = g.cats.length, rows = Math.max(...g.cats.map(c => c.cards.length));
+      const w = leader();
+      const banner = g.phase === 'over' ? `<div class="banner disp" data-an="jover">${w == null ? 'Unentschieden!' : '🏆 ' + esc(P.teams[w].name) + ' gewinnt!'}</div>`
+        : `<div class="banner t disp" style="--tc:${P.teams[g.pickTeam].color}" data-an="jpick${g.pickTeam}${g.cats.map(c => c.cards.filter(x => x.used).length).join('')}">${esc(P.teams[g.pickTeam].name)} wählt</div>`;
+      center = `${g.nb > 1 ? `<div class="qmeta disp" data-an="jb${g.bi}">${g.bi ? 'RUNDE 2 · DOPPELTE PUNKTE' : 'RUNDE 1 / 2'}</div>` : ''}<div class="jboard" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:84px repeat(${rows},1fr)">${g.cats.map(c => `<div class="jh disp">${esc(c.name)}</div>`).join('')}
+        ${Array.from({length: rows}, (_, r) => g.cats.map((c, ci) => { const x = c.cards[r]; if (!x) return '<div></div>'; const cl = canPick && !x.used; return `<div class="jv disp ${x.used ? 'used' : ''} ${cl ? 'click' : ''}" ${cl ? `data-pact="pick" data-c="${ci}" data-r="${r}"` : ''}>${x.v}</div>`; }).join('')).join('')}</div>${banner}`;
+    }
+    const tp = t => teamPanel(t, {status: st(t), active: active(t)});
+    return tp(0) + tp(1) + `<div class="center">${center}${hostSlot()}</div>`;
+  }
+  function vDdf(g) {
+    const meAlive = !!me && g.lives[me] > 0, myVote = getVote();
+    const show = g.order.filter(id => g.lives[id] > 0 || id === g.out || (g.phase === 'over' && id === g.winner)).map(id => P.players.find(p => p.id === id)).filter(Boolean);
+    const n = show.length; const cols = n <= 3 ? Math.max(n, 1) : n === 4 ? 4 : n <= 6 ? 3 : n <= 8 ? 4 : n <= 12 ? 6 : 7;
+    const rows = Math.ceil(n / cols);
+    const availH = 1080 - 34 - 260 - (rows - 1) * 24;
+    const w = Math.floor(Math.min(480, (1840 - (cols - 1) * 24) / cols, (availH / rows - 10) * 16 / 9));
+    const showAns = ['vote', 'tie', 'reveal'].includes(g.phase);
+    const votersOf = id => g.votes ? Object.keys(g.votes).filter(v => g.votes[v] === id).map(v => esc(pname(P, v))) : [];
+    const slots = show.map(m => {
+      let cls = '', badge = null, top = '', tag = '';
+      if (g.cur && g.cur.pid === m.id && (g.phase === 'ask' || g.phase === 'judged')) cls = 'turn';
+      if (showAns) { const an = g.answers.filter(a => a.pid === m.id); if (an.length) top = `<div class="ansbox">${an.map(a => `<div>${a.ok ? '✅' : '❌'} ${esc(a.a || '–')}</div>`).join('')}</div>`; }
+      if (g.phase === 'vote' && g.voted.includes(m.id)) tag = '✓ HAT GEWÄHLT';
+      if ((g.phase === 'reveal' || g.phase === 'tie') && g.tally && g.tally[m.id] != null) { badge = g.tally[m.id]; const vs = votersOf(m.id); if (vs.length) top = `<div class="ansbox">🗳 ${vs.join(', ')}</div>`; }
+      if (g.phase === 'reveal' && (g.loser === m.id || g.out === m.id)) cls = 'hit';
+      if (g.phase === 'tie' && g.tie.includes(m.id)) cls = 'turn';
+      if (g.phase === 'over') cls = g.winner === m.id ? 'win' : 'dim';
+      if (g.phase === 'vote' && myVote === m.id) cls = 'mine';
+      const click = g.phase === 'vote' && meAlive && m.id !== me && g.lives[m.id] > 0 ? 'vote' : null;
+      return slot(m, {cls, badge, badgeKey: 'r' + g.round, top, tag, tagLow: true, click, sc: '#7c4dff', right: `<span class="hearts">${hearts(g.lives[m.id], g.max, 'd:' + m.id)}</span>`});
+    }).join('');
+    let q = '';
+    if (g.phase === 'intro') q = `<div class="qbar disp" style="font-size:54px" data-an="di${g.round}">RUNDE ${g.round + 1} STARTET GLEICH</div>`;
+    if (g.phase === 'ask' || g.phase === 'judged') q = `<div class="qwho disp">${esc(pname(P, g.cur.pid))} ist dran · Runde ${g.round}</div><div class="qbar" data-an="dq${g.round}:${g.left}">${esc(g.cur.q)}${g.cur.ok != null ? `<div><span class="okbadge ${g.cur.ok ? 'y' : 'n'}">${g.cur.ok ? '✓ ' : '✗ '}${esc(g.cur.a || '')}</span></div>` : ''}</div>`;
+    if (g.phase === 'vote') q = `<div class="qbar disp" style="font-size:50px" data-an="dv${g.round}">🗳 WER WAR AM DÜMMSTEN? <span style="color:var(--gold)">${g.voted.length} / ${g.order.filter(i => g.lives[i] > 0).length}</span></div>`;
+    if (g.phase === 'tie') q = `<div class="qbar disp" style="font-size:50px" data-an="dt${g.round}">GLEICHSTAND! ${g.tie.map(id => esc(pname(P, id))).join(' VS. ')}</div>`;
+    if (g.phase === 'reveal') q = `<div class="qbar disp" style="font-size:54px" data-an="dr${g.round}">${esc(pname(P, g.loser))} ${g.out ? 'FLIEGT RAUS! 💀' : 'VERLIERT EIN HERZ 💔'}</div>`;
+    if (g.phase === 'over') q = `<div class="qbar disp" style="font-size:60px" data-an="dover">🏆 ${g.winner ? esc(pname(P, g.winner)) + ' GEWINNT!' : 'SPIEL VORBEI'}</div>`;
+    const gh = rows * w * 9 / 16 + (rows - 1) * 24, gtop = 34 + Math.max(0, (1080 - 34 - 270 - gh) / 2);
+    return `<div class="ddfgrid" style="grid-template-columns:repeat(${cols},${w}px);top:${gtop}px">${slots}</div><div class="ddfbottom"><div class="qcol">${q}</div>${hostSlot()}</div>`;
+  }
+
+  /* --- Rendern + Animationen --- */
+  function render() {
+    if (!P) {
+      stage.classList.add('bg');
+      ui.innerHTML = `<div class="lobbygrid">${logoHTML('QUIZ SHOW')}<div style="font-size:28px;color:#ffffffaa">${status === 'nohost' ? 'Host-Panel ist nicht geöffnet' : 'Verbinde…'} · Raum ${esc(room)}</div></div>`;
+      return;
+    }
+    stage.classList.toggle('bg', !!opt.alwaysBg || P.settings.bg !== 'transparent');
+    const g = P.g;
+    const before = new Map(); $$('[data-flip]', ui).forEach(el => before.set(el.dataset.flip, el.getBoundingClientRect()));
+    let html = !g ? vLobby() : g.type === 'feud' ? vFeud(g) : g.type === 'ddf' ? vDdf(g) : vJeo(g);
+    if (status !== 'online' && !me) html += `<div class="ovhint">⚠ ${status === 'nohost' ? 'Host offline' : 'verbinde…'}</div>`;
+    ui.innerHTML = html;
+    const now = performance.now();
+    $$('[data-an]', ui).forEach(el => {
+      const k = el.dataset.an; let t = seen.get(k);
+      if (t == null) { t = firstRender ? -1e9 : now; seen.set(k, t); }
+      const e = now - t; if (e < 1600) { el.classList.add('an'); el.style.setProperty('--ad', -e + 'ms'); }
+    });
+    $$('[data-flip]', ui).forEach(el => {
+      const b = before.get(el.dataset.flip); if (!b || el.classList.contains('an')) return;
+      const r = el.getBoundingClientRect(); if (!r.width) return;
+      const dx = (b.left - r.left) / scale, dy = (b.top - r.top) / scale, sx = b.width / r.width;
+      if (Math.abs(dx) < 2 && Math.abs(dy) < 2 && Math.abs(sx - 1) < .02) return;
+      el.style.transition = 'none'; el.style.transform = `translate(${dx}px,${dy}px) scale(${sx})`;
+      el.getBoundingClientRect();
+      el.style.transition = 'transform .65s cubic-bezier(.2,.8,.2,1)'; el.style.transform = '';
+    });
+    $$('[data-count]', ui).forEach(el => {
+      const k = el.dataset.count, v = +el.dataset.v; let c = counts.get(k);
+      if (!c || firstRender) { c = {v, from: v, to: v, t0: 0}; counts.set(k, c); }
+      else if (c.to !== v) { c.from = c.v; c.to = v; c.t0 = now; }
+      c.el = el; el.textContent = Math.round(c.v);
+    });
+    doFlash();
+    firstRender = false;
+  }
+  function doFlash() {
+    const f = P.flash; if (!f || f.id === lastFlash) return; lastFlash = f.id; if (f.age > 3000) return;
+    const add = (h, ms) => { const d = document.createElement('div'); d.innerHTML = h; const el = d.firstElementChild; fx.appendChild(el); setTimeout(() => el.remove(), ms); };
+    const tc = f.team != null && P.teams[f.team] ? P.teams[f.team].color : null;
+    if (f.kind === 'x') add(`<div class="bigx">${'<span>✕</span>'.repeat(f.n || 1)}</div>`, 1700);
+    if (f.kind === 'text') add(`<div class="flashtxt disp" style="${tc ? `color:${f.bad ? 'var(--bad)' : tc}` : ''}">${esc(f.text)}</div>`, 1900);
+    if (f.kind === 'buzz') add(`<div class="flashtxt disp" style="color:${tc || 'var(--gold)'}">${f.pid ? esc(pname(P, f.pid)) : esc(P.teams[f.team] ? P.teams[f.team].name : '')}!</div>`, 1900);
+    if (f.kind === 'title') { add('<div class="fxdim"></div>', 2800); add(`<div class="titlecard disp">${esc(f.text)}</div>`, 2800); }
+    if (f.kind === 'win') { add(`<div class="flashtxt long disp">${esc(f.text)}</div>`, 4600); confettiIn(fx); }
+  }
+  function placeCams() {
+    const sr = stage.getBoundingClientRect(); const ids = new Set();
+    ui.querySelectorAll('[data-cam]').forEach(el => {
+      const id = el.dataset.cam; if (!id) return; ids.add(id);
+      let w = camEls.get(id);
+      if (!w) { w = document.createElement('div'); w.className = 'camwrap'; w.innerHTML = `<iframe allow="autoplay;fullscreen" src="${camViewUrl(camSid(room, id), low)}"></iframe>`; camlayer.appendChild(w); camEls.set(id, w); }
+      const r = el.getBoundingClientRect();
+      const css = `left:${(r.left - sr.left) / scale}px;top:${(r.top - sr.top) / scale}px;width:${r.width / scale}px;height:${r.height / scale}px;display:block`;
+      if (w._css !== css) { w.style.cssText = css; w._css = css; }
+    });
+    camEls.forEach((w, id) => { if (!ids.has(id) && w._css !== 'display:none') { w.style.cssText = 'display:none'; w._css = 'display:none'; } });
+  }
+  function tickCounts() {
+    const now = performance.now();
+    counts.forEach(c => { if (c.v === c.to) return; const p = Math.min(1, (now - c.t0) / 900); const e = 1 - Math.pow(1 - p, 3); c.v = p >= 1 ? c.to : c.from + (c.to - c.from) * e; if (c.el && c.el.isConnected) c.el.textContent = Math.round(c.v); });
+  }
+  (function loop() { placeCams(); tickCounts(); requestAnimationFrame(loop); })();
+  setInterval(() => {
+    const t = timerText();
+    if (t == null) { timerEl.style.display = 'none'; lastTick = null; return; }
+    timerEl.style.display = 'block'; timerEl.textContent = t; timerEl.classList.toggle('low', t <= 5);
+    if (!opt.silent && t <= 5 && t > 0 && t !== lastTick) playSfx('tick'); lastTick = t;
+  }, 100);
+  render();
+  return {update(p) { P = p; render(); }, setStatus(s) { if (s !== status) { status = s; render(); } }, rerender: render};
+}
+
+/* =====================================================================
+   CLIENT-Zustand
+   ===================================================================== */
+let PUB = null, timerEnd = null;
+function applyState(s) { PUB = s; if (s.settings && s.settings.sfx) SFXCFG = s.settings.sfx; timerEnd = s.timer.rem != null ? Date.now() + s.timer.rem : null; }
 function timerText() { if (!timerEnd) return null; return Math.max(0, Math.ceil((timerEnd - Date.now()) / 1000)); }
 
 /* ---------------- Spieler ---------------- */
 function startPlayer() {
   const room = (PARAMS.play || '').toUpperCase();
-  document.body.className = 'player';
   let pid = store.sget('dqs-pid-' + room); if (!pid) { pid = 'p' + rid(9); store.sset('dqs-pid-' + room, pid); }
   let name = store.sget('dqs-name-' + room) || '';
   let camOn = store.sget('dqs-cam-' + room) === '1';
-  soundOn = store.get('dqs-psound', true);
-  let net = null, status = 'connecting', myVote = null;
+  soundOn = true; masterVol = store.get('dqs-pvol', 0.6);
+  let net = null, status = 'connecting', myVote = null, stage = null, camOpen = false;
   const hello = () => ({t: 'hello', role: 'player', pid, name, cam: camOn});
   const send = (a, extra = {}) => net && net.send(Object.assign({t: 'act', a}, extra));
 
   function joinScreen() {
+    document.body.className = 'player';
     $('#app').innerHTML = `<div class="landing"><div class="logo">Quiz<span>show</span></div><p class="muted">Raum <b style="color:var(--gold)">${esc(room)}</b></p>
       <div class="card"><h2>Wie heißt du?</h2><div class="row"><input id="nm" class="grow" maxlength="24" placeholder="Dein Streamer-Name" value="${esc(store.get('dqs-lastname', ''))}"><button class="b-gold" id="go">Beitreten</button></div></div></div>`;
     const go = () => { const v = $('#nm').value.trim(); if (!v) return; name = v; store.sset('dqs-name-' + room, v); store.set('dqs-lastname', v); ac(); main(); };
     $('#go').onclick = go; $('#nm').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#nm').focus();
   }
   function main() {
-    $('#app').innerHTML = `<div class="player"><div class="ptop" id="ptop"></div><div id="pmain"><p class="muted">Verbinde mit dem Host…</p></div>
-      <div class="card campanel"><div class="row"><h3 class="grow" style="margin:0">Kamera fürs Overlay</h3><button id="camBtn"></button></div>
-      <p class="muted" style="font-size:14px;margin:8px 0 0" id="camHint"></p><div id="camBox"></div></div>
-      <div class="row" style="margin-top:12px"><label class="row muted"><input type="checkbox" id="snd" ${soundOn ? 'checked' : ''}> Sounds</label></div></div>`;
-    $('#snd').onchange = e => { soundOn = e.target.checked; store.set('dqs-psound', soundOn); };
-    $('#camBtn').onclick = () => { camOn = !camOn; store.sset('dqs-cam-' + room, camOn ? '1' : ''); renderCam(); send('cam', {on: camOn}); };
-    renderCam(); render();
+    document.body.className = 'pl';
+    $('#app').innerHTML = `<div class="plwrap"><div class="plstage" id="plstage"></div><div class="pbar" id="pbar"></div></div>
+      <div class="card campop ${camOpen ? '' : 'hide'}" id="campop"><div class="row"><h3 class="grow" style="margin:0">Deine Kamera</h3><button id="camBtn"></button><button class="b-ghost" data-bact="camClose">✕</button></div>
+      <p class="muted" style="font-size:14px;margin:8px 0 0" id="camHint"></p><div id="camBox"></div></div>`;
+    stage = createStage($('#plstage'), {room, me: pid, low: true, alwaysBg: true, getVote: () => myVote, onAct: (a, d) => {
+      if (a === 'vote') { myVote = d.target; send('vote', {target: d.target}); stage.rerender(); renderBar(); }
+      if (a === 'pick') send('pick', {c: +d.c, r: +d.r});
+    }});
+    $('#camBtn').onclick = () => { camOn = !camOn; store.sset('dqs-cam-' + room, camOn ? '1' : ''); renderCam(); send('cam', {on: camOn}); renderBar(); };
+    renderCam(); renderBar();
     clientTransport(room, {
       hello,
-      onStatus: s => { if (s !== status) { status = s; renderTop(); } },
+      onStatus: s => { if (s !== status) { status = s; renderBar(); } },
       onMsg: m => {
-        if (m.t === 'state') { applyState(m.s); if (!m.s.g || m.s.g.phase !== 'vote') myVote = null; render(); }
+        if (m.t === 'state') { applyState(m.s); if (!m.s.g || m.s.g.type !== 'ddf' || m.s.g.phase !== 'vote') myVote = null; stage.update(m.s); renderBar(); }
         if (m.t === 'sfx') playSfx(m.n);
+        if (m.t === 'sounds') setCustomSounds(m.data, m.ver);
       }
     }).then(n => net = n).catch(err => toast(err.message));
     setInterval(() => { const el = $('#ptimer'); if (el) { const t = timerText(); el.textContent = t == null ? '' : '⏱ ' + t; } }, 250);
@@ -998,103 +1541,71 @@ function startPlayer() {
     const sid = camSid(room, pid);
     $('#camBtn').textContent = camOn ? 'Kamera beenden' : 'Kamera starten';
     $('#camBtn').className = camOn ? 'b-ghost' : 'b-gold';
-    $('#camHint').innerHTML = camOn ? `Wähle unten deine Kamera und klicke auf „Start“. Diese Seite offen lassen. <a href="${camPushUrl(sid, name)}" target="_blank" rel="noopener">Im eigenen Tab öffnen</a>` : 'Deine Cam erscheint im Stream-Overlay. Ohne Ton – geredet wird im Discord.';
+    $('#camHint').innerHTML = camOn ? `Kamera auswählen und auf „Start“ klicken. Danach kannst du dieses Fenster schließen – die Cam läuft weiter. <a href="${camPushUrl(sid, name)}" target="_blank" rel="noopener">In eigenem Tab öffnen</a>` : 'Deine Cam erscheint im Overlay und bei allen Mitspielern. Ohne Ton – geredet wird im Discord.';
     const box = $('#camBox');
     if (camOn && !box.querySelector('iframe')) box.innerHTML = `<iframe allow="camera;microphone;autoplay;display-capture;fullscreen" src="${camPushUrl(sid, name)}"></iframe>`;
     if (!camOn) box.innerHTML = '';
   }
-  const me = () => PUB && PUB.players.find(p => p.id === pid);
-  function renderTop() {
-    const el = $('#ptop'); if (!el) return; const m = me(); const t = m && m.team != null ? PUB.teams[m.team] : null;
-    const g = PUB && PUB.g;
-    const hearts = g && g.type === 'ddf' && pid in g.lives ? heartsHTML(g.lives[pid], g.max) : '';
-    el.innerHTML = `<span class="dot ${status === 'online' ? 'on' : ''}" title="${status}"></span><b style="font-size:20px">${esc(name)}</b>
-      ${t ? `<span class="pill" style="background:${t.color};color:#000">${esc(t.name)}</span>` : ''}<span style="font-size:22px">${hearts}</span>
-      <div class="grow"></div><b id="ptimer" style="font-size:22px;color:var(--gold)"></b>${status !== 'online' ? `<span class="muted">${status === 'nohost' ? 'Host offline…' : 'verbinde…'}</span>` : ''}`;
-  }
-  function render() {
-    renderTop();
-    const el = $('#pmain'); if (!el || !PUB) return;
-    const g = PUB.g, m = me();
-    if (!m) { el.innerHTML = '<p class="muted">Melde mich beim Host an…</p>'; return; }
-    if (!g) { el.innerHTML = `<div class="big-msg">Du bist drin! 🎉</div><p class="muted" style="text-align:center">Warte, bis der Host ein Spiel startet.<br>${PUB.players.length} Spieler im Raum.</p>`; return; }
-    if (g.type === 'feud') el.innerHTML = playerFeud(g, m);
-    if (g.type === 'ddf') el.innerHTML = playerDdf(g, m);
-    if (g.type === 'jeo') el.innerHTML = playerJeo(g, m);
-  }
-  function teamTag(t) { return t == null ? '' : `<b style="color:${PUB.teams[t].color}">${esc(PUB.teams[t].name)}</b>`; }
-  function scores() { return `<div class="row" style="justify-content:center;gap:18px;margin-bottom:10px">${PUB.teams.map(t => `<span class="pill" style="font-size:18px;border:2px solid ${t.color}">${esc(t.name)} <b>${t.score}</b></span>`).join('')}</div>`; }
-  function playerFeud(g, m) {
-    const amBuzzer = m.team != null && g.buzzers[m.team] === pid;
-    let action = '';
-    if (amBuzzer && g.phase === 'buzz') action = `<button class="buzz" style="--tc:${PUB.teams[m.team].color}" data-pact="buzz">BUZZ!</button>`;
-    else if (amBuzzer && g.phase === 'intro') action = `<button class="buzz" disabled style="--tc:#555">GLEICH…</button><p class="muted" style="text-align:center">Du bist diese Runde am Buzzer für dein Team.</p>`;
-    else {
-      const who = g.buzzWinner ? pname(PUB, g.buzzWinner) : null;
-      const msg = {intro: 'Gleich geht’s los…', buzz: 'Buzzer offen! ' + g.buzzers.filter(Boolean).map(b => esc(pname(PUB, b))).join(' vs. '), faceoff: `${teamTag(g.turn)} ist dran${who ? ' (' + esc(who) + ')' : ''}`, play: `${teamTag(g.control)} zählt auf · Fehler ${g.strikes}/3`, steal: `${teamTag(g.turn)} darf klauen – ein Versuch!`, done: g.awarded != null ? `${teamTag(g.awarded)} bekommt ${g.pot} Punkte` : 'Runde vorbei', over: 'Spiel vorbei!'}[g.phase];
-      action = `<div class="big-msg">${msg}</div>`;
+  const meP = () => PUB && PUB.players.find(p => p.id === pid);
+  const tTag = t => t == null ? '' : `<b style="color:${PUB.teams[t].color};filter:brightness(1.3)">${esc(PUB.teams[t].name)}</b>`;
+  function midHTML() {
+    if (!PUB) return `<span class="msg muted">Verbinde mit dem Host…</span>`;
+    const g = PUB.g, m = meP();
+    if (!m) return `<span class="msg muted">Melde mich beim Host an…</span>`;
+    if (!g) return `<span class="msg">Du bist drin! 🎉 Warte, bis der Host startet.</span>`;
+    if (g.type === 'feud') {
+      const amB = m.team != null && g.buzzers[m.team] === pid;
+      if (amB && g.phase === 'buzz') return `<button class="bigbuzz" style="--tc:${PUB.teams[m.team].color}" data-bact="buzz">BUZZER · LEERTASTE</button>`;
+      if (amB && g.phase === 'intro') return `<button class="bigbuzz" disabled style="--tc:#555">DU BIST AM BUZZER…</button>`;
+      const who = g.buzzWinner ? esc(pname(PUB, g.buzzWinner)) : '';
+      const t = {intro: 'Gleich geht’s los…', buzz: 'Buzzer offen!', faceoff: `${tTag(g.turn)} ist dran${who ? ' (' + who + ')' : ''}`, play: `${tTag(g.control)} zählt auf · Fehler ${g.strikes}/3`, steal: `${tTag(g.turn)} darf klauen – ein Versuch!`, done: g.awarded != null ? `${tTag(g.awarded)} bekommt ${g.pot} Punkte` : 'Runde vorbei', over: 'Spiel vorbei!'}[g.phase];
+      return `<span class="msg">${t}</span>`;
     }
-    return `${scores()}<div class="card"><div class="phase">Runde ${g.ri + 1}/${g.total}</div><div class="qbox" style="margin:8px 0">${esc(g.q)}</div>
-      ${action}
-      <div class="hcards">${g.cards.map(c => `<div class="hcard ${c.rev ? 'rev' : ''}"><b>${c.rank}.</b><span class="t">${c.rev ? esc(c.text) : '???'}</span><span class="pts">${c.pts}</span></div>`).join('')}</div>
-      <p style="text-align:center;margin:10px 0 0">Topf: <b style="color:var(--gold)">${g.pot}</b> · ${'❌'.repeat(g.strikes)}</p></div>`;
-  }
-  function playerDdf(g, m) {
-    const nm = id => esc(pname(PUB, id));
-    const inGame = pid in g.lives, aliveMe = g.lives[pid] > 0;
-    if (!inGame) return `<div class="big-msg">Du schaust zu 👀</div><p class="muted" style="text-align:center">Der Host kann dich ins Spiel aufnehmen.</p>`;
-    if (g.phase === 'over') return `<div class="big-msg">${g.winner === pid ? '🏆 Du hast gewonnen!' : '🏆 ' + nm(g.winner) + ' gewinnt!'}</div>`;
-    let s = '';
-    if (!aliveMe) s += `<div class="big-msg" style="color:var(--bad)">Du bist raus 💀</div>`;
-    if (g.phase === 'intro') s += `<div class="big-msg">Gleich startet Runde ${g.round + 1}</div>`;
-    if (g.phase === 'ask' || g.phase === 'judged') {
-      const mine = g.cur.pid === pid;
-      s += `<div class="card"><div class="phase">Runde ${g.round}</div><h2 style="margin-top:6px">${mine ? '👉 Du bist dran!' : nm(g.cur.pid) + ' ist dran'}</h2><div class="qbox">${esc(g.cur.q)}${g.cur.a != null ? `<div class="ans">Lösung: ${esc(g.cur.a)}</div>` : ''}</div>
-        ${g.cur.ok != null ? `<span class="okbadge ${g.cur.ok ? 'y' : 'n'}" style="font-size:18px">${g.cur.ok ? 'Richtig' : 'Falsch'}</span>` : ''}</div>`;
-    }
-    if (g.phase === 'vote') {
-      if (aliveMe) {
+    if (g.type === 'ddf') {
+      if (!(pid in g.lives)) return `<span class="msg">Du schaust zu 👀</span>`;
+      const alive = g.lives[pid] > 0;
+      if (g.phase === 'vote' && alive) {
         const others = g.order.filter(id => g.lives[id] > 0 && id !== pid);
-        s += `<div class="big-msg">Wer hatte die dümmste Antwort?</div>` + others.map(id => {
-          const ans = g.answers.filter(a => a.pid === id);
-          return `<button class="vbtn ${myVote === id ? 'on' : ''}" data-pact="vote" data-target="${id}"><b>${nm(id)}</b>${ans.map(a => `<small>${a.ok ? '✅' : '❌'} ${esc(a.q)} → ${esc(a.a)}</small>`).join('')}</button>`;
-        }).join('') + `<p class="muted" style="text-align:center">${g.voted.length} haben abgestimmt · du kannst deine Stimme ändern, bis aufgelöst wird</p>`;
-      } else s += `<div class="big-msg">Abstimmung läuft… (${g.voted.length})</div>`;
+        return `<span class="msg" style="font-size:18px">Dümmste Antwort:</span>` + others.map(id => `<button class="vchip ${myVote === id ? 'on' : ''}" data-bact="vote" data-target="${id}">${esc(pname(PUB, id))}</button>`).join('') + `<span class="muted" style="font-size:13px;width:100%;text-align:center">…oder klick oben direkt auf die Cam · änderbar bis zur Auflösung</span>`;
+      }
+      if (!alive && g.phase !== 'over') return `<span class="msg" style="color:var(--bad)">Du bist raus 💀</span>`;
+      const t = {intro: 'Gleich startet die nächste Runde', ask: g.cur && g.cur.pid === pid ? '👉 Du bist dran!' : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, judged: g.cur && g.cur.pid === pid ? (g.cur.ok ? '✅ Richtig!' : '❌ Falsch!') : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, vote: 'Abstimmung läuft…', tie: 'Gleichstand – der Host entscheidet', reveal: g.loser === pid ? 'Du verlierst ein Herz 💔' : `${esc(pname(PUB, g.loser))} verliert ein Herz`, over: g.winner === pid ? '🏆 Du hast gewonnen!' : `🏆 ${esc(pname(PUB, g.winner))} gewinnt!`}[g.phase];
+      return `<span class="msg">${t}</span>`;
     }
-    if (g.phase === 'tie') s += `<div class="big-msg">Gleichstand zwischen ${g.tie.map(nm).join(', ')}!</div><p class="muted" style="text-align:center">Der Host entscheidet.</p>`;
-    if (g.phase === 'reveal') s += `<div class="big-msg">${g.loser === pid ? 'Du verlierst ein Herz 💔' : nm(g.loser) + ' verliert ein Herz'}</div>` +
-      (g.tally ? `<div class="card">${Object.entries(g.tally).sort((a, b) => b[1] - a[1]).map(([id, n]) => `<div class="row"><b class="grow">${nm(id)}</b><span>${n} Stimme${n === 1 ? '' : 'n'}</span></div>`).join('')}</div>` : '');
-    const list = `<div class="card" style="margin-top:12px">${g.order.filter(id => g.lives[id] > 0).map(id => `<div class="row"><span class="grow">${nm(id)}${id === pid ? ' (du)' : ''}</span>${heartsHTML(g.lives[id], g.max)}</div>`).join('')}</div>`;
-    return s + list;
+    if (g.type === 'jeo') {
+      if (m.team == null) return `<span class="msg">Du bist in keinem Team</span>`;
+      if (g.phase === 'board') return `<span class="msg">${g.pickTeam === m.team ? '👉 Dein Team wählt – klick oben auf eine Karte!' : tTag(g.pickTeam) + ' wählt eine Karte…'}</span>`;
+      if (g.phase === 'stealOffer') return m.team === 1 - g.pickTeam
+        ? `<span class="msg">Falsch! Nachziehen? <small class="muted">(falsch = Abzug)</small></span><button class="b-gold b-big" data-bact="steal">Nachziehen!</button><button class="b-big" data-bact="pass">Verzichten</button>`
+        : `<span class="msg">Falsch! ${tTag(1 - g.pickTeam)} überlegt…</span>`;
+      if (g.phase === 'question' || g.phase === 'steal') return `<span class="msg">${g.answerTeam === m.team ? '👉 Dein Team antwortet!' : tTag(g.answerTeam) + ' antwortet…'}</span>`;
+      if (g.phase === 'answer') return `<span class="msg">${g.result && g.result.team != null ? tTag(g.result.team) + ' ' + (g.result.delta > 0 ? '+' : '') + g.result.delta : 'Keine Punkte'}</span>`;
+      return `<span class="msg">Spiel vorbei!</span>`;
+    }
+    return '';
   }
-  function playerJeo(g, m) {
-    const myTeam = m.team;
-    if (myTeam == null) return `<div class="big-msg">Du bist in keinem Team</div><p class="muted" style="text-align:center">Der Host teilt dich ein.</p>`;
-    let s = scores();
-    if (g.phase === 'board' || g.phase === 'over') {
-      const mine = g.pickTeam === myTeam && g.phase === 'board';
-      const rows = Math.max(...g.cats.map(c => c.cards.length));
-      s += `<div class="big-msg">${g.phase === 'over' ? 'Spiel vorbei!' : mine ? '👉 Dein Team wählt eine Karte!' : teamTag(g.pickTeam) + ' wählt…'}</div>
-        <div class="jgrid" style="grid-template-columns:repeat(${g.cats.length},1fr)">${g.cats.map(c => `<div class="jh">${esc(c.name)}</div>`).join('')}
-        ${Array.from({length: rows}, (_, r) => g.cats.map((c, ci) => c.cards[r] ? `<button class="jc ${c.cards[r].used ? 'used' : ''}" data-pact="pick" data-c="${ci}" data-r="${r}" ${!mine || c.cards[r].used ? 'disabled' : ''}>${c.cards[r].v}</button>` : '<div></div>').join('')).join('')}</div>`;
-    } else {
-      const c = g.cur;
-      s += `<div class="card"><div class="phase">${esc(c.cat)} · ${c.v}</div><div class="qbox" style="margin-top:8px">${esc(c.q)}${c.a != null ? `<div class="ans">Lösung: ${esc(c.a)}</div>` : ''}</div></div>`;
-      if (g.phase === 'question' || g.phase === 'steal') s += `<div class="big-msg">${g.answerTeam === myTeam ? '👉 Dein Team antwortet!' : teamTag(g.answerTeam) + ' antwortet…'}</div>`;
-      if (g.phase === 'stealOffer') s += myTeam === 1 - g.pickTeam
-        ? `<div class="big-msg">Falsch! Wollt ihr nachziehen?</div><p class="muted" style="text-align:center">Falsche Antwort beim Nachziehen = Punktabzug</p><div class="row" style="justify-content:center"><button class="b-gold b-big" data-pact="steal">Nachziehen!</button><button class="b-big" data-pact="pass">Verzichten</button></div>`
-        : `<div class="big-msg">Falsch! ${teamTag(1 - g.pickTeam)} überlegt, ob sie nachziehen…</div>`;
-      if (g.phase === 'answer') s += `<div class="big-msg">${g.result && g.result.team != null ? teamTag(g.result.team) + ' ' + (g.result.delta > 0 ? '+' : '') + g.result.delta : 'Keine Punkte'}</div>`;
-    }
-    return s;
+  function renderBar() {
+    const el = $('#pbar'); if (!el) return; const m = meP(); const g = PUB && PUB.g;
+    const t = m && m.team != null && PUB.teams[m.team] ? PUB.teams[m.team] : null;
+    const hearts = g && g.type === 'ddf' && pid in g.lives ? heartsHTML(g.lives[pid], g.max) : '';
+    el.innerHTML = `<div class="me"><div class="row"><span class="dot ${status === 'online' ? 'on' : ''}"></span><b>${esc(name)}</b></div><div class="row">${t ? `<span class="pill" style="background:${t.color};color:#fff">${esc(t.name)}</span>` : ''}<span style="font-size:18px">${hearts}</span>${status !== 'online' ? `<span class="muted" style="font-size:13px">${status === 'nohost' ? 'Host offline…' : 'verbinde…'}</span>` : ''}</div></div>
+      <div class="mid">${midHTML()}</div>
+      <div class="side"><b id="ptimer" style="font-size:26px;color:var(--gold);min-width:60px"></b>
+      <button data-bact="cam" class="${camOn ? '' : 'b-gold'}">${camOn ? '📷 Cam an' : '📷 Cam starten'}</button>
+      <label class="row muted" title="Lautstärke">🔊<input type="range" min="0" max="100" value="${Math.round(masterVol * 100)}" id="vol" style="width:90px"></label></div>`;
+    $('#vol').oninput = e => { masterVol = e.target.value / 100; store.set('dqs-pvol', masterVol); };
   }
   document.addEventListener('click', e => {
-    const b = e.target.closest('[data-pact]'); if (!b || b.disabled) return;
-    const d = b.dataset;
-    if (d.pact === 'buzz') { send('buzz'); b.disabled = true; b.textContent = '…'; }
-    if (d.pact === 'vote') { send('vote', {target: d.target}); myVote = d.target; render(); }
-    if (d.pact === 'pick') send('pick', {c: +d.c, r: +d.r});
-    if (d.pact === 'steal' || d.pact === 'pass') send(d.pact);
+    const b = e.target.closest('[data-bact]'); if (!b || b.disabled) return; const d = b.dataset;
+    if (d.bact === 'buzz') { send('buzz'); b.disabled = true; }
+    if (d.bact === 'vote') { myVote = d.target; send('vote', {target: d.target}); renderBar(); stage && stage.rerender(); }
+    if (d.bact === 'steal' || d.bact === 'pass') send(d.bact);
+    if (d.bact === 'cam') { camOpen = !camOpen; $('#campop').classList.toggle('hide', !camOpen); }
+    if (d.bact === 'camClose') { camOpen = false; $('#campop').classList.add('hide'); }
+  });
+  addEventListener('keydown', e => {
+    if (e.code !== 'Space' || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    const b = document.querySelector('[data-bact="buzz"]:not([disabled])'); if (b) { e.preventDefault(); b.click(); }
   });
   name ? main() : joinScreen();
 }
@@ -1102,156 +1613,39 @@ function startPlayer() {
 /* ---------------- Overlay ---------------- */
 function startOverlay() {
   const room = (PARAMS.overlay || '').toUpperCase();
-  document.body.className = 'ov dark';
-  $('#app').innerHTML = `<div id="stage"><div id="camlayer"></div><div id="ui"></div><div id="fx"></div><div class="timer" id="otimer"></div></div>`;
-  const stage = $('#stage');
-  let scale = 1;
-  function fit() { scale = Math.min(innerWidth / 1920, innerHeight / 1080); stage.style.transform = `scale(${scale})`; stage.style.left = (innerWidth - 1920 * scale) / 2 + 'px'; stage.style.top = (innerHeight - 1080 * scale) / 2 + 'px'; placeCams(); }
-  addEventListener('resize', fit);
-  let status = 'connecting';
+  document.body.className = 'ov';
+  masterVol = 1;
+  $('#app').innerHTML = '<div id="ovwrap" style="position:fixed;inset:0"></div>';
+  const st = createStage($('#ovwrap'), {room});
   clientTransport(room, {
     hello: () => ({t: 'hello', role: 'overlay'}),
-    onStatus: s => { if (s !== status) { status = s; render(); } },
-    onMsg: m => { if (m.t === 'state') { applyState(m.s); render(); } if (m.t === 'sfx') playSfx(m.n); }
-  }).catch(err => { $('#ui').innerHTML = `<div class="lobbyov"><h1>${esc(err.message)}</h1></div>`; });
-
-  let lastTick = null;
-  setInterval(() => {
-    const el = $('#otimer'), t = timerText();
-    if (t == null) { el.style.display = 'none'; lastTick = null; return; }
-    el.style.display = 'block'; el.textContent = t; el.classList.toggle('low', t <= 5);
-    if (t <= 5 && t > 0 && t !== lastTick) playSfx('tick'); lastTick = t;
-  }, 100);
-
-  function slot(m, o = {}) {
-    const on = PUB.settings.cams && m.cam;
-    const tc = m.team != null && PUB.teams[m.team] ? PUB.teams[m.team].color : '#ffffff40';
-    return `<div class="slot ${o.cls || ''}" style="--sc:${o.sc || tc};${o.style || ''}"><div class="cam ${on ? 'hascam' : 'nocam'}" data-cam="${on ? m.id : ''}">${on ? '' : `<span class="ini">${esc((m.name || '?')[0].toUpperCase())}</span>`}
-      ${o.tag ? `<div class="stag">${o.tag}</div>` : ''}${o.top || ''}
-      <div class="sname"><span class="n">${esc(m.name)}${m.online ? '' : ' ⚠'}</span>${o.right || ''}</div></div>${o.badge != null ? `<div class="sbadge">${o.badge}</div>` : ''}</div>`;
-  }
-  function render() {
-    document.body.className = 'ov ' + (PUB && PUB.settings.bg === 'transparent' ? '' : 'dark');
-    const ui = $('#ui');
-    if (!PUB) { ui.innerHTML = `<div class="lobbyov"><div class="logo">Quiz<span>show</span></div><div class="muted" style="font-size:30px">${status === 'nohost' ? 'Host-Panel ist nicht geöffnet' : 'Verbinde…'} · Raum ${esc(room)}</div></div>`; placeCams(); return; }
-    const g = PUB.g;
-    if (!g) ui.innerHTML = ovLobby();
-    else if (g.type === 'feud') ui.innerHTML = ovFeud(g);
-    else if (g.type === 'ddf') ui.innerHTML = ovDdf(g);
-    else if (g.type === 'jeo') ui.innerHTML = ovJeo(g);
-    if (status !== 'online') ui.innerHTML += `<div class="ovhint">⚠ ${status === 'nohost' ? 'Host offline' : 'verbinde…'}</div>`;
-    doFlash();
-    requestAnimationFrame(placeCams);
-  }
-  function ovLobby() {
-    const ps = PUB.players; const n = ps.length; const cols = n <= 4 ? Math.max(n, 1) : n <= 8 ? 4 : 6; const w = Math.min(420, (1840 - (cols - 1) * 26) / cols);
-    return `<div class="lobbyov"><div class="logo">Quiz<span>show</span></div>
-      <div class="ddfslots" style="position:static;grid-template-columns:repeat(${cols},${w}px)">${ps.map(p => slot(p)).join('')}</div>
-      <div class="muted" style="font-size:28px">${n ? n + ' Spieler bereit' : 'Warte auf Spieler…'}</div></div>`;
-  }
-  function teamSide(g, t, opts) {
-    const ms = PUB.players.filter(p => p.team === t), tm = PUB.teams[t];
-    return `<div class="tside ${t === 0 ? 'l' : 'r'} ${opts.active ? 'active' : ''}" style="--tc:${tm.color}">
-      <div class="thead"><div class="tname">${esc(tm.name)}</div><div class="tscore">${tm.score}</div></div>
-      <div class="tslots" style="${ms.length > 3 ? 'gap:10px' : ''}">${ms.map(m => slot(m, opts.slot ? opts.slot(m) : {})).join('')}</div></div>`;
-  }
-  function ovFeud(g) {
-    const active = t => (g.phase === 'faceoff' || g.phase === 'steal') ? g.turn === t : g.phase === 'play' ? g.control === t : false;
-    const slotO = m => ({cls: g.buzzWinner === m.id && ['faceoff'].includes(g.phase) ? 'hot' : '', tag: g.buzzers.includes(m.id) && ['intro', 'buzz'].includes(g.phase) ? 'BUZZER' : ''});
-    const rows = Math.ceil(g.cards.length / 2);
-    let banner = '';
-    if (g.phase === 'buzz') banner = `<div class="banner">BUZZER OFFEN!</div>`;
-    if (g.phase === 'steal') banner = `<div class="banner t" style="--tc:${PUB.teams[g.turn].color}">${esc(PUB.teams[g.turn].name)} darf klauen!</div>`;
-    if (g.phase === 'done' && g.awarded != null) banner = `<div class="banner t" style="--tc:${PUB.teams[g.awarded].color}">+${g.pot} für ${esc(PUB.teams[g.awarded].name)}</div>`;
-    if (g.phase === 'over') { const w = PUB.teams[0].score === PUB.teams[1].score ? null : PUB.teams[0].score > PUB.teams[1].score ? 0 : 1; banner = `<div class="banner">${w == null ? 'Unentschieden!' : '🏆 ' + esc(PUB.teams[w].name) + ' gewinnt!'}</div>`; }
-    return teamSide(g, 0, {active: active(0), slot: slotO}) + teamSide(g, 1, {active: active(1), slot: slotO}) +
-      `<div class="center"><div class="qmeta">Runde ${g.ri + 1} / ${g.total}</div><div class="qbar">${esc(g.q)}</div>
-      <div class="fboard" style="--rows:${rows}">${g.cards.map(c => `<div class="fcard ${c.rev ? 'rev' : ''}"><span class="rk">${c.rank}</span>${c.rev ? `<span class="tx">${esc(c.text)}</span><span class="pt">${c.pts}</span>` : ''}</div>`).join('')}</div>
-      ${banner}
-      <div class="fstat"><div class="pot">TOPF<b>${g.pot}</b></div><div class="strikes">${[0, 1, 2].map(i => `<div class="strk ${i < g.strikes ? 'on' : ''}">✕</div>`).join('')}</div></div></div>`;
-  }
-  function ovDdf(g) {
-    const show = g.order.filter(id => g.lives[id] > 0 || id === g.out || (g.phase === 'over' && id === g.winner)).map(id => PUB.players.find(p => p.id === id)).filter(Boolean);
-    const n = show.length; const cols = n <= 3 ? Math.max(n, 1) : n === 4 ? 4 : n <= 6 ? 3 : n <= 8 ? 4 : n <= 12 ? 6 : 7;
-    const w = Math.min(470, (1840 - (cols - 1) * 26) / cols);
-    const votersOf = id => g.votes ? Object.keys(g.votes).filter(v => g.votes[v] === id).map(v => esc(pname(PUB, v))) : [];
-    const slots = show.map(m => {
-      let cls = '', badge = null, top = '', right = `<span class="hearts">${heartsHTML(g.lives[m.id], g.max)}</span>`;
-      if (g.cur && g.cur.pid === m.id && (g.phase === 'ask' || g.phase === 'judged')) cls = 'turn';
-      if (g.phase === 'vote' && g.voted.includes(m.id)) top += `<div class="stag">✓ GEWÄHLT</div>`;
-      if ((g.phase === 'reveal' || g.phase === 'tie') && g.tally && g.tally[m.id] != null) { badge = g.tally[m.id]; const vs = votersOf(m.id); if (vs.length) top += `<div class="voters">${vs.join(', ')}</div>`; }
-      if (g.phase === 'reveal' && g.loser === m.id) cls = 'hit';
-      if (g.phase === 'tie' && g.tie.includes(m.id)) cls = 'turn';
-      if (g.phase === 'over' && g.winner === m.id) cls = 'win';
-      if (g.phase === 'over' && g.winner !== m.id) cls = 'dim';
-      if (g.out === m.id && g.phase === 'reveal') cls = 'hit';
-      return slot(m, {cls, badge, top, right, sc: '#ffffff40'});
-    }).join('');
-    let bottom = '';
-    if (g.phase === 'intro') bottom = `<div class="qbar">Runde ${g.round + 1} startet gleich</div>`;
-    if (g.phase === 'ask' || g.phase === 'judged') bottom = `<div class="qwho">${esc(pname(PUB, g.cur.pid))} ist dran · Runde ${g.round}</div><div class="qbar">${esc(g.cur.q)}${g.cur.ok != null ? `<div><span class="okbadge ${g.cur.ok ? 'y' : 'n'}">${g.cur.ok ? '✓ ' : '✗ '}${esc(g.cur.a || '')}</span></div>` : ''}</div>`;
-    if (g.phase === 'vote') bottom = `<div class="qbar">🗳 Wer war am dümmsten? <span style="color:var(--gold)">${g.voted.length} / ${g.order.filter(i => g.lives[i] > 0).length}</span> haben abgestimmt</div>`;
-    if (g.phase === 'tie') bottom = `<div class="qbar">Gleichstand! ${g.tie.map(id => esc(pname(PUB, id))).join(' vs. ')}</div>`;
-    if (g.phase === 'reveal') bottom = `<div class="qbar">${esc(pname(PUB, g.loser))} ${g.out ? 'fliegt raus! 💀' : 'verliert ein Herz 💔'}</div>`;
-    if (g.phase === 'over') bottom = `<div class="qbar">🏆 ${g.winner ? esc(pname(PUB, g.winner)) + ' gewinnt!' : 'Spiel vorbei'}</div>`;
-    const bigTop = n <= 4 ? 120 : 50;
-    return `<div class="ddfslots" style="grid-template-columns:repeat(${cols},${w}px);top:${bigTop}px">${slots}</div><div class="ddfbottom">${bottom}</div>`;
-  }
-  function ovJeo(g) {
-    const active = t => (g.phase === 'board' ? g.pickTeam === t : ['question', 'steal'].includes(g.phase) ? g.answerTeam === t : g.phase === 'stealOffer' ? 1 - g.pickTeam === t : false);
-    let center;
-    if (g.cur) {
-      const c = g.cur; let extra = '';
-      if (g.phase === 'stealOffer') extra = `<div class="banner t" style="--tc:${PUB.teams[1 - g.pickTeam].color};margin-top:24px">${esc(PUB.teams[1 - g.pickTeam].name)}: nachziehen?</div>`;
-      if (g.phase === 'steal') extra = `<div class="banner t" style="--tc:${PUB.teams[g.answerTeam].color};margin-top:24px">${esc(PUB.teams[g.answerTeam].name)} zieht nach!</div>`;
-      if (g.phase === 'answer' && g.result && g.result.team != null) extra = `<div class="banner t" style="--tc:${PUB.teams[g.result.team].color};margin-top:24px">${esc(PUB.teams[g.result.team].name)} ${g.result.delta > 0 ? '+' : ''}${g.result.delta}</div>`;
-      center = `<div class="jq"><div class="cat">${esc(c.cat)}</div><div class="val">${c.v}</div><div class="qq">${esc(c.q)}</div>${c.a != null ? `<div class="aa">${esc(c.a)}</div>` : ''}${extra}</div>`;
-    } else {
-      const cols = g.cats.length, rows = Math.max(...g.cats.map(c => c.cards.length));
-      let banner = g.phase === 'over' ? (() => { const w = PUB.teams[0].score === PUB.teams[1].score ? null : PUB.teams[0].score > PUB.teams[1].score ? 0 : 1; return `<div class="banner">${w == null ? 'Unentschieden!' : '🏆 ' + esc(PUB.teams[w].name) + ' gewinnt!'}</div>`; })()
-        : `<div class="banner t" style="--tc:${PUB.teams[g.pickTeam].color}">${esc(PUB.teams[g.pickTeam].name)} wählt</div>`;
-      center = `<div class="jboard" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:90px repeat(${rows},1fr)">${g.cats.map(c => `<div class="jh">${esc(c.name)}</div>`).join('')}
-        ${Array.from({length: rows}, (_, r) => g.cats.map(c => c.cards[r] ? `<div class="jv ${c.cards[r].used ? 'used' : ''}">${c.cards[r].v}</div>` : '<div></div>').join('')).join('')}</div>${banner}`;
-    }
-    return teamSide(g, 0, {active: active(0)}) + teamSide(g, 1, {active: active(1)}) + `<div class="center">${center}</div>`;
-  }
-  function doFlash() {
-    const f = PUB.flash; if (!f || f.id === lastFlash) return; lastFlash = f.id; if (f.age > 2500) return;
-    const fx = $('#fx'); let h = '';
-    if (f.kind === 'x') h = `<div class="bigx">${Array.from({length: f.n || 1}, () => '<span>✕</span>').join('')}</div>`;
-    if (f.kind === 'text') h = `<div class="flashtxt" style="${f.team != null && PUB.teams[f.team] ? `color:${f.bad ? 'var(--bad)' : PUB.teams[f.team].color}` : ''}">${esc(f.text)}</div>`;
-    if (f.kind === 'buzz') h = `<div class="flashtxt" style="color:${f.team != null && PUB.teams[f.team] ? PUB.teams[f.team].color : 'var(--gold)'}">${f.pid ? esc(pname(PUB, f.pid)) : esc(PUB.teams[f.team]?.name || '')}!</div>`;
-    if (!h) return;
-    fx.innerHTML = h; setTimeout(() => { if (lastFlash === f.id) fx.innerHTML = ''; }, 1900);
-  }
-  // Cams: iframes bleiben bestehen (kein Neuladen beim Re-Render) und werden über die Slots gelegt
-  const camEls = new Map();
-  function placeCams() {
-    const layer = $('#camlayer'); if (!layer) return;
-    const sr = stage.getBoundingClientRect(); const seen = new Set();
-    $$('#ui [data-cam]').forEach(el => {
-      const id = el.dataset.cam; if (!id) return; seen.add(id);
-      let w = camEls.get(id);
-      if (!w) { w = document.createElement('div'); w.className = 'camwrap'; w.innerHTML = `<iframe allow="autoplay;fullscreen" src="${camViewUrl(camSid(room, id))}"></iframe>`; layer.appendChild(w); camEls.set(id, w); }
-      const r = el.getBoundingClientRect();
-      Object.assign(w.style, {left: (r.left - sr.left) / scale + 'px', top: (r.top - sr.top) / scale + 'px', width: r.width / scale + 'px', height: r.height / scale + 'px', display: 'block'});
-    });
-    camEls.forEach((w, id) => { if (!seen.has(id)) w.style.display = 'none'; });
-  }
-  setInterval(placeCams, 400);
-  fit(); render();
+    onStatus: s => st.setStatus(s),
+    onMsg: m => { if (m.t === 'state') { applyState(m.s); st.update(m.s); } if (m.t === 'sfx') playSfx(m.n); if (m.t === 'sounds') setCustomSounds(m.data, m.ver); }
+  }).catch(err => toast(err.message));
 }
 
 /* ---------------- Startseite ---------------- */
 function startLanding() {
   $('#app').innerHTML = `<div class="landing"><div class="logo">Quiz<span>show</span></div><p class="muted">Team-Duell · Der Dümmste fliegt · Kategorien-Duell</p>
     <div class="card" style="margin-bottom:14px"><h2>Mitspielen</h2><div class="row"><input id="code" class="grow" maxlength="8" placeholder="Raumcode" style="text-transform:uppercase"><button class="b-gold" id="join">Beitreten</button></div></div>
-    <div class="card"><h2>Show hosten</h2><p class="muted">Öffnet dein Host-Panel mit eigenem Raum.</p><button id="host">Host-Panel öffnen</button></div></div>`;
+    </div>`;
   $('#join').onclick = () => { const c = $('#code').value.trim().toUpperCase(); if (c) { location.hash = 'play=' + c + (LOCAL ? '&local=1' : ''); location.reload(); } };
-  $('#host').onclick = () => { location.hash = 'host' + (LOCAL ? '&local=1' : ''); location.reload(); };
 }
 
-if ('host' in PARAMS) startHost();
+function hostGate() {
+  if (!HOST_PASS_HASH || store.get('dqs-auth', '') === HOST_PASS_HASH) return startHost();
+  $('#app').innerHTML = `<div class="landing"><div class="logo">Host-<span>Panel</span></div>
+    <div class="card"><h2>Passwort</h2><div class="row"><input id="pw" type="password" class="grow" placeholder="Host-Passwort"><button class="b-gold" id="pwgo">Anmelden</button></div>
+    <label class="row muted" style="margin-top:10px;font-size:14px"><input type="checkbox" id="pwkeep" checked> Auf diesem Gerät angemeldet bleiben</label></div></div>`;
+  const go = async () => {
+    const h = await sha256($('#pw').value);
+    if (h !== HOST_PASS_HASH) { toast('Falsches Passwort'); $('#pw').select(); return; }
+    if ($('#pwkeep').checked) store.set('dqs-auth', h);
+    startHost();
+  };
+  $('#pwgo').onclick = go; $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#pw').focus();
+}
+if ('host' in PARAMS) hostGate();
 else if (PARAMS.play) startPlayer();
 else if (PARAMS.overlay) startOverlay();
 else startLanding();
