@@ -38,6 +38,9 @@ h1,h2,h3{margin:0 0 10px;line-height:1.1}h2{font-size:18px}h3{font-size:15px;col
 @media(max-width:900px){.hgrid{grid-template-columns:1fr}}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:var(--panel)}.tabs button.on{background:var(--gold);color:#1d1500}
 .plist{display:flex;flex-direction:column;gap:6px}
+.guard{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.guard button{padding:6px 10px;font-size:13px}
+.pendbox{background:#3a3110;border:1px solid var(--gold);border-radius:12px;padding:10px;margin-bottom:10px;display:flex;flex-direction:column;gap:6px}
+.pendbox .prow button{padding:5px 9px;font-size:12px}
 .prow{display:flex;align-items:center;gap:8px;background:var(--panel2);border-radius:10px;padding:7px 9px;border-left:5px solid var(--tc,#444)}
 .prow .nm{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prow button{padding:4px 8px;font-size:12px;border-radius:7px}
@@ -620,7 +623,7 @@ function defaultState(room) {
     teams: [{name: 'Team Rot', color: '#e0263f', score: 0}, {name: 'Team Blau', color: '#2f6bff', score: 0}],
     settings: {sfxMaster: 1, sfxVol: {}, showName: 'ANDI QUIZ', hostName: 'Host', cams: true, bg: 'dark', ddfLives: 3, ddfQPP: 3, ddfShuffle: true, jeoPenalty: 'half_all', hostSound: false},
     content: {feud: SAMPLE.feud, ddf: SAMPLE.ddf, jeo: SAMPLE.jeo}, cdata: null,
-    game: null, timer: {end: null, total: 0}, flash: null, tab: 'feud', hostCam: false
+    game: null, timer: {end: null, total: 0}, flash: null, tab: 'feud', hostCam: false, joinKey: '', pending: [], blocked: [], approve: true, locked: false
   };
 }
 function startHost() {
@@ -642,6 +645,9 @@ function startHost() {
   applySfxCfg(); setCustomSounds(SND.data, SND.ver);
   const soundsMsg = () => ({t: 'sounds', ver: SND.ver, data: SND.data});
   const cid2pid = new Map();
+  if (!S.joinKey) S.joinKey = rid(8);
+  S.pending = [];
+  const playerLink = () => link('play', room) + '&k=' + S.joinKey;
   const undo = [];
   let net = null, status = 'connecting';
 
@@ -804,7 +810,7 @@ function startHost() {
     round() {
       const g = S.game; if (g.phase === 'over') return;
       g.round++; const al = alive(); const qpp = Math.max(1, +S.settings.ddfQPP || 1);
-      g.queue = []; al.forEach(id => { for (let k = 0; k < qpp; k++) g.queue.push(id); });
+      g.queue = []; for (let k = 0; k < qpp; k++) g.queue.push(...al);
       g.answers = []; g.votes = {}; g.tally = null; g.loser = null; g.tie = null; g.out = null; S.flash = null;
       ddfNextQ();
     },
@@ -897,9 +903,23 @@ function startHost() {
     if (m.t === 'hello') {
       if (m.role === 'player' && m.pid) {
         const name = String(m.name || 'Spieler').slice(0, 24);
+        if (S.blocked.includes(m.pid)) { net.send(cid, {t: 'denied', why: 'rejected'}); return; }
         let p = S.players.find(x => x.id === m.pid);
-        if (!p) { p = S.players.find(x => !x.online && x.name.toLowerCase() === name.toLowerCase()); if (p) { renamePid(p.id, m.pid); } }
-        if (!p) { p = {id: m.pid, name, team: null, online: true, cam: false}; S.players.push(p); toast(name + ' ist beigetreten'); }
+        if (!p) {
+          if (m.key !== S.joinKey) { net.send(cid, {t: 'denied', why: 'key'}); return; }
+          p = S.players.find(x => !x.online && x.name.toLowerCase() === name.toLowerCase()); if (p) { renamePid(p.id, m.pid); }
+        }
+        if (!p) {
+          if (S.locked) { net.send(cid, {t: 'denied', why: 'locked'}); return; }
+          if (S.approve) {
+            const q = S.pending.find(x => x.id === m.pid);
+            if (q) { q.name = name; q.cid = cid; q.cam = !!m.cam; } else { S.pending.push({id: m.pid, name, cid, cam: !!m.cam}); toast('✋ ' + name + ' möchte beitreten'); if (S.settings.hostSound) playSfx('open', true); }
+            cid2pid.set(cid, m.pid);
+            net.send(cid, {t: 'pending'}); net.send(cid, {t: 'state', s: buildPub()});
+            renderPlayers(); return;
+          }
+          p = {id: m.pid, name, team: null, online: true, cam: false}; S.players.push(p); toast(name + ' ist beigetreten');
+        }
         p.name = name; p.online = true; if (typeof m.cam === 'boolean') p.cam = m.cam;
         cid2pid.set(cid, p.id);
       } else cid2pid.set(cid, null);
@@ -934,6 +954,7 @@ function startHost() {
   }
   function onClose(cid) {
     const pid = cid2pid.get(cid); cid2pid.delete(cid);
+    const pi = S.pending.findIndex(x => x.cid === cid); if (pi >= 0) { S.pending.splice(pi, 1); renderPlayers(); }
     if (pid && ![...cid2pid.values()].includes(pid)) { const p = S.players.find(x => x.id === pid); if (p) { p.online = false; changed(); } }
   }
 
@@ -951,7 +972,9 @@ function startHost() {
   }
   function renderPlayers() {
     const g = S.game, teamMode = !g || g.type !== 'ddf';
-    $('#hplayers').innerHTML = (S.players.length ? '' : '<p class="muted">Noch niemand da. Schick den Spieler-Link in den Discord.</p>') +
+    const pend = S.pending.length ? `<div class="pendbox"><b>✋ Möchten beitreten (${S.pending.length})</b>${S.pending.map(q => `<div class="prow" style="--tc:var(--gold)"><span class="nm">${esc(q.name)}</span><button class="b-good" data-act="approve" data-p="${q.id}">✓ Zulassen</button><button class="b-bad" data-act="reject" data-p="${q.id}">✕</button></div>`).join('')}${S.pending.length > 1 ? '<button class="b-good" data-act="approveAll" style="margin-top:4px">Alle zulassen</button>' : ''}</div>` : '';
+    const guard = `<div class="guard"><button data-act="toggleLock" class="${S.locked ? 'b-bad' : 'b-ghost'}">${S.locked ? '🔒 Lobby gesperrt' : '🔓 Lobby offen'}</button><button data-act="toggleApprove" class="b-ghost" title="Neue Spieler müssen erst von dir zugelassen werden">${S.approve ? '✅ Freigabe nötig' : '⚠ Freigabe aus'}</button><button data-act="newKey" class="b-ghost" title="Falls der Link im Stream zu sehen war">🔑 Neuer Link</button></div>`;
+    $('#hplayers').innerHTML = guard + pend + (S.players.length ? '' : '<p class="muted">Noch niemand da. Schick den Spieler-Link in den Discord.</p>') +
       `<div class="plist">${S.players.map(p => {
         const tc = p.team != null ? S.teams[p.team].color : '#555';
         const ddfInfo = g && g.type === 'ddf' ? (p.id in g.lives ? `<span>${heartsHTML(g.lives[p.id], g.maxLives)}</span><button data-act="ddfLife" data-p="${p.id}" data-d="-1">−</button><button data-act="ddfLife" data-p="${p.id}" data-d="1">+</button>${g.lives[p.id] > 0 ? `<button data-act="ddfRemove" data-p="${p.id}" title="Aus dem Spiel nehmen">raus</button>` : `<button data-act="ddfAdd" data-p="${p.id}">rein</button>`}` : `<button data-act="ddfAdd" data-p="${p.id}">+ ins Spiel</button>`) : '';
@@ -983,7 +1006,7 @@ function startHost() {
     if (!g || g.type !== tab) {
       const desc = {
         feud: 'Zwei Teams. Pro Runde buzzert je ein Spieler pro Team. Wer zuerst buzzert, nennt ein Wort. Falsch → das andere Team darf. Sobald ein Wort stimmt, spielt dieses Team weiter, bis es 3 Fehler hat. Dann darf das andere Team mit einem Versuch alle Punkte klauen.',
-        ddf: 'Jeder Spieler hat Leben und bekommt pro Runde 3 Fragen am Stück. Danach stimmen alle anonym ab, wer ein Herz verlieren soll. Du deckst die Stimmen Spieler für Spieler auf – wer die meisten hat, verliert ein Herz. Der Schlauste bleibt übrig und gewinnt.',
+        ddf: 'Jeder Spieler hat Leben und bekommt pro Runde 3 Fragen – reihum: erst jeder eine, dann jeder die zweite, dann die dritte. Danach stimmen alle anonym ab, wer ein Herz verlieren soll. Du deckst die Stimmen Spieler für Spieler auf – wer die meisten hat, verliert ein Herz. Der Schlauste bleibt übrig und gewinnt.',
         jeo: 'Zwei Teams wählen abwechselnd eine Karte (Kategorie + Punkte). Falsch → das andere Team darf nachziehen. Ist auch das falsch, gibt es Punktabzug.'
       }[tab];
       m.innerHTML = `<div class="card"><h2>${MODE_NAMES[tab]}</h2><p class="muted" style="line-height:1.5">${desc}</p>
@@ -1165,7 +1188,7 @@ function startHost() {
       <label class="row">Overlay-Hintergrund <select data-set="bg"><option value="dark" ${s.bg === 'dark' ? 'selected' : ''}>Dunkel (fertige Szene)</option><option value="transparent" ${s.bg === 'transparent' ? 'selected' : ''}>Transparent (eigener Hintergrund in OBS)</option></select></label>
       <label class="row"><input type="checkbox" data-set="hostSound" ${s.hostSound ? 'checked' : ''}> Sounds auch hier im Host-Panel abspielen</label>
       <label class="row">Der Schlauste bleibt – Leben: <input type="number" min="1" max="10" style="width:70px" data-set="ddfLives" value="${s.ddfLives}"></label>
-      <label class="row">Der Schlauste bleibt – Fragen pro Spieler und Runde (am Stück): <input type="number" min="1" max="10" style="width:70px" data-set="ddfQPP" value="${s.ddfQPP}"></label>
+      <label class="row">Der Schlauste bleibt – Fragen pro Spieler und Runde (reihum): <input type="number" min="1" max="10" style="width:70px" data-set="ddfQPP" value="${s.ddfQPP}"></label>
       <label class="row"><input type="checkbox" data-set="ddfShuffle" ${s.ddfShuffle ? 'checked' : ''}> Der Schlauste bleibt – Fragen mischen</label>
       <label class="row">Kategorien-Duell – Abzug bei falscher Antwort: <select data-set="jeoPenalty"><option value="half_all" ${s.jeoPenalty === 'half_all' ? 'selected' : ''}>Hälfte der Kartenpunkte – bei jeder falschen Antwort</option><option value="half_steal" ${s.jeoPenalty === 'half_steal' ? 'selected' : ''}>Hälfte der Kartenpunkte – nur beim Nachziehen</option><option value="none" ${s.jeoPenalty === 'none' ? 'selected' : ''}>Kein Abzug</option></select></label>
       </div>
@@ -1197,7 +1220,7 @@ function startHost() {
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
     const d = b.dataset, a = d.act;
-    const NOSNAP = ['edAdd', 'edDel', 'edMove', 'jeoShape', 'jeoBoardTab', 'edImport', 'edSample', 'copyHash', 'sfxTest', 'sfxReset', 'mkHash', 'hostCam', 'hostCamToggle', 'tab', 'ctab', 'copyPlayer', 'copyOverlay', 'openOverlay', 'undo', 'csave', 'csample', 'timer', 'newRoom', 'resetAll'];
+    const NOSNAP = ['approve', 'approveAll', 'reject', 'toggleApprove', 'toggleLock', 'newKey', 'edAdd', 'edDel', 'edMove', 'jeoShape', 'jeoBoardTab', 'edImport', 'edSample', 'copyHash', 'sfxTest', 'sfxReset', 'mkHash', 'hostCam', 'hostCamToggle', 'tab', 'ctab', 'copyPlayer', 'copyOverlay', 'openOverlay', 'undo', 'csave', 'csample', 'timer', 'newRoom', 'resetAll'];
     if (!NOSNAP.includes(a)) snap();
     switch (a) {
       case 'hostCam': $('#hcampop').classList.toggle('hide'); return;
@@ -1210,7 +1233,7 @@ function startHost() {
       case 'tab': S.tab = d.k; renderTabs(); renderMain(); store.set(KEY, S); return;
       case 'ctab': S.ctab = d.k; renderMain(); return;
       case 'edAdd': case 'edDel': case 'edMove': case 'jeoShape': case 'jeoBoardTab': case 'edImport': case 'edSample': edStructural(d); return;
-      case 'copyPlayer': return copy(link('play', room));
+      case 'copyPlayer': return copy(playerLink());
       case 'copyOverlay': return copy(link('overlay', room));
       case 'openOverlay': return window.open(link('overlay', room), '_blank');
       case 'undo': return doUndo();
@@ -1218,7 +1241,13 @@ function startHost() {
       case 'newRoom': if (confirm('Neuen Raum erstellen? Spieler brauchen dann den neuen Link.')) { store.set('dqs-last-room', ''); location.hash = 'host' + (LOCAL ? '&local=1' : ''); location.reload(); } return;
       case 'resetAll': if (confirm('Alles (Spieler, Punkte, Fragen) zurücksetzen?')) { S = defaultState(room); changed(); renderMain(); } return;
       case 'setTeam': { const p = S.players.find(x => x.id === d.p); if (p) p.team = p.team === +d.t ? null : +d.t; break; }
-      case 'kick': { if (!confirm('Spieler entfernen?')) { undo.pop(); return; } const i = S.players.findIndex(x => x.id === d.p); if (i >= 0) { if (S.game && S.game.type === 'ddf') D.remove(d.p); S.players.splice(i, 1); } break; }
+      case 'approve': { const i = S.pending.findIndex(x => x.id === d.p); if (i < 0) return; const q = S.pending.splice(i, 1)[0]; S.players.push({id: q.id, name: q.name, team: null, online: true, cam: q.cam}); cid2pid.set(q.cid, q.id); break; }
+      case 'approveAll': { S.pending.forEach(q => { S.players.push({id: q.id, name: q.name, team: null, online: true, cam: q.cam}); cid2pid.set(q.cid, q.id); }); S.pending = []; break; }
+      case 'reject': { const i = S.pending.findIndex(x => x.id === d.p); if (i < 0) return; const q = S.pending.splice(i, 1)[0]; S.blocked.push(q.id); net && net.send(q.cid, {t: 'denied', why: 'rejected'}); break; }
+      case 'toggleApprove': S.approve = !S.approve; break;
+      case 'toggleLock': S.locked = !S.locked; toast(S.locked ? '🔒 Lobby gesperrt – niemand Neues kommt rein' : '🔓 Lobby offen'); break;
+      case 'newKey': if (!confirm('Neuen Spieler-Link erzeugen? Der alte Link funktioniert dann für neue Leute nicht mehr. Wer schon drin ist, bleibt drin.')) return; S.joinKey = rid(8); copy(playerLink()); break;
+      case 'kick': { if (!confirm('Spieler entfernen?')) { undo.pop(); return; } const i = S.players.findIndex(x => x.id === d.p); if (i >= 0) { if (S.game && S.game.type === 'ddf') D.remove(d.p); S.players.splice(i, 1); S.blocked.push(d.p); for (const [c, v] of cid2pid) if (v === d.p) net && net.send(c, {t: 'denied', why: 'rejected'}); } break; }
       case 'movePlayer': { const i = S.players.findIndex(x => x.id === d.p); if (i > 0) { const [p] = S.players.splice(i, 1); S.players.splice(i - 1, 0, p); if (S.game && S.game.type === 'ddf') { const o = S.game.order, j = o.indexOf(d.p); if (j > 0) { o.splice(j, 1); o.splice(j - 1, 0, d.p); } } } break; }
       case 'randomTeams': { const ps = shuffle(S.players); ps.forEach((p, i) => p.team = i % 2); break; }
       case 'clearOffline': S.players = S.players.filter(p => p.online); break;
@@ -1481,7 +1510,7 @@ function createStage(wrap, opt) {
   function render() {
     if (!P) {
       stage.classList.add('bg');
-      ui.innerHTML = `<div class="lobbygrid">${logoHTML('QUIZ SHOW')}<div style="font-size:28px;color:#ffffffaa">${status === 'nohost' ? 'Host-Panel ist nicht geöffnet' : 'Verbinde…'} · Raum ${esc(room)}</div></div>`;
+      ui.innerHTML = `<div class="lobbygrid">${logoHTML('QUIZ SHOW')}<div style="font-size:28px;color:#ffffffaa">${status === 'nohost' ? 'Host-Panel ist nicht geöffnet' : 'Verbinde…'}</div></div>`;
       return;
     }
     stage.classList.toggle('bg', !!opt.alwaysBg || P.settings.bg !== 'transparent');
@@ -1567,9 +1596,12 @@ function startPlayer() {
   let pid = store.sget('dqs-pid-' + room); if (!pid) { pid = 'p' + rid(9); store.sset('dqs-pid-' + room, pid); }
   let name = store.sget('dqs-name-' + room) || '';
   let camOn = store.sget('dqs-cam-' + room) === '1';
+  if (PARAMS.k) store.sset('dqs-key-' + room, PARAMS.k);
+  const key = PARAMS.k || store.sget('dqs-key-' + room) || '';
+  let gate = null;
   soundOn = true; masterVol = store.get('dqs-pvol', 0.6);
   let net = null, status = 'connecting', myVote = null, stage = null, camOpen = false;
-  const hello = () => ({t: 'hello', role: 'player', pid, name, cam: camOn});
+  const hello = () => ({t: 'hello', role: 'player', pid, name, cam: camOn, key});
   const send = (a, extra = {}) => net && net.send(Object.assign({t: 'act', a}, extra));
 
   function joinScreen() {
@@ -1594,7 +1626,9 @@ function startPlayer() {
       hello,
       onStatus: s => { if (s !== status) { status = s; renderBar(); } },
       onMsg: m => {
-        if (m.t === 'state') { applyState(m.s); if (!m.s.g || m.s.g.type !== 'ddf' || m.s.g.phase !== 'vote') myVote = null; stage.update(m.s); renderBar(); }
+        if (m.t === 'denied') { gate = m.why; renderBar(); return; }
+        if (m.t === 'pending') { gate = 'pending'; renderBar(); return; }
+        if (m.t === 'state') { if (m.s.players.some(p => p.id === pid)) gate = null; applyState(m.s); if (!m.s.g || m.s.g.type !== 'ddf' || m.s.g.phase !== 'vote') myVote = null; stage.update(m.s); renderBar(); }
         if (m.t === 'sfx') playSfx(m.n);
         if (m.t === 'sounds') setCustomSounds(m.data, m.ver);
       }
@@ -1613,6 +1647,10 @@ function startPlayer() {
   const meP = () => PUB && PUB.players.find(p => p.id === pid);
   const tTag = t => t == null ? '' : `<b style="color:${PUB.teams[t].color};filter:brightness(1.3)">${esc(PUB.teams[t].name)}</b>`;
   function midHTML() {
+    if (gate === 'pending') return `<span class="msg">⏳ Warte auf Freigabe durch den Host…</span>`;
+    if (gate === 'key') return `<span class="msg" style="color:var(--bad)">⛔ Ungültiger oder alter Link – frag den Host nach dem aktuellen Spieler-Link.</span>`;
+    if (gate === 'locked') return `<span class="msg" style="color:var(--bad)">🔒 Die Lobby ist gerade gesperrt.</span>`;
+    if (gate === 'rejected') return `<span class="msg" style="color:var(--bad)">⛔ Der Host hat dich nicht zugelassen.</span>`;
     if (!PUB) return `<span class="msg muted">Verbinde mit dem Host…</span>`;
     const g = PUB.g, m = meP();
     if (!m) return `<span class="msg muted">Melde mich beim Host an…</span>`;
@@ -1693,9 +1731,8 @@ function startOverlay() {
 /* ---------------- Startseite ---------------- */
 function startLanding() {
   $('#app').innerHTML = `<div class="landing"><div class="logo">Quiz<span>show</span></div><p class="muted">Team-Duell · Der Schlauste bleibt · Kategorien-Duell</p>
-    <div class="card" style="margin-bottom:14px"><h2>Mitspielen</h2><div class="row"><input id="code" class="grow" maxlength="8" placeholder="Raumcode" style="text-transform:uppercase"><button class="b-gold" id="join">Beitreten</button></div></div>
+    <div class="card"><h2>Mitspielen</h2><p class="muted" style="margin:0">Zum Mitspielen brauchst du den Spieler-Link vom Host. Frag im Discord danach.</p></div>
     </div>`;
-  $('#join').onclick = () => { const c = $('#code').value.trim().toUpperCase(); if (c) { location.hash = 'play=' + c + (LOCAL ? '&local=1' : ''); location.reload(); } };
 }
 
 function hostGate() {
