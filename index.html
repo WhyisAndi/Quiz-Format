@@ -197,7 +197,7 @@ body.ov{overflow:hidden;background:transparent}
 .jq .qq{font-size:44px;font-weight:800;line-height:1.2;margin-top:12px}
 .jq .aa{margin-top:20px;font-size:38px;font-weight:800;background:var(--good);color:#00281a;padding:6px 26px;border-radius:14px}
 .jq .aa.an,.jq .banner.an{animation:pop .45s var(--ad,0s) both}
-/* Der Dümmste fliegt */
+/* Der Schlauste bleibt */
 .ddfgrid{position:absolute;left:40px;right:40px;top:34px;display:grid;gap:24px;justify-content:center}
 .ddfbottom{position:absolute;left:40px;right:40px;bottom:28px;display:flex;gap:22px;align-items:flex-end}
 .ddfbottom .qcol{flex:1;display:flex;flex-direction:column;gap:10px}
@@ -424,7 +424,7 @@ Giraffe
 Affe
 Pinguin
 Zebra`,
-ddf: `// DER DÜMMSTE FLIEGT: eine Frage pro Zeile, Lösung nach dem |
+ddf: `// DER SCHLAUSTE BLEIBT: eine Frage pro Zeile, Lösung nach dem |
 Wie viele Bundesländer hat Deutschland? | 16
 Was ist die Hauptstadt von Australien? | Canberra
 Wie viele Beine hat eine Spinne? | 8
@@ -448,7 +448,41 @@ Wie viel ist 7 × 8? | 56
 Wie viele Spieler einer Fußballmannschaft stehen auf dem Feld? | 11
 In welchem Land steht der Eiffelturm? | Frankreich
 Wie heißt die Hauptstadt von Italien? | Rom
-Wie viele Sekunden hat eine Stunde? | 3600`,
+Wie viele Sekunden hat eine Stunde? | 3600
+Wie heißt die Hauptstadt von Österreich? | Wien
+Wie viele Farben hat ein Regenbogen? | 7
+Welches Tier legt die größten Eier? | Strauß
+Wie viele Monate haben 31 Tage? | 7
+Was ist die Hauptstadt von Portugal? | Lissabon
+Welcher Ozean ist der größte? | Pazifik
+Wie viele Spieler hat eine Basketballmannschaft auf dem Feld? | 5
+Wie heißt das längste Gebirge der Welt? | Anden
+Was misst ein Thermometer? | Temperatur
+Welches Metall ist bei Raumtemperatur flüssig? | Quecksilber
+Wie viele Beine hat ein Insekt? | 6
+In welcher Stadt steht das Kolosseum? | Rom
+Wie viele Wochen hat ein Jahr? | 52
+Welcher Planet wird „Roter Planet“ genannt? | Mars
+Wer hat die Relativitätstheorie aufgestellt? | Albert Einstein
+Wie heißt die Hauptstadt der Schweiz? | Bern
+Wie viel ist 12 × 12? | 144
+Aus wie vielen Bundesstaaten bestehen die USA? | 50
+Welches Organ filtert das Blut? | Niere
+Wie heißt der größte Kontinent? | Asien
+Wie viele Felder hat ein Schachbrett? | 64
+Welche Farbe hat ein Smaragd? | Grün
+Wie heißt die Hauptstadt von Griechenland? | Athen
+Wie viele Ecken hat ein Sechseck? | 6
+In welchem Land liegt Machu Picchu? | Peru
+Welches Tier ist das Wappentier Deutschlands? | Adler
+Wie heißt die kleinste Primzahl? | 2
+Welches Gas macht den größten Teil der Luft aus? | Stickstoff
+Wer schrieb die „Harry Potter“-Bücher? | J. K. Rowling
+Wie viele Herzkammern hat ein Mensch? | 4
+Welche Stadt nennt man „Big Apple“? | New York
+Wie viele Tasten hat ein normales Klavier? | 88
+Was ist die Hauptstadt von Polen? | Warschau
+Welches Element hat das Symbol „Fe“? | Eisen`,
 jeo: `// KATEGORIEN-DUELL: # = Kategorie, darunter: Punkte | Frage | Antwort
 // Empfohlen: 5 Kategorien mit je 5 Karten (100–500).
 
@@ -550,7 +584,7 @@ function parseJeo(t) {
 }
 
 /* ================== Gemeinsame Rendering-Bausteine ================== */
-const MODE_NAMES = {feud: 'Team-Duell', ddf: 'Der Dümmste fliegt', jeo: 'Kategorien-Duell'};
+const MODE_NAMES = {feud: 'Team-Duell', ddf: 'Der Schlauste bleibt', jeo: 'Kategorien-Duell'};
 function pname(p, id) { return p.players.find(x => x.id === id)?.name || '?'; }
 function feudPts(n, i) { return n - i; }
 const jeoVal = (b, r) => (r + 1) * 100 * (b + 1);
@@ -584,7 +618,7 @@ function defaultState(room) {
     v: 1, room,
     players: [],
     teams: [{name: 'Team Rot', color: '#e0263f', score: 0}, {name: 'Team Blau', color: '#2f6bff', score: 0}],
-    settings: {sfxMaster: 1, sfxVol: {}, showName: 'ANDI QUIZ', hostName: 'Host', cams: true, bg: 'dark', ddfLives: 3, ddfQPP: 1, ddfShuffle: true, jeoPenalty: 'half_all', hostSound: false},
+    settings: {sfxMaster: 1, sfxVol: {}, showName: 'ANDI QUIZ', hostName: 'Host', cams: true, bg: 'dark', ddfLives: 3, ddfQPP: 3, ddfShuffle: true, jeoPenalty: 'half_all', hostSound: false},
     content: {feud: SAMPLE.feud, ddf: SAMPLE.ddf, jeo: SAMPLE.jeo}, cdata: null,
     game: null, timer: {end: null, total: 0}, flash: null, tab: 'feud', hostCam: false
   };
@@ -600,6 +634,7 @@ function startHost() {
   S.settings = Object.assign(defaultState(room).settings, S.settings);
   S.players.forEach(p => p.online = false);
   if (!S.cdata) S.cdata = cdataFromText(S.content);
+  if (!S.settings.sv2) { S.settings.sv2 = true; S.settings.ddfQPP = 3; }
   if (typeof S.settings.jeoPenalty === 'number') S.settings.jeoPenalty = 'half_all';
   soundOn = S.settings.hostSound;
   let SND = store.get('dqs-sounds', {ver: null, data: {}});
@@ -681,10 +716,11 @@ function startHost() {
         cards: r.answers.map((a, i) => ({rank: i + 1, pts: feudPts(n, i), rev: g.revealed[i], text: g.revealed[i] ? a : null}))};
     } else if (g.type === 'ddf') {
       const vis = g.phase === 'reveal' || g.phase === 'tie' || g.phase === 'over';
+      const tallyPub = g.phase === 'tally' ? Object.fromEntries((g.shown || []).map(id => [id, g.tally[id]])) : vis ? g.tally : null;
       pub.g = {type: 'ddf', phase: g.phase, round: g.round, lives: g.lives, max: g.maxLives, order: g.order,
         cur: g.cur ? {pid: g.cur.pid, q: g.cur.q, ok: g.cur.ok, a: g.cur.ok != null ? g.cur.a : null} : null,
         left: g.queue.length, answers: g.answers.map(x => ({pid: x.pid, q: x.q, a: x.a, ok: x.ok})),
-        voted: Object.keys(g.votes), votes: vis ? g.votes : null, tally: vis ? g.tally : null, loser: g.loser, tie: g.tie, winner: g.winner, out: g.out || null};
+        voted: Object.keys(g.votes), tally: tallyPub, shown: g.shown || [], loser: g.loser, tie: g.tie, winner: g.winner, out: g.out || null};
     } else if (g.type === 'jeo') {
       const cats = g.boards[g.bi], c = g.cur ? cats[g.cur.c].cards[g.cur.r] : null;
       pub.g = {type: 'jeo', phase: g.phase, pickTeam: g.pickTeam, answerTeam: g.answerTeam, result: g.result, bi: g.bi, nb: g.boards.length,
@@ -735,7 +771,7 @@ function startHost() {
     next() { const g = S.game; if (g.ri + 1 < g.rounds.length) { g.ri++; feudRound(); sfx('reveal'); } else { g.phase = 'over'; flash('win', {text: winText()}); sfx('win'); } },
     setBuzzer(team, pid) { S.game.buzzers[team] = pid || null; }
   };
-  // Der Dümmste fliegt
+  // Der Schlauste bleibt
   function ddfStart() {
     let qs = S.cdata.ddf.map(x => ({q: x.q.trim(), a: x.a.trim()})).filter(x => x.q); if (!qs.length) return toast('Keine Fragen im Inhalt');
     if (S.settings.ddfShuffle) qs = shuffle(qs);
@@ -768,7 +804,7 @@ function startHost() {
     round() {
       const g = S.game; if (g.phase === 'over') return;
       g.round++; const al = alive(); const qpp = Math.max(1, +S.settings.ddfQPP || 1);
-      g.queue = []; for (let k = 0; k < qpp; k++) g.queue.push(...al);
+      g.queue = []; al.forEach(id => { for (let k = 0; k < qpp; k++) g.queue.push(id); });
       g.answers = []; g.votes = {}; g.tally = null; g.loser = null; g.tie = null; g.out = null; S.flash = null;
       ddfNextQ();
     },
@@ -785,12 +821,19 @@ function startHost() {
       const g = S.game; if (g.phase !== 'vote') return;
       const tally = {}; alive().forEach(id => tally[id] = 0);
       Object.values(g.votes).forEach(t => { if (t in tally) tally[t]++; });
-      g.tally = tally; const max = Math.max(...Object.values(tally));
+      g.tally = tally; g.shown = []; g.votes = {}; g.phase = 'tally'; sfx('vote');
+    },
+    show(pid) { const g = S.game; if (g.phase !== 'tally' || g.shown.includes(pid) || !(pid in g.tally)) return; g.shown.push(pid); sfx(g.tally[pid] ? 'buzz' : 'reveal'); },
+    showAll() { const g = S.game; if (g.phase !== 'tally') return; Object.keys(g.tally).forEach(id => { if (!g.shown.includes(id)) g.shown.push(id); }); sfx('buzz'); },
+    finish() {
+      const g = S.game; if (g.phase !== 'tally') return;
+      g.shown = Object.keys(g.tally);
+      const tally = g.tally; const max = Math.max(...Object.values(tally));
       const top = Object.keys(tally).filter(k => tally[k] === max);
       if (max > 0 && top.length === 1) ddfHit(top[0]);
       else { g.phase = 'tie'; g.tie = max > 0 ? top : alive(); sfx('vote'); }
     },
-    hit(pid) { const g = S.game; if (g.phase === 'tie' || g.phase === 'vote') { if (!g.tally) { g.tally = {}; } ddfHit(pid); } },
+    hit(pid) { const g = S.game; if (g.phase === 'tie' || g.phase === 'vote' || g.phase === 'tally') { if (!g.tally) { g.tally = {}; } ddfHit(pid); } },
     life(pid, d) { const g = S.game; if (!(pid in g.lives)) return; g.lives[pid] = Math.max(0, Math.min(g.maxLives, g.lives[pid] + d)); if (g.phase !== 'over') ddfCheckWin(); else if (alive().length > 1) { g.phase = 'intro'; g.winner = null; } },
     remove(pid) { const g = S.game; if (!(pid in g.lives)) return; g.lives[pid] = 0; delete g.votes[pid]; Object.keys(g.votes).forEach(v => { if (g.votes[v] === pid) delete g.votes[v]; }); if (g.cur && g.cur.pid === pid && g.phase === 'ask') ddfNextQ(); ddfCheckWin(); },
     add(pid) { const g = S.game; if (!g.order.includes(pid)) g.order.push(pid); g.lives[pid] = g.maxLives; if (g.phase === 'over' && alive().length > 1) { g.phase = 'intro'; g.winner = null; } }
@@ -926,7 +969,7 @@ function startHost() {
       '<p class="muted" style="font-size:13px;margin:6px 0 0">Name · Punkte · Farbcode · Farbwähler (Punkte kannst du hier jederzeit korrigieren)</p>';
   }
   function renderTabs() {
-    const tabs = [['feud', 'Team-Duell'], ['ddf', 'Der Dümmste fliegt'], ['jeo', 'Kategorien-Duell'], ['content', 'Fragen bearbeiten'], ['settings', 'Einstellungen & Hilfe']];
+    const tabs = [['feud', 'Team-Duell'], ['ddf', 'Der Schlauste bleibt'], ['jeo', 'Kategorien-Duell'], ['content', 'Fragen bearbeiten'], ['settings', 'Einstellungen & Hilfe']];
     $('#htabs').innerHTML = tabs.map(([k, n]) => `<button class="${S.tab === k ? 'on' : ''}" data-act="tab" data-k="${k}">${n}${S.game && S.game.type === k ? ' ●' : ''}</button>`).join('');
   }
   function timerBar() {
@@ -940,7 +983,7 @@ function startHost() {
     if (!g || g.type !== tab) {
       const desc = {
         feud: 'Zwei Teams. Pro Runde buzzert je ein Spieler pro Team. Wer zuerst buzzert, nennt ein Wort. Falsch → das andere Team darf. Sobald ein Wort stimmt, spielt dieses Team weiter, bis es 3 Fehler hat. Dann darf das andere Team mit einem Versuch alle Punkte klauen.',
-        ddf: 'Jeder Spieler hat Leben und bekommt nacheinander Fragen. Am Ende der Runde stimmen alle für die dümmste Antwort ab. Wer die meisten Stimmen hat, verliert ein Herz. Der letzte Überlebende gewinnt.',
+        ddf: 'Jeder Spieler hat Leben und bekommt pro Runde 3 Fragen am Stück. Danach stimmen alle anonym ab, wer ein Herz verlieren soll. Du deckst die Stimmen Spieler für Spieler auf – wer die meisten hat, verliert ein Herz. Der Schlauste bleibt übrig und gewinnt.',
         jeo: 'Zwei Teams wählen abwechselnd eine Karte (Kategorie + Punkte). Falsch → das andere Team darf nachziehen. Ist auch das falsch, gibt es Punktabzug.'
       }[tab];
       m.innerHTML = `<div class="card"><h2>${MODE_NAMES[tab]}</h2><p class="muted" style="line-height:1.5">${desc}</p>
@@ -992,8 +1035,16 @@ function startHost() {
       <div class="row" style="margin-top:12px">${g.phase === 'ask' ? `<button class="b-good b-big" data-act="ddfJudge" data-ok="1">✓ Richtig</button><button class="b-bad b-big" data-act="ddfJudge" data-ok="0">✗ Falsch</button><button data-act="ddfSkip" class="b-ghost">Andere Frage</button>` : `<span class="okbadge ${g.cur.ok ? 'y' : 'n'}" style="font-size:18px">${g.cur.ok ? 'Richtig' : 'Falsch'}</span><button class="b-gold b-big" data-act="ddfCont">${g.queue.length ? 'Nächste Frage →' : 'Zur Abstimmung →'}</button>`}
       <div class="grow"></div><button data-act="ddfToVote" class="b-ghost">Direkt abstimmen</button></div>`;
     if (g.phase === 'vote') body = `<h2>Abstimmung läuft (${Object.keys(g.votes).length}/${al.length})</h2>
-      <div class="vlist">${al.map(id => `<div class="prow"><span class="nm">${nm(id)}</span><span class="muted">${g.votes[id] ? '→ ' + nm(g.votes[id]) : 'hat noch nicht abgestimmt'}</span></div>`).join('')}</div>
-      <div class="row" style="margin-top:12px"><button class="b-gold b-big" data-act="ddfReveal">Auflösen</button></div>`;
+      <p class="muted" style="margin-top:0">Die Abstimmung ist anonym – niemand sieht, wer wen gewählt hat, auch du nicht.</p>
+      <div class="vlist">${al.map(id => `<div class="prow"><span class="nm">${nm(id)}</span><span class="muted">${g.votes[id] ? '✅ hat abgestimmt' : '⏳ wartet noch'}</span></div>`).join('')}</div>
+      <div class="row" style="margin-top:12px"><button class="b-gold b-big" data-act="ddfReveal">Auswertung starten</button></div>`;
+    if (g.phase === 'tally') {
+      const ids = Object.keys(g.tally);
+      body = `<h2>Auswertung – deck die Stimmen nacheinander auf</h2>
+      <p class="muted" style="margin-top:0">Nur du siehst die Zahlen schon. Tipp: Den mit den meisten Stimmen zum Schluss aufdecken.</p>
+      <div class="vlist">${ids.sort((a, b) => g.tally[a] - g.tally[b]).map(id => { const sh = g.shown.includes(id); return `<div class="prow"><span class="nm">${nm(id)}</span><b style="min-width:90px">${g.tally[id]} Stimme${g.tally[id] === 1 ? '' : 'n'}</b><button class="${sh ? 'b-ghost' : 'b-gold'}" data-act="ddfShow" data-p="${id}" ${sh ? 'disabled' : ''}>${sh ? '✓ aufgedeckt' : 'Aufdecken'}</button></div>`; }).join('')}</div>
+      <div class="row" style="margin-top:12px"><button data-act="ddfShowAll" class="b-ghost">Alle aufdecken</button><button class="b-bad b-big" data-act="ddfFinish">Ergebnis: Herz abziehen →</button></div>`;
+    }
     if (g.phase === 'tie') body = `<h2>Gleichstand!</h2><p>Wer verliert ein Herz? (Ihr könnt im Call ein Stechen machen.)</p><div class="row">${g.tie.map(id => `<button class="b-bad" data-act="ddfHit" data-p="${id}">${nm(id)}${g.tally && g.tally[id] != null ? ' (' + g.tally[id] + ')' : ''}</button>`).join('')}</div>`;
     if (g.phase === 'reveal') body = `<h2>${nm(g.loser)} verliert ein Herz ${g.out ? '– und fliegt raus!' : ''}</h2>
       <p class="muted">${g.tally ? Object.entries(g.tally).sort((a, b) => b[1] - a[1]).map(([id, n]) => nm(id) + ': ' + n).join(' · ') : ''}</p>
@@ -1113,9 +1164,9 @@ function startHost() {
       <label class="row"><input type="checkbox" data-set="cams" ${s.cams ? 'checked' : ''}> Cams im Overlay anzeigen</label>
       <label class="row">Overlay-Hintergrund <select data-set="bg"><option value="dark" ${s.bg === 'dark' ? 'selected' : ''}>Dunkel (fertige Szene)</option><option value="transparent" ${s.bg === 'transparent' ? 'selected' : ''}>Transparent (eigener Hintergrund in OBS)</option></select></label>
       <label class="row"><input type="checkbox" data-set="hostSound" ${s.hostSound ? 'checked' : ''}> Sounds auch hier im Host-Panel abspielen</label>
-      <label class="row">Der Dümmste fliegt – Leben: <input type="number" min="1" max="10" style="width:70px" data-set="ddfLives" value="${s.ddfLives}"></label>
-      <label class="row">Der Dümmste fliegt – Fragen pro Spieler und Runde: <input type="number" min="1" max="10" style="width:70px" data-set="ddfQPP" value="${s.ddfQPP}"></label>
-      <label class="row"><input type="checkbox" data-set="ddfShuffle" ${s.ddfShuffle ? 'checked' : ''}> Der Dümmste fliegt – Fragen mischen</label>
+      <label class="row">Der Schlauste bleibt – Leben: <input type="number" min="1" max="10" style="width:70px" data-set="ddfLives" value="${s.ddfLives}"></label>
+      <label class="row">Der Schlauste bleibt – Fragen pro Spieler und Runde (am Stück): <input type="number" min="1" max="10" style="width:70px" data-set="ddfQPP" value="${s.ddfQPP}"></label>
+      <label class="row"><input type="checkbox" data-set="ddfShuffle" ${s.ddfShuffle ? 'checked' : ''}> Der Schlauste bleibt – Fragen mischen</label>
       <label class="row">Kategorien-Duell – Abzug bei falscher Antwort: <select data-set="jeoPenalty"><option value="half_all" ${s.jeoPenalty === 'half_all' ? 'selected' : ''}>Hälfte der Kartenpunkte – bei jeder falschen Antwort</option><option value="half_steal" ${s.jeoPenalty === 'half_steal' ? 'selected' : ''}>Hälfte der Kartenpunkte – nur beim Nachziehen</option><option value="none" ${s.jeoPenalty === 'none' ? 'selected' : ''}>Kein Abzug</option></select></label>
       </div>
       <div class="row" style="margin-top:14px"><button data-act="newRoom" class="b-ghost">Neuen Raum erstellen</button><button data-act="resetAll" class="b-bad">Alles zurücksetzen</button></div></div>
@@ -1185,6 +1236,9 @@ function startHost() {
       case 'ddfSkip': D.skipQ(); break;
       case 'ddfToVote': D.toVote(); break;
       case 'ddfReveal': D.reveal(); break;
+      case 'ddfShow': D.show(d.p); break;
+      case 'ddfShowAll': D.showAll(); break;
+      case 'ddfFinish': D.finish(); break;
       case 'ddfHit': D.hit(d.p); break;
       case 'ddfLife': D.life(d.p, +d.d); break;
       case 'ddfRemove': D.remove(d.p); break;
@@ -1397,25 +1451,25 @@ function createStage(wrap, opt) {
     const rows = Math.ceil(n / cols);
     const availH = 1080 - 34 - 260 - (rows - 1) * 24;
     const w = Math.floor(Math.min(480, (1840 - (cols - 1) * 24) / cols, (availH / rows - 10) * 16 / 9));
-    const showAns = ['vote', 'tie', 'reveal'].includes(g.phase);
-    const votersOf = id => g.votes ? Object.keys(g.votes).filter(v => g.votes[v] === id).map(v => esc(pname(P, v))) : [];
+    const showAns = ['vote', 'tally', 'tie', 'reveal'].includes(g.phase);
     const slots = show.map(m => {
       let cls = '', badge = null, top = '', tag = '';
       if (g.cur && g.cur.pid === m.id && (g.phase === 'ask' || g.phase === 'judged')) cls = 'turn';
       if (showAns) { const an = g.answers.filter(a => a.pid === m.id); if (an.length) top = `<div class="ansbox">${an.map(a => `<div>${a.ok ? '✅' : '❌'} ${esc(a.a || '–')}</div>`).join('')}</div>`; }
       if (g.phase === 'vote' && g.voted.includes(m.id)) tag = '✓ HAT GEWÄHLT';
-      if ((g.phase === 'reveal' || g.phase === 'tie') && g.tally && g.tally[m.id] != null) { badge = g.tally[m.id]; const vs = votersOf(m.id); if (vs.length) top = `<div class="ansbox">🗳 ${vs.join(', ')}</div>`; }
+      if (['tally', 'reveal', 'tie'].includes(g.phase) && g.tally) badge = g.tally[m.id] != null ? g.tally[m.id] : (g.phase === 'tally' ? '?' : null);
       if (g.phase === 'reveal' && (g.loser === m.id || g.out === m.id)) cls = 'hit';
       if (g.phase === 'tie' && g.tie.includes(m.id)) cls = 'turn';
       if (g.phase === 'over') cls = g.winner === m.id ? 'win' : 'dim';
       if (g.phase === 'vote' && myVote === m.id) cls = 'mine';
       const click = g.phase === 'vote' && meAlive && m.id !== me && g.lives[m.id] > 0 ? 'vote' : null;
-      return slot(m, {cls, badge, badgeKey: 'r' + g.round, top, tag, tagLow: true, click, sc: '#7c4dff', right: `<span class="hearts">${hearts(g.lives[m.id], g.max, 'd:' + m.id)}</span>`});
+      return slot(m, {cls, badge, badgeKey: 'r' + g.round + ':' + badge, top, tag, tagLow: true, click, sc: '#7c4dff', right: `<span class="hearts">${hearts(g.lives[m.id], g.max, 'd:' + m.id)}</span>`});
     }).join('');
     let q = '';
     if (g.phase === 'intro') q = `<div class="qbar disp" style="font-size:54px" data-an="di${g.round}">RUNDE ${g.round + 1} STARTET GLEICH</div>`;
     if (g.phase === 'ask' || g.phase === 'judged') q = `<div class="qwho disp">${esc(pname(P, g.cur.pid))} ist dran · Runde ${g.round}</div><div class="qbar" data-an="dq${g.round}:${g.left}">${esc(g.cur.q)}${g.cur.ok != null ? `<div><span class="okbadge ${g.cur.ok ? 'y' : 'n'}">${g.cur.ok ? '✓ ' : '✗ '}${esc(g.cur.a || '')}</span></div>` : ''}</div>`;
-    if (g.phase === 'vote') q = `<div class="qbar disp" style="font-size:50px" data-an="dv${g.round}">🗳 WER WAR AM DÜMMSTEN? <span style="color:var(--gold)">${g.voted.length} / ${g.order.filter(i => g.lives[i] > 0).length}</span></div>`;
+    if (g.phase === 'vote') q = `<div class="qbar disp" style="font-size:50px" data-an="dv${g.round}">🗳 WER SOLL EIN HERZ VERLIEREN? <span style="color:var(--gold)">${g.voted.length} / ${g.order.filter(i => g.lives[i] > 0).length}</span></div>`;
+    if (g.phase === 'tally') q = `<div class="qbar disp" style="font-size:50px" data-an="dta${g.round}">🗳 AUSWERTUNG – ${g.shown.length} / ${g.order.filter(i => g.lives[i] > 0).length} AUFGEDECKT</div>`;
     if (g.phase === 'tie') q = `<div class="qbar disp" style="font-size:50px" data-an="dt${g.round}">GLEICHSTAND! ${g.tie.map(id => esc(pname(P, id))).join(' VS. ')}</div>`;
     if (g.phase === 'reveal') q = `<div class="qbar disp" style="font-size:54px" data-an="dr${g.round}">${esc(pname(P, g.loser))} ${g.out ? 'FLIEGT RAUS! 💀' : 'VERLIERT EIN HERZ 💔'}</div>`;
     if (g.phase === 'over') q = `<div class="qbar disp" style="font-size:60px" data-an="dover">🏆 ${g.winner ? esc(pname(P, g.winner)) + ' GEWINNT!' : 'SPIEL VORBEI'}</div>`;
@@ -1576,10 +1630,10 @@ function startPlayer() {
       const alive = g.lives[pid] > 0;
       if (g.phase === 'vote' && alive) {
         const others = g.order.filter(id => g.lives[id] > 0 && id !== pid);
-        return `<span class="msg" style="font-size:18px">Dümmste Antwort:</span>` + others.map(id => `<button class="vchip ${myVote === id ? 'on' : ''}" data-bact="vote" data-target="${id}">${esc(pname(PUB, id))}</button>`).join('') + `<span class="muted" style="font-size:13px;width:100%;text-align:center">…oder klick oben direkt auf die Cam · änderbar bis zur Auflösung</span>`;
+        return `<span class="msg" style="font-size:18px">🗳 Wer soll ein Herz verlieren? <small class="muted">(anonym)</small></span>` + others.map(id => `<button class="vchip ${myVote === id ? 'on' : ''}" data-bact="vote" data-target="${id}">${esc(pname(PUB, id))}</button>`).join('') + `<span class="muted" style="font-size:13px;width:100%;text-align:center">…oder klick oben direkt auf die Cam · änderbar bis zur Auflösung</span>`;
       }
       if (!alive && g.phase !== 'over') return `<span class="msg" style="color:var(--bad)">Du bist raus 💀</span>`;
-      const t = {intro: 'Gleich startet die nächste Runde', ask: g.cur && g.cur.pid === pid ? '👉 Du bist dran!' : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, judged: g.cur && g.cur.pid === pid ? (g.cur.ok ? '✅ Richtig!' : '❌ Falsch!') : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, vote: 'Abstimmung läuft…', tie: 'Gleichstand – der Host entscheidet', reveal: g.loser === pid ? 'Du verlierst ein Herz 💔' : `${esc(pname(PUB, g.loser))} verliert ein Herz`, over: g.winner === pid ? '🏆 Du hast gewonnen!' : `🏆 ${esc(pname(PUB, g.winner))} gewinnt!`}[g.phase];
+      const t = {intro: 'Gleich startet die nächste Runde', ask: g.cur && g.cur.pid === pid ? '👉 Du bist dran!' : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, judged: g.cur && g.cur.pid === pid ? (g.cur.ok ? '✅ Richtig!' : '❌ Falsch!') : `${esc(pname(PUB, g.cur ? g.cur.pid : ''))} ist dran`, vote: 'Abstimmung läuft…', tally: '🗳 Auswertung läuft – der Host deckt auf…', tie: 'Gleichstand – der Host entscheidet', reveal: g.loser === pid ? 'Du verlierst ein Herz 💔' : `${esc(pname(PUB, g.loser))} verliert ein Herz`, over: g.winner === pid ? '🏆 Du hast gewonnen!' : `🏆 ${esc(pname(PUB, g.winner))} gewinnt!`}[g.phase];
       return `<span class="msg">${t}</span>`;
     }
     if (g.type === 'jeo') {
@@ -1638,7 +1692,7 @@ function startOverlay() {
 
 /* ---------------- Startseite ---------------- */
 function startLanding() {
-  $('#app').innerHTML = `<div class="landing"><div class="logo">Quiz<span>show</span></div><p class="muted">Team-Duell · Der Dümmste fliegt · Kategorien-Duell</p>
+  $('#app').innerHTML = `<div class="landing"><div class="logo">Quiz<span>show</span></div><p class="muted">Team-Duell · Der Schlauste bleibt · Kategorien-Duell</p>
     <div class="card" style="margin-bottom:14px"><h2>Mitspielen</h2><div class="row"><input id="code" class="grow" maxlength="8" placeholder="Raumcode" style="text-transform:uppercase"><button class="b-gold" id="join">Beitreten</button></div></div>
     </div>`;
   $('#join').onclick = () => { const c = $('#code').value.trim().toUpperCase(); if (c) { location.hash = 'play=' + c + (LOCAL ? '&local=1' : ''); location.reload(); } };
