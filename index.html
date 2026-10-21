@@ -242,7 +242,7 @@ const PARAMS = parseHash();
 const LOCAL = PARAMS.local === '1';
 const PREFIX = 'dqs-v1-';
 // Host-Passwort: SHA-256-Hash hier eintragen (leer = kein Passwort). Den Hash erzeugst du im Host-Panel unter „Einstellungen & Hilfe“.
-const HOST_PASS_HASH = '';
+const HOST_PASS_HASH = '8a376a996f6d7e958bbd68a87649296ea289ed2880de8b358cb91fa06aa3dfc6';
 async function sha256(t) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
